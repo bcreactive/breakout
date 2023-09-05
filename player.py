@@ -1,7 +1,7 @@
 import pygame
 
 
-class Platform:
+class Player:
     def __init__(self, game):
         self.game = game
         self.screen = game.screen
@@ -9,6 +9,7 @@ class Platform:
         self.width = 100
         self.height = 30
         self.x = 400 - self.width/2
+        self.x = float(self.x)
         self.y = self.screen_rect.height - self.height
         
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
@@ -17,7 +18,7 @@ class Platform:
         # self.rect.midbottom = self.screen_rect.midbottom
         self.moving_left = False
         self.moving_right = False
-        self.speed = game.settings.speed
+        self.speed = game.settings.player_speed
         
     def update(self):
         if self.moving_left == True and self.x > 0:

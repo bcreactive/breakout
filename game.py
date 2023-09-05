@@ -1,8 +1,10 @@
 import pygame
 import sys
 
-from platform import Platform
+from player import Player
 from settings import Settings
+from ball import Ball
+from block import Block
 
 
 class Game:
@@ -20,9 +22,10 @@ class Game:
         self.fps = 60
 
         self.settings = Settings()
-        self.platform = Platform(self)
+        self.platform = Player(self)
+        self.ball = Ball(self)
+        self.block = Block(self)
         
-
         self.game_active = True
     
     def run_game(self):      
@@ -30,6 +33,8 @@ class Game:
             self.check_events()
             if self.game_active:
                 self.platform.update()
+                self.ball.update()
+                self.block.update()
             self.update_screen()  
             self.clock.tick(self.fps)
 
@@ -52,8 +57,10 @@ class Game:
 
                             
     def update_screen(self):
-        self.screen.fill((0, 0, 0))
+        self.screen.fill((0, 100, 150))
         self.platform.drawme()
+        self.ball.drawme()
+        self.block.drawme()
 
         pygame.display.flip()
 
