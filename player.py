@@ -13,7 +13,7 @@ class Player(Sprite):
         self.y = self.screen_rect.height - self.height
         
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        self.rect_image = pygame.Rect(self.x, self.y, self.width, self.height + 10)
+        self.rect_image = pygame.Rect(self.x, self.y, self.width, self.height)
         self.color = (123, 123, 123)
 
         self.moving_left = False
@@ -29,7 +29,8 @@ class Player(Sprite):
             self.x += self.speed
         self.rect.x = self.x
         self.rect_image.x = self.x
+        self.rect_image.y = self.y - 10
 
     def drawme(self):
-        pygame.draw.rect(self.screen, self.color, self.rect)
+        pygame.draw.rect(self.screen, self.color, (self.rect_image))
 

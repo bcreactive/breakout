@@ -1,5 +1,6 @@
 import pygame
 import sys
+from random import choice
 
 from player import Player
 from settings import Settings
@@ -63,9 +64,14 @@ class Game:
                     if event.key == pygame.K_RIGHT:
                         self.platform.moving_right = False
 
+    def get_color(self):
+        colors = ["blue", "red", "green", "violet", "yellow"]
+        return choice(colors)
+    
     def get_blocks(self):
         for i in self.level_pos:
-            new_block = Block(self, i[0], i[1], "red")
+            color = self.get_color()
+            new_block = Block(self, i[0], i[1], color)
             self.blocks.append(new_block)
 
     def update_blocks(self):
@@ -78,13 +84,15 @@ class Game:
                 if i.hp == 0:
                     self.points += i.points
                     self.blocks.remove(i)
-                print(i.hp)
-                print(self.points)
+                # print(i.hp)
+                # print(self.points)
             
     def check_level_end(self):
         if len(self.blocks) == 0:
             self.level += 1
             self.load_next_level(self.level)
+            print(self.level)
+            exit()
 
     def load_next_level(self, level):
         if level == 1:
@@ -93,6 +101,9 @@ class Game:
         if level == 2:
             self.level_pos = [(50, 150), (150, 150), (250, 150), (350, 150),
                             (450, 150), (550, 150), (650, 150)]
+            
+        # ball despawn, reset positions of platform and ball, level screen, 
+        # get_blocks() ev timer 3,2,1..
 
 
     def update_screen(self):

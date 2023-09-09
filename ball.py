@@ -15,7 +15,8 @@ class Ball(Sprite):
 
         self.x = 400 
         self.y = 300
-        
+        self.x = float(self.x)
+        self.y = float(self.y)
         self.color = (200, 250, 200)
         self.speed = self.settings.ball_speed
         self.direction_x = 1
@@ -45,7 +46,7 @@ class Ball(Sprite):
             self.direction_y *= -1
 
     def check_platform(self):
-        if self.rect.colliderect(self.platform.rect_image):
+        if self.rect.colliderect(self.platform.rect):
             self.direction_y *= -1
 
     def check_bottom(self):
