@@ -1,7 +1,7 @@
 import pygame
+from pygame.sprite import Sprite
 
-
-class Player:
+class Player(Sprite):
     def __init__(self, game):
         self.game = game
         self.screen = game.screen

@@ -61,7 +61,7 @@ class Game:
 
     def update_screen(self):
         self.screen.fill((0, 100, 150))
-        # self.platform.drawme()
+        self.platform.drawme()
         self.ball.drawme()
         # self.block.drawme()
 

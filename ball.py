@@ -8,6 +8,7 @@ class Ball(Sprite):
         super().__init__()
         self.screen = game.screen
         self.screen_rect = self.screen.get_rect()
+        self.platform = game.platform
         self.settings = game.settings
 
         self.radius = 10
@@ -18,7 +19,8 @@ class Ball(Sprite):
         
         self.color = (200, 250, 200)
         self.speed = self.settings.ball_speed
-        self.direction = 1
+        self.direction_x = 1
+        self.direction_y = -1
 
         self.start_point = (100, 100)
         # self.angle = self.get_angle()
@@ -27,7 +29,10 @@ class Ball(Sprite):
 
     def update(self):
         self.check_edges()
-        self.x += self.speed * self.direction
+        self.check_platform()
+        self.check_bottom()
+        self.x += self.speed * self.direction_x
+        self.y += self.speed * self.direction_y
         # self.x = self.get_new_x(self.angle)
         # self.y = self.get_new_y(self.angle)
         # print(self.x, self.y)
@@ -36,10 +41,22 @@ class Ball(Sprite):
 
     def check_edges(self):
         if self.x + self.radius >= self.screen_rect.right:
-            self.direction *= -1
+            self.direction_x *= -1
         if self.x - self.radius <= self.screen_rect.left:
-            self.direction *= -1
-        print(self.direction)
+            self.direction_x *= -1
+        if self.y - self.radius <= self.screen_rect.top:
+            self.direction_y *= -1
+
+        # print(self.direction_x, self.direction_y)
+
+    def check_platform(self):
+        if self.rect.colliderect(self.platform.rect):
+            self.direction_y *= -1
+
+    def check_bottom(self):
+        if self.y + self.radius >= self.screen_rect.bottom:
+            print("game over!")
+            exit(0)
 
 
     def get_angle(self):
