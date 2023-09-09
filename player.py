@@ -2,6 +2,7 @@ import pygame
 from pygame.sprite import Sprite
 
 class Player(Sprite):
+    
     def __init__(self, game):
         self.game = game
         self.screen = game.screen
@@ -19,8 +20,6 @@ class Player(Sprite):
         self.moving_left = False
         self.moving_right = False
         self.speed = game.settings.player_speed
-        # print(self.rect)
-        # print(self.rect_image)
         
     def update(self):
         if self.moving_left == True and self.x > 0:
