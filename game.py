@@ -24,8 +24,9 @@ class Game:
         self.settings = Settings()
         self.platform = Player(self)
         self.ball = Ball(self)
-        self.block = Block(self)
-        
+        self.block = Block(self, 200, 200, "yellow")
+        self.level = 1
+        self.load_level(self.level)
         self.game_active = True
     
     def run_game(self):      
@@ -55,12 +56,14 @@ class Game:
                     if event.key == pygame.K_RIGHT:
                         self.platform.moving_right = False
 
-                            
+    def load_level(self, level):
+        pass
+
     def update_screen(self):
         self.screen.fill((0, 100, 150))
-        self.platform.drawme()
+        # self.platform.drawme()
         self.ball.drawme()
-        self.block.drawme()
+        # self.block.drawme()
 
         pygame.display.flip()
 

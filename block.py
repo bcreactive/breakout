@@ -4,20 +4,69 @@ from random import randint
 
 class Block(Sprite):
     
-    def __init__(self, game):
+    def __init__(self, game, x, y, color):
         super().__init__()
         self.screen = game.screen
+        self.settings = game.settings
 
-        self.x = 200
-        self.y = 150
+        self.x = x
+        self.y = y
         self.width = 60
         self.height = 25
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        self.color = (randint(0, 255), randint(0, 255), randint(0, 255))
+        self.color = self.get_color(color)
+        self.points = self.get_points(color)
+        self.hp = self.get_hp(color)
+        
+        self.visible = True
 
-    def update(self):
+    def get_color(self, col):
+        if col == "blue":
+            return (0, 0, 255)
+        elif col == "red":
+            return (255, 0, 0)
+        elif col == "green":
+            return (0, 255, 0)
+        elif col == "violet":
+            return (200, 0, 200)
+        elif col == "yellow":
+            return (0, 200, 200)
+        
+    def get_points(self, col):
+        if col == "blue":
+            return 100
+        elif col == "red":
+            return 200
+        elif col == "green":
+            return 300
+        elif col == "violet":
+            return 400
+        elif col == "yellow":
+            return 500
+        
+    def get_hp(self, col):
+        if col == "blue":
+            return 1
+        elif col == "red":
+            return 2
+        elif col == "green":
+            return 3
+        elif col == "violet":
+            return 4
+        elif col == "yellow":
+            return 5
+
+    def check_hp(self):     
+        if self.hp == 0:
+            self.visible = False
+
+    def check_hit(self):
         pass
 
+    def update(self):
+        self.check_hp()
+        self.check_hit()
 
     def drawme(self):
-        pygame.draw.rect(self.screen, self.color, self.rect)
+        if self.visible:
+            pygame.draw.rect(self.screen, self.color, self.rect)

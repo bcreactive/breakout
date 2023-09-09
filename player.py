@@ -15,7 +15,6 @@ class Player:
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.color = (123, 123, 123)
 
-        # self.rect.midbottom = self.screen_rect.midbottom
         self.moving_left = False
         self.moving_right = False
         self.speed = game.settings.player_speed
