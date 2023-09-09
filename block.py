@@ -6,23 +6,28 @@ class Block(Sprite):
     
     def __init__(self, game, x, y, color):
         super().__init__()
+        self.game = game
         self.screen = game.screen
         self.settings = game.settings
+
 
         self.x = x
         self.y = y
         self.width = 60
         self.height = 25
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.color = self.get_color(color)
+        
+        self.rect = pygame.Rect(self.x, self.y, self.width + 10, self.height + 10)  
+        self.image_rect = pygame.Rect(self.x, self.y, self.width, self.height)  
+        
         self.points = self.get_points(color)
         self.hp = self.get_hp(color)
-        
+           
         self.visible = True
 
     def get_color(self, col):
         if col == "blue":
-            return (0, 0, 255)
+            return (0, 0, 255, 0)
         elif col == "red":
             return (255, 0, 0)
         elif col == "green":
@@ -60,13 +65,9 @@ class Block(Sprite):
         if self.hp == 0:
             self.visible = False
 
-    def check_hit(self):
-        pass
-
     def update(self):
         self.check_hp()
-        self.check_hit()
 
-    def drawme(self):
+    def draw(self):
         if self.visible:
-            pygame.draw.rect(self.screen, self.color, self.rect)
+            pygame.draw.rect(self.screen, self.color, self.image_rect)

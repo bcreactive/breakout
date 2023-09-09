@@ -24,9 +24,14 @@ class Game:
         self.settings = Settings()
         self.platform = Player(self)
         self.ball = Ball(self)
-        self.block = Block(self, 200, 200, "yellow")
+        self.blocks = [] #pygame.sprite.Group()
+        self.level_pos = []
+
+        self.points = 0
         self.level = 1
-        self.load_level(self.level)
+        self.load_next_level(self.level)
+        
+        self.get_blocks()
         self.game_active = True
     
     def run_game(self):      
@@ -35,7 +40,9 @@ class Game:
             if self.game_active:
                 self.platform.update()
                 self.ball.update()
-                self.block.update()
+                for i in self.blocks:
+                    i.update()
+                self.update_blocks()
             self.update_screen()  
             self.clock.tick(self.fps)
 
@@ -56,14 +63,44 @@ class Game:
                     if event.key == pygame.K_RIGHT:
                         self.platform.moving_right = False
 
-    def load_level(self, level):
-        pass
+    def get_blocks(self):
+        for i in self.level_pos:
+            new_block = Block(self, i[0], i[1], "red")
+            self.blocks.append(new_block)
+
+    def update_blocks(self):
+        self.check_level_end()
+        for i in self.blocks:
+            
+            if self.ball.rect.colliderect(i.rect):
+                self.ball.direction_y *= -1
+                i.hp -= 1
+                if i.hp == 0:
+                    self.points += i.points
+                    self.blocks.remove(i)
+                print(i.hp)
+                print(self.points)
+            
+    def check_level_end(self):
+        if len(self.blocks) == 0:
+            self.level += 1
+            self.load_next_level(self.level)
+
+    def load_next_level(self, level):
+        if level == 1:
+            self.level_pos = [(50, 50), (150, 50), (250, 50), (350, 50),
+                            (450, 50), (550, 50), (650, 50)]
+        if level == 2:
+            self.level_pos = [(50, 150), (150, 150), (250, 150), (350, 150),
+                            (450, 150), (550, 150), (650, 150)]
+
 
     def update_screen(self):
         self.screen.fill((0, 100, 150))
         self.platform.drawme()
         self.ball.drawme()
-        # self.block.drawme()
+        for i in self.blocks:
+            i.draw()
 
         pygame.display.flip()
 

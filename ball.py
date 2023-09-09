@@ -12,8 +12,7 @@ class Ball(Sprite):
         self.settings = game.settings
 
         self.radius = 10
-        # self.x = 400 
-        # self.y = 570 - self.radiu
+
         self.x = 400 
         self.y = 300
         
@@ -26,6 +25,7 @@ class Ball(Sprite):
         # self.angle = self.get_angle()
         self.angle = 271
         self.rect = pygame.draw.circle(self.screen, self.color, (self.x, self.y), self.radius)
+        # print(self.rect)
 
     def update(self):
         self.check_edges()
@@ -33,9 +33,6 @@ class Ball(Sprite):
         self.check_bottom()
         self.x += self.speed * self.direction_x
         self.y += self.speed * self.direction_y
-        # self.x = self.get_new_x(self.angle)
-        # self.y = self.get_new_y(self.angle)
-        # print(self.x, self.y)
         self.rect.x = self.x
         self.rect.y = self.y
 
@@ -47,10 +44,8 @@ class Ball(Sprite):
         if self.y - self.radius <= self.screen_rect.top:
             self.direction_y *= -1
 
-        # print(self.direction_x, self.direction_y)
-
     def check_platform(self):
-        if self.rect.colliderect(self.platform.rect):
+        if self.rect.colliderect(self.platform.rect_image):
             self.direction_y *= -1
 
     def check_bottom(self):
