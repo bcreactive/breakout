@@ -22,17 +22,22 @@ class Game:
         self.clock = pygame.time.Clock()   
         self.fps = 60
 
+        # self.button = 
         self.settings = Settings()
         self.platform = Player(self)
         self.ball = Ball(self)
-        self.blocks = [] #pygame.sprite.Group()
+        
+        self.blocks = []
         self.level_pos = []
-
+        # self.title_screen = 
+        # self.level_screen = 
+        # self.music = 
+        
         self.points = 0
         self.level = 1
-        self.load_next_level(self.level)
-        
+        self.load_next_level(self.level)       
         self.get_blocks()
+
         self.game_active = True
     
     def run_game(self):      
@@ -77,15 +82,13 @@ class Game:
     def update_blocks(self):
         self.check_level_end()
         for i in self.blocks:
-            
             if self.ball.rect.colliderect(i.rect):
                 self.ball.direction_y *= -1
                 i.hp -= 1
+
                 if i.hp == 0:
                     self.points += i.points
                     self.blocks.remove(i)
-                # print(i.hp)
-                # print(self.points)
             
     def check_level_end(self):
         if len(self.blocks) == 0:
@@ -96,15 +99,14 @@ class Game:
 
     def load_next_level(self, level):
         if level == 1:
-            self.level_pos = [(50, 50), (150, 50), (250, 50), (350, 50),
-                            (450, 50), (550, 50), (650, 50)]
+            self.level_pos = [(50, 50), (170, 50), (290, 50), (410, 50),
+                            (530, 50), (650, 50)]
         if level == 2:
             self.level_pos = [(50, 150), (150, 150), (250, 150), (350, 150),
                             (450, 150), (550, 150), (650, 150)]
             
         # ball despawn, reset positions of platform and ball, level screen, 
         # get_blocks() ev timer 3,2,1..
-
 
     def update_screen(self):
         self.screen.fill((0, 100, 150))

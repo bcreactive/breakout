@@ -9,8 +9,6 @@ class Block(Sprite):
         self.game = game
         self.screen = game.screen
         self.settings = game.settings
-
-
         self.x = x
         self.y = y
         self.width = 60

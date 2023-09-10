@@ -4,7 +4,7 @@ from random import randint
 from pygame.sprite import Sprite
 
 class Ball(Sprite):
-    
+
     def __init__(self, game):
         super().__init__()
         self.screen = game.screen
@@ -13,7 +13,6 @@ class Ball(Sprite):
         self.settings = game.settings
 
         self.radius = 10
-
         self.x = 400 
         self.y = 300
         self.x = float(self.x)
@@ -27,7 +26,6 @@ class Ball(Sprite):
         # self.angle = self.get_angle()
         self.angle = 271
         self.rect = pygame.draw.circle(self.screen, self.color, (self.x, self.y), self.radius)
-        # print(self.rect)
 
     def update(self):
         self.check_edges()
@@ -54,7 +52,6 @@ class Ball(Sprite):
         if self.y + self.radius >= self.screen_rect.bottom:
             print("game over!")
             exit(0)
-
 
     def get_angle(self):
         deg_angle = randint(210, 330)
