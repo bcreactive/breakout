@@ -20,7 +20,7 @@ class Game:
         self.screen_rect = self.screen.get_rect()
         pygame.display.set_caption("Game")   
         self.clock = pygame.time.Clock()   
-        self.fps = 40
+        self.fps = 60
 
         # self.button = 
         self.settings = Settings()
@@ -34,7 +34,7 @@ class Game:
         # self.music = 
         
         self.points = 0
-        self.level = 3
+        self.level = 2
         self.load_next_level(self.level)       
         self.get_blocks()
 
@@ -82,13 +82,12 @@ class Game:
     def update_blocks(self):
         self.check_level_end()
         for i in self.blocks:
-            if self.ball.rect.colliderect(i):
-                self.ball.change_dir(i)
+            if self.ball.rect.colliderect(i.rect):               
                 i.hp -= 1
-
                 if i.hp == 0:
                     self.points += i.points
                     self.blocks.remove(i)
+                self.ball.change_dir(i)
             
     def check_level_end(self):
         if len(self.blocks) == 0:
@@ -108,6 +107,8 @@ class Game:
             
         if level == 3:
             self.level_pos = [(300, 300)]
+        if level == 4:
+            self.level_pos = [(100, 300),(300, 300),(500, 300) ]
         else:
             return
             
