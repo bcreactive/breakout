@@ -1,6 +1,6 @@
 import pygame
 import math
-from random import randint
+from random import randint, choice
 from pygame.sprite import Sprite
 
 class Ball(Sprite):
@@ -26,7 +26,9 @@ class Ball(Sprite):
 
         # self.start_point = (100, 100)
         # self.angle = self.get_angle()
-        self.angle = 245
+        # self.angle = 345
+        self.angle = 221.001
+        self.angle = float(self.angle)
         self.rect = pygame.draw.circle(self.screen, self.color, (self.x, self.y), self.radius)
 
     def update(self):
@@ -42,7 +44,6 @@ class Ball(Sprite):
         # self.ticker += 1
 
     def check_edges(self):
-        
         if self.x + self.radius >= self.screen_rect.right:
             if self.angle == 0:
                 self.angle += 1
@@ -51,13 +52,11 @@ class Ball(Sprite):
                 b = 90 - a
                 c = 180 - 90 - b
                 self.angle -= (180 - 2 * c)
-                # print(self.angle)
 
             if self.angle < 90:
                 a = 90 - self.angle
                 b = 180 - 90 - a
                 self.angle += (180 - 2 * b)
-                # print(self.angle)
             
         if self.x - self.radius <= self.screen_rect.left:
             if self.angle == 180:
@@ -68,13 +67,10 @@ class Ball(Sprite):
                 c = 180 - 90 - b
                 d = 90 - c
                 self.angle = 270 + d
-                # print(self.angle)
 
             if self.angle < 180:
                 a = self.angle - 90
-                # b = 180 - (a + 90)
                 self.angle = 180 - 90 -a
-                # print(self.angle)
 
         if self.y - self.radius <= self.screen_rect.top:
             if self.angle == 270:
@@ -82,47 +78,62 @@ class Ball(Sprite):
             a = 360 - self.angle
             b = 180 - (a + 90)
             self.angle = (180 - 2 * b) / 2
-            # print(self.angle)
 
     def check_platform(self):
         if self.rect.colliderect(self.platform.rect):
             a = 360 - self.angle
             b = 180 - (a + 90)
             self.angle = (180 - 2 * b) / 2
-            print(self.angle)
             if self.platform.moving_left:
-                self.angle -= 3
+                self.angle -= 3.01
             if self.platform.moving_right:
-                self.angle += 3
-            print(self.angle)
+                self.angle += 3.01
 
     def check_bottom(self):
         if self.y + self.radius >= self.screen_rect.bottom:
             print("game over!")
             exit(0)
 
-    # def change_dir(self, i):
-    #     # if self.ticker % 5 == 0:
-    #     #     print(self.angle)
-    #     if self.x + self.radius >= i.rect.right:
-    #         a = 360 - self.angle
-    #         b = 180 - (a + 90)
-    #         self.angle = self.angle + 90 - 2 * b
+    def change_dir(self, i):
+        if self.x + self.radius <= i.rect.right:
+            if self.angle > 270:
+                a = 360 - self.angle
+                b = 90 - a
+                c = 180 - 90 - b
+                self.angle -= (180 - 2 * c)
 
-    #     if self.x - self.radius <= i.rect.left:
-    #         a = 360 - self.angle
-    #         b = 180 - (a + 90)
-    #         self.angle = self.angle + 90 - 2 * b
+            if self.angle < 90:
+                a = 90 - self.angle
+                b = 180 - 90 - a
+                self.angle += (180 - 2 * b)
 
-    #     if self.y - self.radius <= i.rect.top:
-    #         a = 360 - self.angle
-    #         b = 180 - (a + 90)
-    #         self.angle = (180 - 2 * b) / 2
+        if self.x - self.radius >= i.rect.left:
+            if self.angle > 180:
+                a = self.angle - 180
+                b = 90 - a
+                c = 180 - 90 - b
+                d = 90 - c
+                self.angle = 270 + d
 
-    #     if self.y + self.radius >= i.rect.bottom:
-    #         a = 360 - self.angle
-    #         b = 180 - (a + 90)
-    #         self.angle = (180 - 2 * b) / 2
+            if self.angle < 180:
+                a = self.angle - 90
+                self.angle = 180 - 90 -a
+
+        if self.y + self.radius >= i.rect.top:
+            if self.angle < 90:
+                b = 180 - 90 - self.angle
+                self.angle = 270 - b
+            if self.angle > 90:
+                a = 180 - self.angle
+                b = 180 - 90 - a
+                self.angle = 270 + b
+
+        if self.y - self.radius <= i.rect.bottom:
+            a = 360 - self.angle
+            b = 180 - (a + 90)
+            self.angle = ((180 - 2 * b) / 2)
+
+        print(self.angle)
 
     def get_new_x(self, angle):
         rad_angle = angle * math.pi/180

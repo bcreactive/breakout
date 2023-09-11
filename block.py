@@ -11,12 +11,14 @@ class Block(Sprite):
         self.settings = game.settings
         self.x = x
         self.y = y
-        self.width = 60
-        self.height = 25
+        # self.width = 60
+        # self.height = 25
+        self.width = 200
+        self.height = 100
         self.color = self.get_color(color)
         
-        self.rect = pygame.Rect(self.x, self.y, self.width + 10, self.height + 10)  
-        self.image_rect = pygame.Rect(self.x, self.y, self.width, self.height)  
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)  
+        self.image_rect = pygame.Rect(self.x - 10, self.y - 10, self.width, self.height)  
         
         self.points = self.get_points(color)
         self.hp = self.get_hp(color)

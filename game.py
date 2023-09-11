@@ -20,7 +20,7 @@ class Game:
         self.screen_rect = self.screen.get_rect()
         pygame.display.set_caption("Game")   
         self.clock = pygame.time.Clock()   
-        self.fps = 50
+        self.fps = 40
 
         # self.button = 
         self.settings = Settings()
@@ -34,7 +34,7 @@ class Game:
         # self.music = 
         
         self.points = 0
-        self.level = 1
+        self.level = 3
         self.load_next_level(self.level)       
         self.get_blocks()
 
@@ -46,9 +46,9 @@ class Game:
             if self.game_active:
                 self.platform.update()
                 self.ball.update()
-                # for i in self.blocks:
-                #     i.update()
-                # self.update_blocks()
+                for i in self.blocks:
+                    i.update()
+                self.update_blocks()
             self.update_screen()  
             self.clock.tick(self.fps)
 
@@ -82,10 +82,8 @@ class Game:
     def update_blocks(self):
         self.check_level_end()
         for i in self.blocks:
-            if self.ball.rect.colliderect(i.rect):
-                # self.ball.direction_y *= -1
-                # print(self.ball.angle)
-                # self.ball.change_dir(i)
+            if self.ball.rect.colliderect(i):
+                self.ball.change_dir(i)
                 i.hp -= 1
 
                 if i.hp == 0:
@@ -94,10 +92,11 @@ class Game:
             
     def check_level_end(self):
         if len(self.blocks) == 0:
-            self.level += 1
+            # self.level += 1
             self.load_next_level(self.level)
-            print(self.level)
-            exit()
+            # print(self.level)
+            return
+            # exit()
 
     def load_next_level(self, level):
         if level == 1:
@@ -107,6 +106,11 @@ class Game:
             self.level_pos = [(50, 150), (150, 150), (250, 150), (350, 150),
                             (450, 150), (550, 150), (650, 150)]
             
+        if level == 3:
+            self.level_pos = [(300, 300)]
+        else:
+            return
+            
         # ball despawn, reset positions of platform and ball, level screen, 
         # get_blocks() ev timer 3,2,1..
 
@@ -114,8 +118,8 @@ class Game:
         self.screen.fill((0, 100, 150))
         self.platform.drawme()
         self.ball.drawme()
-        # for i in self.blocks:
-        #     i.draw()
+        for i in self.blocks:
+            i.draw()
 
         pygame.display.flip()
 
