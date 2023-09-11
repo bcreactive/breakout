@@ -26,7 +26,8 @@ class Ball(Sprite):
         # self.speed_y = randint(-4, 8)
         self.direction_x = 1
         self.direction_y = -1
-
+        # self.image = pygame.image.load("ballx.png")
+        # self.rect = self.image.get_rect()
         self.rect = pygame.draw.circle(self.screen, self.color, (self.x, self.y), self.radius)
 
     def update(self):
@@ -75,6 +76,7 @@ class Ball(Sprite):
             print(i.rect.bottom)
  
     def drawme(self):
+        # self.screen.blit(self.image, (self.x, self.y))
         pygame.draw.circle(self.screen, self.color, (self.x, self.y), self.radius)
     
     #  if self.x + self.radius <= i.rect.right:

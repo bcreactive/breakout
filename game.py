@@ -20,7 +20,7 @@ class Game:
         self.screen_rect = self.screen.get_rect()
         pygame.display.set_caption("Game")   
         self.clock = pygame.time.Clock()   
-        self.fps = 60
+        self.fps = 30
 
         # self.button = 
         self.settings = Settings()
@@ -39,6 +39,7 @@ class Game:
         self.get_blocks()
 
         self.game_active = True
+        
     
     def run_game(self):      
         while True:
@@ -82,12 +83,13 @@ class Game:
     def update_blocks(self):
         self.check_level_end()
         for i in self.blocks:
-            if self.ball.rect.colliderect(i.rect):               
+            if self.ball.rect.colliderect(i.rect):
+                # i.collision = True               
                 i.hp -= 1
                 if i.hp == 0:
                     self.points += i.points
                     self.blocks.remove(i)
-                self.ball.change_dir(i)
+                # self.ball.change_dir(i)
             
     def check_level_end(self):
         if len(self.blocks) == 0:

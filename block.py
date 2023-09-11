@@ -9,6 +9,7 @@ class Block(Sprite):
         self.game = game
         self.screen = game.screen
         self.settings = game.settings
+        self.ball = game.ball
         self.x = x
         self.y = y
         self.width = 60
@@ -24,6 +25,8 @@ class Block(Sprite):
         self.hp = self.get_hp(color)
            
         self.visible = True
+        self.tick = 0
+        # self.collision = False
 
     def get_color(self, col):
         if col == "blue":
@@ -65,13 +68,33 @@ class Block(Sprite):
         if self.hp == 0:
             self.visible = False
 
-    # def check_collision(self):
-    #     pass
-            
+    def check_collision(self, ball_x, ball_y):
+        self.ball_x = ball_x
+        self.ball_y = ball_y
+
+        if self.ball.rect.colliderect(self.rect):
+        # if self.collision:
+            # print("got hit!")
+            if self.ball_x <= self.rect.right:
+                self.ball.direction_x *= -1
+                # self.collision = False
+                # print(self.direction_x, self.direction_y)
+            if self.ball_x + 2*self.ball.radius >= self.rect.left:
+                self.ball.direction_x *= -1
+                # self.collision = False
+                # print(self.direction_x, self.direction_y)
+            if self.ball_y + 2*self.ball.radius >= self.rect.top:
+                self.ball.direction_y *= -1
+                # self.collision = False
+                # print(self.direction_x, self.direction_y)
+            if self.ball_y <= self.ball.rect.bottom:
+                self.ball.direction_y *= -1
+                # self.collision = False
+
     def update(self):
         self.check_hp()
-        # self.check_collision()
+        self.check_collision(self.ball.x, self.ball.y)
 
     def draw(self):
         if self.visible:
-            pygame.draw.rect(self.screen, self.color, self.image_rect)
+            pygame.draw.rect(self.screen, self.color, self.rect)
