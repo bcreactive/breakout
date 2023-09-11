@@ -20,7 +20,7 @@ class Game:
         self.screen_rect = self.screen.get_rect()
         pygame.display.set_caption("Game")   
         self.clock = pygame.time.Clock()   
-        self.fps = 60
+        self.fps = 50
 
         # self.button = 
         self.settings = Settings()
@@ -46,9 +46,9 @@ class Game:
             if self.game_active:
                 self.platform.update()
                 self.ball.update()
-                for i in self.blocks:
-                    i.update()
-                self.update_blocks()
+                # for i in self.blocks:
+                #     i.update()
+                # self.update_blocks()
             self.update_screen()  
             self.clock.tick(self.fps)
 
@@ -83,7 +83,9 @@ class Game:
         self.check_level_end()
         for i in self.blocks:
             if self.ball.rect.colliderect(i.rect):
-                self.ball.direction_y *= -1
+                # self.ball.direction_y *= -1
+                # print(self.ball.angle)
+                # self.ball.change_dir(i)
                 i.hp -= 1
 
                 if i.hp == 0:
@@ -112,8 +114,8 @@ class Game:
         self.screen.fill((0, 100, 150))
         self.platform.drawme()
         self.ball.drawme()
-        for i in self.blocks:
-            i.draw()
+        # for i in self.blocks:
+        #     i.draw()
 
         pygame.display.flip()
 

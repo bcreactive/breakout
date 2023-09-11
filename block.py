@@ -63,8 +63,12 @@ class Block(Sprite):
         if self.hp == 0:
             self.visible = False
 
+    # def check_collision(self):
+    #     pass
+            
     def update(self):
         self.check_hp()
+        # self.check_collision()
 
     def draw(self):
         if self.visible:
