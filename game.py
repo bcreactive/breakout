@@ -1,11 +1,13 @@
 import pygame
 import sys
 from random import choice
+from time import sleep
 
 from player import Player
 from settings import Settings
 from ball import Ball
 from block import Block
+from button import Button
 
 
 class Game:
@@ -22,7 +24,7 @@ class Game:
         self.clock = pygame.time.Clock()   
         self.fps = 60
 
-        # self.button = 
+        self.play_button = Button(self, "Play!")
         self.settings = Settings()
         self.platform = Player(self)
         self.ball = Ball(self)
@@ -38,15 +40,14 @@ class Game:
         self.load_next_level(self.level)       
         self.get_blocks()
 
-        self.game_active = True
+        self.game_active = False
         
     def run_game(self):      
         while True:
             self.check_events()
             if self.game_active:
                 self.platform.update()
-                self.ball.update(self.blocks)     
-                
+                self.ball.update(self.blocks)                    
                 self.check_level_end()
                 self.check_blocks()
                 self.update_blocks()
@@ -56,8 +57,10 @@ class Game:
     def check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                sys.exit()
-             
+                sys.exit()          
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                self.check_play_button(mouse_pos)
             if self.game_active:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
@@ -69,6 +72,19 @@ class Game:
                         self.platform.moving_left = False
                     if event.key == pygame.K_RIGHT:
                         self.platform.moving_right = False
+
+    def check_play_button(self, mouse_pos):
+        """Start a new game if the player clicks Play."""
+        if not self.game_active:
+            if self.play_button.rect.collidepoint(mouse_pos):
+                # pygame.mixer.Channel(2).play(pygame.mixer.Sound('sound\\button.mp3'))
+                sleep(1)
+                # pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound\playing.mp3'))
+                # self.player.reset_stats()
+                self.game_active = True
+                pygame.mouse.set_visible(False)
+                # self.new_high_score = False
+                # self.bonus_fruit_visible = False
 
     def get_color(self):
         colors = ["blue", "red", "green", "violet", "yellow"]
@@ -88,6 +104,7 @@ class Game:
                 if i.hp == 0:
                     self.points += i.points
                     self.blocks.remove(i)
+                    print(self.points)
 
     def check_blocks(self):
         for i in self.blocks:
@@ -153,11 +170,14 @@ class Game:
 
     def update_screen(self):
         self.screen.fill((0, 100, 150))
-        self.platform.drawme()
-        self.ball.drawme()
-        for i in self.blocks:
-            i.draw()
-        
+        if not self.game_active:
+            self.play_button.draw_button()
+        if self.game_active:
+            self.platform.drawme()
+            self.ball.drawme()
+            for i in self.blocks:
+                i.draw()
+            
         pygame.display.flip()
 
 pygame.quit()
