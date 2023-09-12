@@ -34,22 +34,21 @@ class Game:
         # self.music = 
         
         self.points = 0
-        self.level = 2
+        self.level = 0
         self.load_next_level(self.level)       
         self.get_blocks()
 
         self.game_active = True
         
-    
     def run_game(self):      
         while True:
             self.check_events()
             if self.game_active:
                 self.platform.update()
-                self.ball.update()
-                for i in self.blocks:
-                    i.update()
+                self.ball.update(self.blocks)
+      
                 self.update_blocks()
+                self.check_level_end()
             self.update_screen()  
             self.clock.tick(self.fps)
 
@@ -81,15 +80,17 @@ class Game:
             self.blocks.append(new_block)
 
     def update_blocks(self):
-        self.check_level_end()
+        # self.check_level_end()
+        # for i in self.blocks:
+                    # i.update()
         for i in self.blocks:
-            if self.ball.rect.colliderect(i.rect):
-                # i.collision = True               
+            i.update()           
+            if self.ball.rect.colliderect(i.rect):         
                 i.hp -= 1
                 if i.hp == 0:
                     self.points += i.points
                     self.blocks.remove(i)
-                # self.ball.change_dir(i)
+
             
     def check_level_end(self):
         if len(self.blocks) == 0:
