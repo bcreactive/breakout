@@ -20,7 +20,7 @@ class Game:
         self.screen_rect = self.screen.get_rect()
         pygame.display.set_caption("Game")   
         self.clock = pygame.time.Clock()   
-        self.fps = 30
+        self.fps = 60
 
         # self.button = 
         self.settings = Settings()
@@ -34,7 +34,7 @@ class Game:
         # self.music = 
         
         self.points = 0
-        self.level = 0
+        self.level = 1
         self.load_next_level(self.level)       
         self.get_blocks()
 
@@ -45,10 +45,11 @@ class Game:
             self.check_events()
             if self.game_active:
                 self.platform.update()
-                self.ball.update(self.blocks)
-      
-                self.update_blocks()
+                self.ball.update(self.blocks)     
+                
                 self.check_level_end()
+                self.check_blocks()
+                self.update_blocks()
             self.update_screen()  
             self.clock.tick(self.fps)
 
@@ -80,9 +81,6 @@ class Game:
             self.blocks.append(new_block)
 
     def update_blocks(self):
-        # self.check_level_end()
-        # for i in self.blocks:
-                    # i.update()
         for i in self.blocks:
             i.update()           
             if self.ball.rect.colliderect(i.rect):         
@@ -91,7 +89,34 @@ class Game:
                     self.points += i.points
                     self.blocks.remove(i)
 
-            
+    def check_blocks(self):
+        for i in self.blocks:
+            if self.ball.rect.colliderect(i.rect):
+                if self.ball.rect.bottom >= i.rect.top and self.ball.rect.top <= i.rect.top:
+                    if self.ball.rect.left <= i.rect.right  and self.ball.rect.right >= i.rect.left :
+                            # print("hit")
+                            if self.ball.direction_y == 1:
+                                self.ball.direction_y *= -1
+                                print("top")
+                if self.ball.rect.right >= i.rect.left and self.ball.rect.left <= i.rect.left: 
+                    if self.ball.rect.bottom >= i.rect.top  and self.ball.rect.top <= i.rect.bottom :  
+                            # print("hit")
+                            if self.ball.direction_x == 1:      
+                                self.ball.direction_x *= -1
+                                print("left")
+                if self.ball.rect.left <= i.rect.right and self.ball.rect.right >= i.rect.right: 
+                    if self.ball.rect.bottom >= i.rect.top  and self.ball.rect.top <= i.rect.bottom:  
+                            # print("hit")
+                            if self.ball.direction_x == -1:      
+                                self.ball.direction_x *= -1
+                                print("right")
+                if self.ball.rect.top <= i.rect.bottom and self.ball.rect.bottom >= i.rect.bottom: 
+                    if self.ball.rect.left <= i.rect.right and self.ball.rect.right >= i.rect.left :  
+                            # print("hit")
+                            if self.ball.direction_y == -1:      
+                                self.ball.direction_y *= -1
+                                print("bottom")
+
     def check_level_end(self):
         if len(self.blocks) == 0:
             # self.level += 1
@@ -102,16 +127,24 @@ class Game:
 
     def load_next_level(self, level):
         if level == 1:
-            self.level_pos = [(50, 50), (170, 50), (290, 50), (410, 50),
-                            (530, 50), (650, 50)]
+            self.level_pos = [(50, 50), (120, 50), (190, 50), (260, 50),
+                            (330, 50), (400, 50), (470, 50), (540, 50),
+                            (610, 50), (680, 50),(50, 100), (120, 100),
+                            (190, 100), (260, 100), (330, 100), (400, 100),
+                            (470, 100), (540, 100), (610, 100), (680, 100),
+                            (50, 150), (120, 150), (190, 150), (260, 150),
+                            (330, 150), (400, 150), (470, 150), (540, 150),
+                            (610, 150), (680, 150)]
         if level == 2:
             self.level_pos = [(50, 150), (150, 150), (250, 150), (350, 150),
                             (450, 150), (550, 150), (650, 150)]
             
         if level == 3:
             self.level_pos = [(300, 300)]
+
         if level == 4:
             self.level_pos = [(100, 300),(300, 300),(500, 300) ]
+
         else:
             return
             
@@ -121,10 +154,10 @@ class Game:
     def update_screen(self):
         self.screen.fill((0, 100, 150))
         self.platform.drawme()
-        self.ball.drawme()
+        
         for i in self.blocks:
             i.draw()
-
+        self.ball.drawme()
         pygame.display.flip()
 
 pygame.quit()
