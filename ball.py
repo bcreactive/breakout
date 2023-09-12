@@ -54,7 +54,7 @@ class Ball(Sprite):
           
     def check_platform(self):
         if self.rect.colliderect(self.platform.rect):
-            
+
             if not self.rect.bottom >= self.screen_rect.bottom - 29:
                 self.direction_y *= -1
 
@@ -67,7 +67,7 @@ class Ball(Sprite):
                 print(self.speed_x)
 
     def check_bottom(self):
-        if self.y + self.radius >= self.screen_rect.bottom:
+        if self.y + self.radius > self.screen_rect.bottom:
             print("game over!")
             exit(0)
        

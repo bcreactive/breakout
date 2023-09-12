@@ -8,6 +8,7 @@ from settings import Settings
 from ball import Ball
 from block import Block
 from button import Button
+from scorelabel import Scorelabel
 
 
 class Game:
@@ -28,6 +29,7 @@ class Game:
         self.settings = Settings()
         self.platform = Player(self)
         self.ball = Ball(self)
+        self.scorelabel = Scorelabel(self)
         
         self.blocks = []
         self.level_pos = []
@@ -51,6 +53,7 @@ class Game:
                 self.check_level_end()
                 self.check_blocks()
                 self.update_blocks()
+                self.scorelabel.prep_score(self.points)
             self.update_screen()  
             self.clock.tick(self.fps)
 
@@ -81,6 +84,7 @@ class Game:
                 sleep(1)
                 # pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound\playing.mp3'))
                 # self.player.reset_stats()
+                self.points = 0
                 self.game_active = True
                 pygame.mouse.set_visible(False)
                 # self.new_high_score = False
@@ -173,10 +177,12 @@ class Game:
         if not self.game_active:
             self.play_button.draw_button()
         if self.game_active:
+            self.scorelabel.draw_score()
             self.platform.drawme()
             self.ball.drawme()
             for i in self.blocks:
                 i.draw()
+            
             
         pygame.display.flip()
 
