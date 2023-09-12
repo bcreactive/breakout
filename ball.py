@@ -16,22 +16,25 @@ class Ball(Sprite):
 
         self.radius = 10
         self.x = 400
-        self.y = 540 
+        self.y = 540
         self.x = float(self.x)
         self.y = float(self.y)
         self.color = (200, 250, 200)
-        # self.speed_x = self.settings.ball_speed_x
-        self.speed_y = self.settings.ball_speed_y
-        values = [uniform(-4.99, -0.99), uniform(0.99, 4.99)]
-        self.speed_x = choice(values)
+        self.speed_x = 0 
+        self.speed_y = 0
+        # self.speed_y = self.settings.ball_speed_y
+        # values = [uniform(-4.99, -0.99), uniform(0.99, 4.99)]
+        # self.speed_x = choice(values)
         self.direction_x = 1
         self.direction_y = -1
         self.image = pygame.image.load("ballx.png")
         self.rect = self.image.get_rect()
+        # self.rect.x = 
         # self.rect = pygame.draw.circle(self.screen, self.color, (self.x, self.y), self.radius)
         # print(self.rect)
 
     def update(self, blocks):
+        
         self.check_walls()
         self.check_platform()
         self.check_bottom()
@@ -68,8 +71,23 @@ class Ball(Sprite):
 
     def check_bottom(self):
         if self.y + self.radius > self.screen_rect.bottom:
-            print("game over!")
-            exit(0)
-       
+            self.game.dead()
+            # exit(0)
+    
+    def start_pos(self):
+        self.x = 400
+        self.y = 540
+        # self.speed_x = 0
+        # self.speed_y = 0
+        # if self.platform.moving_left or self.platform.moving_right:
+        self.speed_y = self.settings.ball_speed_y
+        values = [uniform(-4.99, -0.99), uniform(0.99, 4.99)]
+        self.speed_x = choice(values)
+        self.direction_x = 1
+        self.direction_y = -1
+        self.platform.x = 350
+        self.game.level_running = False
+
+
     def drawme(self):
         self.screen.blit(self.image, (self.x, self.y))

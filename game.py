@@ -33,16 +33,18 @@ class Game:
         
         self.blocks = []
         self.level_pos = []
+        self.lives = self.settings.lives
         # self.title_screen = 
         # self.level_screen = 
         # self.music = 
         
         self.points = 0
-        self.level = 1
-        self.load_next_level(self.level)       
+        self.current_level = 1
+        self.load_next_level(self.current_level)       
         self.get_blocks()
 
         self.game_active = False
+        self.level_running = True
         
     def run_game(self):      
         while True:
@@ -50,10 +52,11 @@ class Game:
             if self.game_active:
                 self.platform.update()
                 self.ball.update(self.blocks)                    
-                self.check_level_end()
+                # self.check_level_end()
                 self.check_blocks()
                 self.update_blocks()
                 self.scorelabel.prep_score(self.points)
+                self.check_level_end()
             self.update_screen()  
             self.clock.tick(self.fps)
 
@@ -61,9 +64,11 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()          
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 self.check_play_button(mouse_pos)
+
             if self.game_active:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
@@ -85,8 +90,14 @@ class Game:
                 # pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound\playing.mp3'))
                 # self.player.reset_stats()
                 self.points = 0
+                self.current_level = 1
                 self.game_active = True
                 pygame.mouse.set_visible(False)
+                self.ball.speed_x = 0
+                self.ball.speed_y = 0
+                self.ball.start_pos()
+                self.get_blocks()
+                self.lives = self.settings.lives
                 # self.new_high_score = False
                 # self.bonus_fruit_visible = False
 
@@ -108,7 +119,6 @@ class Game:
                 if i.hp == 0:
                     self.points += i.points
                     self.blocks.remove(i)
-                    print(self.points)
 
     def check_blocks(self):
         for i in self.blocks:
@@ -133,17 +143,49 @@ class Game:
                             if self.ball.direction_y == -1:      
                                 self.ball.direction_y *= -1
                                 print("bottom")
+        # if self.level_running:
+        #     self.check_level_end()
+
+    def dead(self):
+        self.lives -= 1
+        # print fail screen
+        print(self.lives)
+        if self.lives > 0:
+            self.ball.start_pos()
+            # self.load_next_level(self.current_level)
+        else:
+            self.game_active = False
+            self.current_level = 1
+            print("game over")
+            pygame.mouse.set_visible(True)
+            
 
     def check_level_end(self):
         if len(self.blocks) == 0:
-            # self.level += 1
-            self.load_next_level(self.level)
-            # print(self.level)
-            return
+            self.level_running = False
+            self.ball.speed_x = 0 
+            self.ball.speed_y = 0
+            self.ball.start_pos()
+            self.current_level += 1
+            self.load_next_level(self.current_level)
+            self.get_blocks()
+            
+            print("level: " + str(self.current_level))
+
             # exit()
 
     def load_next_level(self, level):
         if level == 1:
+            self.level_pos = [(300, 300)]
+        if level == 2:
+            self.level_pos = [(300, 300)]
+
+        if level == 3:
+            self.level_pos = [(100, 300),(300, 300),(500, 300) ]
+        if level == 4:
+            self.level_pos = [(50, 150), (150, 150), (250, 150), (350, 150),
+                            (450, 150), (550, 150), (650, 150)]
+        if level == 5:
             self.level_pos = [(30, 50), (90, 50), (150, 50), (210, 50),
                             (270, 50), (330, 50), (390, 50), (450, 50),
                             (510, 50), (570, 50),(630, 50), (690, 50),
@@ -156,15 +198,13 @@ class Game:
                             (30, 170), (90, 170), (150, 170), (210, 170),
                             (270, 170), (330, 170), (390, 170), (450, 170),
                             (510, 170), (570, 170),(630, 170), (690, 170)] 
-        if level == 2:
-            self.level_pos = [(50, 150), (150, 150), (250, 150), (350, 150),
-                            (450, 150), (550, 150), (650, 150)]
+        
             
-        if level == 3:
-            self.level_pos = [(300, 300)]
+        # if level == 4:
+        #     self.level_pos = [(300, 300)]
 
-        if level == 4:
-            self.level_pos = [(100, 300),(300, 300),(500, 300) ]
+        # if level == 5:
+        #     self.level_pos = [(100, 300),(300, 300),(500, 300) ]
 
         else:
             return

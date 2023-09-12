@@ -4,15 +4,15 @@ from random import randint
 
 class Block(Sprite):
     
-    def __init__(self, game, x, y, color):
+    def __init__(self, game, x, y, color="blue"):
         super().__init__()
         self.game = game
         self.screen = game.screen
         self.settings = game.settings
         self.x = x
         self.y = y
-        self.width = 60
-        self.height = 40
+        self.width = 160
+        self.height = 140
         self.color = self.get_color(color)
         self.points = self.get_points(color)
         self.hp = self.get_hp(color)
