@@ -13,8 +13,6 @@ class Block(Sprite):
         self.y = y
         self.width = 60
         self.height = 40
-        # self.width = 150
-        # self.height = 150
         self.color = self.get_color(color)
         self.points = self.get_points(color)
         self.hp = self.get_hp(color)
@@ -66,8 +64,8 @@ class Block(Sprite):
 
     def update(self):
         self.check_hp()
-        # self.check_collision(self.ball.x, self.ball.y)
 
     def draw(self):
         if self.visible:
             pygame.draw.rect(self.screen, self.color, self.rect)
+            pygame.draw.rect(self.screen, (20, 20, 20), self.rect, 1)

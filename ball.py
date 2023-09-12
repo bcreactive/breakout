@@ -24,7 +24,6 @@ class Ball(Sprite):
         self.speed_y = self.settings.ball_speed_y
         values = [uniform(-4.99, -0.99), uniform(0.99, 4.99)]
         self.speed_x = choice(values)
-        # self.speed_y = randint(-4, 8)
         self.direction_x = 1
         self.direction_y = -1
         self.image = pygame.image.load("ballx.png")
@@ -36,7 +35,6 @@ class Ball(Sprite):
         self.check_walls()
         self.check_platform()
         self.check_bottom()
-        # self.check_blocks(blocks)
         self.x += (self.speed_x * self.direction_x)
         self.y += (self.speed_y * self.direction_y)
         self.rect.x = self.x
