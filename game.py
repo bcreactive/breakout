@@ -52,6 +52,7 @@ class Game:
         self.load_next_level(self.current_level)  
         self.game_active = False
         self.level_running = False
+        self.pickup_visible = False
         self.pickup_collected = False
         
     # Main game loop.
@@ -68,7 +69,9 @@ class Game:
                     self.update_blocks()
                     self.check_level_end()
                     self.pickup.update()
-                    if not self.pickup_collected:
+                    
+                    # if not self.pickup_collected:
+                    if self.pickup_visible:
                         self.check_pickup()
             self.update_screen()  
             self.clock.tick(self.fps)
@@ -106,30 +109,43 @@ class Game:
                 self.ball.start_pos()
                 self.level_pos = []
                 self.blocks = []
+                self.active_drop = []
+                self.drops_collected = []
                 self.load_next_level(self.current_level)
                 self.get_blocks()
                 self.lives = self.settings.lives               
                 self.level_running = False
                 self.game_active = True
+                self.pickup_visible = False
+                self.pickup_collected = False
                 pygame.mouse.set_visible(False)
                 # self.new_high_score = False
                 # self.bonus_fruit_visible = False
 
-    # def generate_pickup(self):
-    #     value = randint(1, 1000)
-    #     if value <= 999:
-    #         pickup = Pickup(self, self.lifeup_image)
-    #         return pickup
-    #     elif value <= 500:
-    #         pickup = Pickup(self, )
+    def check_spawn(self):
+        value = randint(1, 1000)
+        if value <= 333 and len(self.active_drop) <= 1:
+            if len(self.drops_collected) <= 2:
+                return True
+
+    def create_pickup(self, rect):
+        # block_rect = rect
+        self.pickup = Pickup(self, self.dmgup_image)
+        self.pickup.x = rect.x
+        self.pickup.y = rect.y
+        self.pickup_visible = True
 
     def check_pickup(self):     
         self.pickup_rect = pygame.Rect(self.pickup.x, self.pickup.y, 40, 40)
         if self.pickup_rect.colliderect(self.platform.rect):
-            self.pickup_collected = True
-            self.active_drop = []
-            self.drops_collected.append(self.pickup)
-            print(self.drops_collected)
+            if self.pickup_visible and not self.pickup_collected:
+                self.pickup_collected = True
+                self.pickup_visible = False
+                
+                self.active_drop = []  
+                print(self.drops_collected)
+                self.drops_collected.append("")
+                self.pickup_collected = False
             return
 
     def get_color(self):
@@ -153,11 +169,16 @@ class Game:
     def update_blocks(self):
         for i in self.blocks:
             i.update()           
-            if self.ball.rect.colliderect(i.rect):         
+            if self.ball.rect.colliderect(i.rect):                 
                 i.hp -= 1
                 if i.hp == 0:
                     self.points += i.points
                     self.blocks.remove(i)
+                    
+                    bonus = self.check_spawn()
+                    if bonus and not self.pickup_visible:
+                        self.create_pickup(i.rect)
+                
 
     def check_blocks(self):
         for i in self.blocks:
@@ -205,6 +226,10 @@ class Game:
     def check_level_end(self):
         if len(self.blocks) == 0:           
             self.level_running = False
+            self.pickup_visible = False
+            self.pickup_collected = False
+            self.active_drop = []
+            self.drops_collected = []
             self.ball.start_pos()
             self.current_level += 1
             self.load_next_level(self.current_level)
@@ -267,7 +292,7 @@ class Game:
 
         if self.game_active:
             self.scorelabel.draw_score()
-            if not self.pickup_collected:
+            if self.pickup_visible:
                 self.pickup.drawme()
             self.platform.drawme()
             # self.ball.drawme()
