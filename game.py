@@ -1,6 +1,6 @@
 import pygame
 import sys
-from random import choice
+from random import randint, choice
 from time import sleep
 
 from player import Player
@@ -9,6 +9,7 @@ from ball import Ball
 from block import Block
 from button import Button
 from scorelabel import Scorelabel
+from pickup import Pickup
 
 
 class Game:
@@ -25,15 +26,23 @@ class Game:
         self.clock = pygame.time.Clock()   
         self.fps = 60
 
+        self.dmgup_image = pygame.image.load("images/dmg_up.png")
+        self.lifeup_image = pygame.image.load("images/life_up.png")
+        self.widthup_image = pygame.image.load("images/width_up.png")
+
         self.play_button = Button(self, "Play!")
         self.settings = Settings()
         self.platform = Player(self)
         self.ball = Ball(self)
         self.scorelabel = Scorelabel(self)
+        self.pickup = Pickup(self, self.lifeup_image)
         
         self.blocks = []
         self.level_pos = []
+        self.active_drop = []
+        self.drops_collected = []
         self.lives = self.settings.lives
+        
         # self.title_screen = 
         # self.level_screen = 
         # self.music = 
@@ -43,6 +52,7 @@ class Game:
         self.load_next_level(self.current_level)  
         self.game_active = False
         self.level_running = False
+        self.pickup_collected = False
         
     # Main game loop.
     def run_game(self):      
@@ -57,6 +67,9 @@ class Game:
                     self.check_blocks()
                     self.update_blocks()
                     self.check_level_end()
+                    self.pickup.update()
+                    if not self.pickup_collected:
+                        self.check_pickup()
             self.update_screen()  
             self.clock.tick(self.fps)
 
@@ -102,13 +115,30 @@ class Game:
                 # self.new_high_score = False
                 # self.bonus_fruit_visible = False
 
+    # def generate_pickup(self):
+    #     value = randint(1, 1000)
+    #     if value <= 999:
+    #         pickup = Pickup(self, self.lifeup_image)
+    #         return pickup
+    #     elif value <= 500:
+    #         pickup = Pickup(self, )
+
+    def check_pickup(self):     
+        self.pickup_rect = pygame.Rect(self.pickup.x, self.pickup.y, 40, 40)
+        if self.pickup_rect.colliderect(self.platform.rect):
+            self.pickup_collected = True
+            self.active_drop = []
+            self.drops_collected.append(self.pickup)
+            print(self.drops_collected)
+            return
+
     def get_color(self):
         if self.current_level == 1:
             colors = ["blue"]
         elif self.current_level == 2:
             colors = ["blue", "red"]
         elif self.current_level == 3:
-            colors = ["blue", "red", "green", "violet", "yellow"]
+            colors = ["blue", "red", "green", "violet"]
         elif self.current_level == 4:
             colors = ["blue", "red", "green", "violet", "yellow"]
 
@@ -182,16 +212,7 @@ class Game:
             self.scorelabel.prep_level(self.current_level)
 
     def load_next_level(self, level):
-        # if level == 1:
-        #     self.level_pos = [(100, 100)]
-        # if level == 1:
-        #     self.level_pos = [
-        #                     (250, 50), (490, 50), (310, 90), (430, 90),
-        #                     ]
-        # if level == 2:
-        #     self.level_pos = [
-        #                     (310, 130), (370, 130), (430, 130), (250, 170),
-        #                     ]
+       
         if level == 1:
             self.level_pos = [
                             (250, 50), (490, 50), (310, 90), (430, 90),
@@ -213,20 +234,30 @@ class Game:
                             (490, 290), (130, 330), (190, 330), (370, 330),
                             (550, 330), (610, 330)
                             ]
-
-        # if level == 3:
-        #     self.level_pos = [(30, 50), (90, 50), (150, 50), (210, 50),
-        #                     (270, 50), (330, 50), (390, 50), (450, 50),
-        #                     (510, 50), (570, 50),(630, 50), (690, 50),
-        #                     (30, 90), (90, 90), (150, 90), (210, 90),
-        #                     (270, 90), (330, 90), (390, 90), (450, 90),
-        #                     (510, 90), (570, 90),(630, 90), (690, 90), 
-        #                     (30, 130), (90, 130), (150, 130), (210, 130),
-        #                     (270, 130), (330, 130), (390, 130), (450, 130),
-        #                     (510, 130), (570, 130),(630, 130), (690, 130),
-        #                     (30, 170), (90, 170), (150, 170), (210, 170),
-        #                     (270, 170), (330, 170), (390, 170), (450, 170),
-        #                     (510, 170), (570, 170),(630, 170), (690, 170)] 
+            
+        if level == 3:
+            self.level_pos = [(30, 50), (90, 50), (150, 50), (210, 50),
+                            (270, 50), (330, 50), (390, 50), (450, 50),
+                            (510, 50), (570, 50),(630, 50), (690, 50),
+                            (30, 90), (90, 90), (150, 90), (210, 90),
+                            (270, 90), (330, 90), (390, 90), (450, 90),
+                            (510, 90), (570, 90),(630, 90), (690, 90), 
+                            (30, 130), (90, 130), (150, 130), (210, 130),
+                            (270, 130), (330, 130), (390, 130), (450, 130),
+                            (510, 130), (570, 130),(630, 130), (690, 130),
+                            (30, 170), (90, 170), (150, 170), (210, 170),
+                            (270, 170), (330, 170), (390, 170), (450, 170),
+                            (510, 170), (570, 170),(630, 170), (690, 170)] 
+        
+            # if level == 1:
+        #     self.level_pos = [(100, 100)]
+        # if level == 1:
+        #     self.level_pos = [
+        #                     (250, 50), (490, 50), (310, 90), (430, 90),
+        #                     ]
+        # if level == 2:
+        #     self.level_pos = [
+        #                     (310, 130), (370, 130), (430, 130), (250, 170),
 
     def update_screen(self):
         self.screen.fill((0, 100, 150))
@@ -236,10 +267,12 @@ class Game:
 
         if self.game_active:
             self.scorelabel.draw_score()
+            if not self.pickup_collected:
+                self.pickup.drawme()
             self.platform.drawme()
             # self.ball.drawme()
             for i in self.blocks:
-                i.draw()      
+                i.draw()                 
             self.ball.drawme()
         pygame.display.flip()
 

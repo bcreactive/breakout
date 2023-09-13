@@ -20,11 +20,9 @@ class Ball(Sprite):
         self.x = float(self.x)
         self.y = float(self.y)
         self.color = (200, 250, 200)
-        self.image = pygame.image.load("ballx.png")
+        self.image = pygame.image.load("images/ball.png")
         self.rect = self.image.get_rect()
         self.start_pos()
-        # self.temp_speed_x = 0
-        # self.temp_speed_y = 0
         self.speed_y = self.settings.ball_speed_y
         values = [uniform(-2.99, -1.99), uniform(1.99, 2.99)]
         self.speed_x = choice(values)
@@ -33,8 +31,6 @@ class Ball(Sprite):
     def start_pos(self):
         self.x = 390
         self.y = 540
-        # self.x = 100 + 60
-        # self.y = 100
         self.speed_x = 0
         self.speed_y = 0
         self.direction_x = 1
