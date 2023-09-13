@@ -44,14 +44,14 @@ class Game:
         self.get_blocks()
 
         self.game_active = False
-        self.level_running = True
+        self.level_running = False
         
     def run_game(self):      
         while True:
             self.check_events()
             if self.game_active:
                 self.platform.update()
-                self.ball.update(self.blocks)                    
+                self.ball.update()                    
                 # self.check_level_end()
                 self.check_blocks()
                 self.update_blocks()
@@ -98,6 +98,7 @@ class Game:
                 self.ball.start_pos()
                 self.get_blocks()
                 self.lives = self.settings.lives
+                self.level_running = False
                 # self.new_high_score = False
                 # self.bonus_fruit_visible = False
 
@@ -151,10 +152,12 @@ class Game:
         # print fail screen
         print(self.lives)
         if self.lives > 0:
+            self.level_running = False
             self.ball.start_pos()
             # self.load_next_level(self.current_level)
         else:
             self.game_active = False
+            self.level_running = False
             self.current_level = 1
             print("game over")
             pygame.mouse.set_visible(True)
