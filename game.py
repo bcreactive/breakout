@@ -40,9 +40,10 @@ class Game:
         
         self.points = 0
         self.current_level = 1
-        self.load_next_level(self.current_level)       
-        self.get_blocks()
-
+        self.load_next_level(self.current_level)  
+        print(self.blocks, self.level_pos)     
+        # self.get_blocks()
+        print(self.blocks, self.level_pos)   
         self.game_active = False
         self.level_running = False
         
@@ -52,11 +53,12 @@ class Game:
             if self.game_active:
                 self.platform.update()
                 self.ball.update()                    
-                # self.check_level_end()
                 self.check_blocks()
-                self.update_blocks()
+                # self.update_blocks()
                 self.scorelabel.prep_score(self.points)
-                self.check_level_end()
+                if self.level_running:
+                    self.update_blocks()
+                    self.check_level_end()
             self.update_screen()  
             self.clock.tick(self.fps)
 
@@ -88,17 +90,18 @@ class Game:
                 # pygame.mixer.Channel(2).play(pygame.mixer.Sound('sound\\button.mp3'))
                 sleep(1)
                 # pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound\playing.mp3'))
-                # self.player.reset_stats()
                 self.points = 0
                 self.current_level = 1
                 self.game_active = True
                 pygame.mouse.set_visible(False)
-                self.ball.speed_x = 0
-                self.ball.speed_y = 0
                 self.ball.start_pos()
+                self.level_pos = []
+                self.blocks = []
+                self.load_next_level(self.current_level)
                 self.get_blocks()
                 self.lives = self.settings.lives
                 self.level_running = False
+                print("level: " + str(self.current_level))
                 # self.new_high_score = False
                 # self.bonus_fruit_visible = False
 
@@ -111,6 +114,7 @@ class Game:
             color = self.get_color()
             new_block = Block(self, i[0], i[1], color)
             self.blocks.append(new_block)
+        print(self.blocks, self.level_pos)
 
     def update_blocks(self):
         for i in self.blocks:
@@ -164,27 +168,29 @@ class Game:
             
 
     def check_level_end(self):
-        if len(self.blocks) == 0:
+        print(self.blocks)
+        if len(self.blocks) == 0:           
+            # self.ball.speed_x = 0 
+            # self.ball.speed_y = 0
+            # self.ball.start_pos()
             self.level_running = False
-            self.ball.speed_x = 0 
-            self.ball.speed_y = 0
             self.ball.start_pos()
             self.current_level += 1
             self.load_next_level(self.current_level)
             self.get_blocks()
+        
             
             print("level: " + str(self.current_level))
-
-            # exit()
 
     def load_next_level(self, level):
         if level == 1:
             self.level_pos = [(300, 300)]
+
         if level == 2:
-            self.level_pos = [(300, 300)]
+            self.level_pos = [(400, 200)]
 
         if level == 3:
-            self.level_pos = [(100, 300),(300, 300),(500, 300) ]
+            self.level_pos = [(100, 200),(300, 250),(500, 200) ]
         if level == 4:
             self.level_pos = [(50, 150), (150, 150), (250, 150), (350, 150),
                             (450, 150), (550, 150), (650, 150)]
@@ -209,8 +215,7 @@ class Game:
         # if level == 5:
         #     self.level_pos = [(100, 300),(300, 300),(500, 300) ]
 
-        else:
-            return
+    
             
         # ball despawn, reset positions of platform and ball, level screen, 
         # get_blocks() ev timer 3,2,1..
