@@ -15,7 +15,7 @@ class Ball(Sprite):
         self.settings = game.settings
 
         self.radius = 10
-        self.x = 400
+        self.x = 390
         self.y = 540
         self.x = float(self.x)
         self.y = float(self.y)
@@ -23,11 +23,18 @@ class Ball(Sprite):
         self.image = pygame.image.load("ballx.png")
         self.rect = self.image.get_rect()
         self.start_pos()
+        # self.temp_speed_x = 0
+        # self.temp_speed_y = 0
+        self.speed_y = self.settings.ball_speed_y
+        values = [uniform(-2.99, -1.99), uniform(1.99, 2.99)]
+        self.speed_x = choice(values)
         # self.rect = pygame.draw.circle(self.screen, self.color, (self.x, self.y), self.radius)
 
     def start_pos(self):
         self.x = 390
         self.y = 540
+        # self.x = 100 + 60
+        # self.y = 100
         self.speed_x = 0
         self.speed_y = 0
         self.direction_x = 1
@@ -36,8 +43,12 @@ class Ball(Sprite):
 
     def check_launch(self):
         if self.platform.moving_left or self.platform.moving_right:
+            # print(self.speed_x, self.speed_y, self.temp_speed_x, self.temp_speed_y)
+            # self.speed_x = self.temp_speed_x
+            # self.speed_y = self.temp_speed_y
+            # print(self.speed_x, self.speed_y, self.temp_speed_x, self.temp_speed_y)
             self.speed_y = self.settings.ball_speed_y
-            values = [uniform(-4.99, -0.99), uniform(0.99, 4.99)]
+            values = [uniform(-2.99, -1.99), uniform(1.99, 2.99)]
             self.speed_x = choice(values)
             self.game.level_running = True
 
@@ -73,17 +84,23 @@ class Ball(Sprite):
             if not self.rect.bottom >= self.screen_rect.bottom - 29:
                 self.direction_y *= -1
 
-            if self.platform.moving_right:
-                self.speed_x += 0.15
-                print(self.speed_x)
-
-            if self.platform.moving_left:
-                self.speed_x -= 0.149
-                print(self.speed_x)
+            if self.platform.moving_right and self.direction_x == 1:
+                self.speed_x += 0.149
+                print("inc")
+            elif self.platform.moving_right and self.direction_x == -1:
+                self.speed_x -= 0.148
+                print("dec")
+            elif self.platform.moving_left and self.direction_x == -1:
+                self.speed_x += 0.149
+                print("inc")
+            elif self.platform.moving_left and self.direction_x == 1:
+                self.speed_x -= 0.148
+                print("dec")
 
     def check_bottom(self):
-        if self.y + self.radius > self.screen_rect.bottom:
-            self.game.dead()    
+        if self.y + self.radius > self.screen_rect.bottom:    
+            self.game.dead()  
+              
 
     def drawme(self):
         self.screen.blit(self.image, (self.x, self.y))

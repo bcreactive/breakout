@@ -39,25 +39,25 @@ class Scorelabel:
                                             self.label_color)
         
         self.level_rect = self.level_img.get_rect()
-        self.level_rect.right = self.screen_rect.right - 250
+        self.level_rect.right = self.screen_rect.right - 280
         self.level_rect.top = 5
 
     def show_lives(self):
         self.lives = self.game.lives
         if self.lives == 1:
-            self.screen.blit(self.game.ball.image, (5, 5))
+            self.screen.blit(self.game.ball.image, (10, 10))
         elif self.lives == 2:
-            self.screen.blit(self.game.ball.image, (5, 5))
-            self.screen.blit(self.game.ball.image, (30, 5))
+            self.screen.blit(self.game.ball.image, (10, 10))
+            self.screen.blit(self.game.ball.image, (40, 10))
         elif self.lives == 3:
-            self.screen.blit(self.game.ball.image, (5, 5))
-            self.screen.blit(self.game.ball.image, (30, 5))
-            self.screen.blit(self.game.ball.image, (55, 5))
+            self.screen.blit(self.game.ball.image, (10, 10))
+            self.screen.blit(self.game.ball.image, (40, 10))
+            self.screen.blit(self.game.ball.image, (70, 10))
         elif self.lives == 4:
-            self.screen.blit(self.game.ball.image, (5, 5))
-            self.screen.blit(self.game.ball.image, (30, 5))
-            self.screen.blit(self.game.ball.image, (55, 5))
-            self.screen.blit(self.game.ball.image, (80, 5))
+            self.screen.blit(self.game.ball.image, (10, 10))
+            self.screen.blit(self.game.ball.image, (40, 10))
+            self.screen.blit(self.game.ball.image, (70, 10))
+            self.screen.blit(self.game.ball.image, (100, 10))
 
     def draw_score(self):
         self.screen.blit(self.score_image, self.score_rect)

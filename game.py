@@ -43,18 +43,18 @@ class Game:
         self.load_next_level(self.current_level)  
         self.game_active = False
         self.level_running = False
-        print(self.lives)
         
+    # Main game loop.
     def run_game(self):      
         while True:
             self.check_events()
             if self.game_active:
                 self.platform.update()
                 self.ball.update()                    
-                self.check_blocks()
-                # self.update_blocks()
+                # self.check_blocks()
                 self.scorelabel.prep_score(self.points)
                 if self.level_running:
+                    self.check_blocks()
                     self.update_blocks()
                     self.check_level_end()
             self.update_screen()  
@@ -90,22 +90,27 @@ class Game:
                 # pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound\playing.mp3'))
                 self.points = 0
                 self.current_level = 1
-                self.game_active = True
-                pygame.mouse.set_visible(False)
                 self.ball.start_pos()
                 self.level_pos = []
                 self.blocks = []
                 self.load_next_level(self.current_level)
                 self.get_blocks()
-                self.lives = self.settings.lives
+                self.lives = self.settings.lives               
                 self.level_running = False
-                print("level: " + str(self.current_level))
+                self.game_active = True
+                pygame.mouse.set_visible(False)
                 # self.new_high_score = False
                 # self.bonus_fruit_visible = False
 
     def get_color(self):
-        colors = ["blue"]
-        # colors = ["blue", "red", "green", "violet", "yellow"]
+        if self.current_level == 1:
+            colors = ["blue"]
+        elif self.current_level == 2:
+            colors = ["blue", "red"]
+        elif self.current_level == 3:
+            colors = ["blue", "red", "green", "violet", "yellow"]
+        elif self.current_level == 4:
+            colors = ["blue", "red", "green", "violet", "yellow"]
 
         return choice(colors)
     
@@ -127,22 +132,22 @@ class Game:
     def check_blocks(self):
         for i in self.blocks:
             if self.ball.rect.colliderect(i.rect):
-                if self.ball.rect.bottom >= i.rect.top and self.ball.rect.top <= i.rect.top:
+                if self.ball.rect.bottom >= i.rect.top and self.ball.rect.top < i.rect.top:
                     if self.ball.rect.left <= i.rect.right  and self.ball.rect.right >= i.rect.left :
                             if self.ball.direction_y == 1:
                                 self.ball.direction_y *= -1
                                 print("top")
-                if self.ball.rect.right >= i.rect.left and self.ball.rect.left <= i.rect.left: 
+                if self.ball.rect.right >= i.rect.left and self.ball.rect.left < i.rect.left: 
                     if self.ball.rect.bottom >= i.rect.top  and self.ball.rect.top <= i.rect.bottom :  
                             if self.ball.direction_x == 1:      
                                 self.ball.direction_x *= -1
                                 print("left")
-                if self.ball.rect.left <= i.rect.right and self.ball.rect.right >= i.rect.right: 
+                if self.ball.rect.left <= i.rect.right and self.ball.rect.right > i.rect.right: 
                     if self.ball.rect.bottom >= i.rect.top  and self.ball.rect.top <= i.rect.bottom:  
                             if self.ball.direction_x == -1:      
                                 self.ball.direction_x *= -1
                                 print("right")
-                if self.ball.rect.top <= i.rect.bottom and self.ball.rect.bottom >= i.rect.bottom: 
+                if self.ball.rect.top <= i.rect.bottom and self.ball.rect.bottom > i.rect.bottom: 
                     if self.ball.rect.left <= i.rect.right and self.ball.rect.right >= i.rect.left :  
                             if self.ball.direction_y == -1:      
                                 self.ball.direction_y *= -1
@@ -156,6 +161,8 @@ class Game:
         print(self.lives)
         if self.lives > 0:
             self.level_running = False
+            # self.ball.temp_speed_x = self.ball.speed_x
+            # self.ball.temp_speed_y = self.ball.speed_y 
             self.ball.start_pos()
             # self.load_next_level(self.current_level)
         else:
@@ -173,9 +180,10 @@ class Game:
             self.load_next_level(self.current_level)
             self.get_blocks()
             self.scorelabel.prep_level(self.current_level)
-            print("level: " + str(self.current_level))
 
     def load_next_level(self, level):
+        # if level == 1:
+        #     self.level_pos = [(100, 100)]
         # if level == 1:
         #     self.level_pos = [
         #                     (250, 50), (490, 50), (310, 90), (430, 90),
@@ -229,10 +237,10 @@ class Game:
         if self.game_active:
             self.scorelabel.draw_score()
             self.platform.drawme()
-            self.ball.drawme()
+            # self.ball.drawme()
             for i in self.blocks:
                 i.draw()      
-
+            self.ball.drawme()
         pygame.display.flip()
 
 pygame.quit()

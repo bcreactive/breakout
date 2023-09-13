@@ -4,7 +4,7 @@ from random import randint
 
 class Block(Sprite):
     
-    def __init__(self, game, x, y, color="blue"):
+    def __init__(self, game, x, y, color):
         super().__init__()
         self.game = game
         self.screen = game.screen
@@ -18,7 +18,7 @@ class Block(Sprite):
         self.hp = self.get_hp(color)
 
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)  
-        self.image_rect = pygame.Rect(self.x, self.y, self.width, self.height)  
+        # self.image_rect = pygame.Rect(self.x, self.y, self.width, self.height)  
            
         self.visible = True
 
