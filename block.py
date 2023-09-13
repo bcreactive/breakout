@@ -61,9 +61,22 @@ class Block(Sprite):
     def check_hp(self):     
         if self.hp == 0:
             self.visible = False
+    
+    def check_color(self, hp):
+        if hp == 1:
+            return (0, 0, 255, 0)
+        elif hp == 2:
+            return (255, 0, 0)
+        elif hp == 3:
+            return (0, 255, 0)
+        elif hp == 4:
+            return (200, 0, 200)
+        elif hp == 5:
+            return (0, 200, 200)
 
     def update(self):
         self.check_hp()
+        self.color = self.check_color(self.hp)
 
     def draw(self):
         if self.visible:

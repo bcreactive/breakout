@@ -41,11 +41,9 @@ class Game:
         self.points = 0
         self.current_level = 1
         self.load_next_level(self.current_level)  
-        print(self.blocks, self.level_pos)     
-        # self.get_blocks()
-        print(self.blocks, self.level_pos)   
         self.game_active = False
         self.level_running = False
+        print(self.lives)
         
     def run_game(self):      
         while True:
@@ -114,7 +112,6 @@ class Game:
             color = self.get_color()
             new_block = Block(self, i[0], i[1], color)
             self.blocks.append(new_block)
-        print(self.blocks, self.level_pos)
 
     def update_blocks(self):
         for i in self.blocks:
@@ -166,20 +163,13 @@ class Game:
             print("game over")
             pygame.mouse.set_visible(True)
             
-
     def check_level_end(self):
-        print(self.blocks)
         if len(self.blocks) == 0:           
-            # self.ball.speed_x = 0 
-            # self.ball.speed_y = 0
-            # self.ball.start_pos()
             self.level_running = False
             self.ball.start_pos()
             self.current_level += 1
             self.load_next_level(self.current_level)
             self.get_blocks()
-        
-            
             print("level: " + str(self.current_level))
 
     def load_next_level(self, level):
