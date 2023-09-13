@@ -11,8 +11,8 @@ class Block(Sprite):
         self.settings = game.settings
         self.x = x
         self.y = y
-        self.width = 160
-        self.height = 140
+        self.width = 60
+        self.height = 40
         self.color = self.get_color(color)
         self.points = self.get_points(color)
         self.hp = self.get_hp(color)
