@@ -17,9 +17,9 @@ class Button:
         if msg == "Play!":
             self.width, self.height = 160, 80
             self.button_color = (96, 21, 95)
-        # elif msg == "Play again?":
-        #     self.width, self.height = 300, 80
-        #     self.button_color = (55, 23, 100)
+        elif msg == "Replay?":
+            self.width, self.height = 200, 80
+            self.button_color = (55, 23, 100)
 
         self.text_color = (255, 55, 255)
         self.font = pygame.font.SysFont(None, 60)
@@ -29,9 +29,10 @@ class Button:
         if msg == "Play!":
             self.width, self.height = 160, 80      
             self.rect.center = self.screen_rect.center
-        # elif msg == "Play again?":
-        #     self.rect.x = 20
-        #     self.rect.y = 300
+        elif msg == "Replay?":
+            self.rect.center = self.screen_rect.center
+            # self.rect.x = 200
+            # self.rect.y = 400
         
         self._prep_msg(msg)
 

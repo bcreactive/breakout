@@ -33,4 +33,5 @@ class Player(Sprite):
     
     def drawme(self):
         pygame.draw.rect(self.screen, self.color, (self.rect_image))
+        pygame.draw.rect(self.screen, (60, 60, 60), (self.rect_image), 2)
 

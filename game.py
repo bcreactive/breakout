@@ -10,6 +10,7 @@ from block import Block
 from button import Button
 from scorelabel import Scorelabel
 from pickup import Pickup
+from timer import Timer
 
 
 class Game:
@@ -29,31 +30,32 @@ class Game:
         self.dmgup_image = pygame.image.load("images/dmg_up.png")
         self.lifeup_image = pygame.image.load("images/life_up.png")
         self.widthup_image = pygame.image.load("images/width_up.png")
+        # self.title_screen = 
+        # self.level_screen = 
+        # self.music = 
 
         self.play_button = Button(self, "Play!")
         self.settings = Settings()
+        self.lives = self.settings.lives
         self.platform = Player(self)
         self.ball = Ball(self)
         self.scorelabel = Scorelabel(self)
         self.pickup = Pickup(self, self.lifeup_image)
+        self.timer = Timer(self)
         
         self.blocks = []
         self.level_pos = []
         self.active_drop = []
         self.drops_collected = []
-        self.lives = self.settings.lives
-        
-        # self.title_screen = 
-        # self.level_screen = 
-        # self.music = 
-        
         self.points = 0
         self.current_level = 1
-        self.load_next_level(self.current_level)  
+
         self.game_active = False
         self.level_running = False
         self.pickup_visible = False
         self.pickup_collected = False
+
+        self.load_next_level(self.current_level) 
         
     # Main game loop.
     def run_game(self):      
@@ -62,7 +64,6 @@ class Game:
             if self.game_active:
                 self.platform.update()
                 self.ball.update()                    
-                # self.check_blocks()
                 self.scorelabel.prep_score(self.points)
                 if self.level_running:
                     self.check_blocks()
@@ -70,9 +71,9 @@ class Game:
                     self.check_level_end()
                     self.pickup.update()
                     
-                    # if not self.pickup_collected:
                     if self.pickup_visible:
                         self.check_pickup()
+                    self.timer.update()
             self.update_screen()  
             self.clock.tick(self.fps)
 
@@ -118,6 +119,8 @@ class Game:
                 self.game_active = True
                 self.pickup_visible = False
                 self.pickup_collected = False
+                self.timer.value = 180
+                self.timer.collected = False
                 pygame.mouse.set_visible(False)
                 # self.new_high_score = False
                 # self.bonus_fruit_visible = False
@@ -125,7 +128,7 @@ class Game:
     def check_spawn(self):
         value = randint(1, 1000)
         if value <= 333 and len(self.active_drop) <= 1:
-            if len(self.drops_collected) <= 2:
+            if len(self.drops_collected) <= 4:
                 return True
 
     def create_pickup(self, rect):
@@ -141,10 +144,10 @@ class Game:
             if self.pickup_visible and not self.pickup_collected:
                 self.pickup_collected = True
                 self.pickup_visible = False
-                
+               
                 self.active_drop = []  
-                print(self.drops_collected)
                 self.drops_collected.append("")
+                self.timer.collected = True
                 self.pickup_collected = False
             return
 
@@ -179,7 +182,6 @@ class Game:
                     if bonus and not self.pickup_visible:
                         self.create_pickup(i.rect)
                 
-
     def check_blocks(self):
         for i in self.blocks:
             if self.ball.rect.colliderect(i.rect):
@@ -211,12 +213,13 @@ class Game:
         # print fail screen
         print(self.lives)
         if self.lives > 0:
-            self.level_running = False
-            # self.ball.temp_speed_x = self.ball.speed_x
-            # self.ball.temp_speed_y = self.ball.speed_y 
+            self.level_running = False         
+            self.pickup_visible = False
+            self.pickup_collected = False
+            self.timer.reset()
             self.ball.start_pos()
-            # self.load_next_level(self.current_level)
         else:
+            self.play_button = Button(self, "Replay?")
             self.game_active = False
             self.level_running = False
             self.current_level = 1
@@ -291,13 +294,13 @@ class Game:
             self.play_button.draw_button()
 
         if self.game_active:
+            self.timer.drawme()
             self.scorelabel.draw_score()
             if self.pickup_visible:
                 self.pickup.drawme()
             self.platform.drawme()
-            # self.ball.drawme()
             for i in self.blocks:
-                i.draw()                 
+                i.drawme()                 
             self.ball.drawme()
         pygame.display.flip()
 

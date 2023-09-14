@@ -78,7 +78,7 @@ class Block(Sprite):
         self.check_hp()
         self.color = self.check_color(self.hp)
 
-    def draw(self):
+    def drawme(self):
         if self.visible:
             pygame.draw.rect(self.screen, self.color, self.rect)
-            pygame.draw.rect(self.screen, (20, 20, 20), self.rect, 1)
+            pygame.draw.rect(self.screen, (20, 20, 20), self.rect, 2)

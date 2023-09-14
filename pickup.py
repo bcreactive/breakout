@@ -18,7 +18,7 @@ class Pickup(Sprite):
 
     def update(self):
         self.y += self.settings.pickup_speed
-       
+
     def drawme(self):
         if not self.rect.top >= self.screen_rect.bottom: 
             self.screen.blit(self.image, (self.x, self.y))

@@ -15,7 +15,7 @@ class Ball(Sprite):
         self.settings = game.settings
 
         self.radius = 10
-        self.x = 390
+        self.x = 389
         self.y = 540
         self.x = float(self.x)
         self.y = float(self.y)
@@ -29,7 +29,7 @@ class Ball(Sprite):
         # self.rect = pygame.draw.circle(self.screen, self.color, (self.x, self.y), self.radius)
 
     def start_pos(self):
-        self.x = 390
+        self.x = 389
         self.y = 540
         self.speed_x = 0
         self.speed_y = 0
