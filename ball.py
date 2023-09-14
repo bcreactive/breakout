@@ -25,7 +25,8 @@ class Ball(Sprite):
         self.rect = pygame.Rect(self.x, self.y, 19.73, 19.71)
         self.start_pos()
         self.speed_y = self.settings.ball_speed_y
-        values = [uniform(-2.99, -1.99), uniform(1.99, 2.99)]
+        # values = [uniform(-2.99, -1.99), uniform(1.99, 2.99)]
+        values = [2.99, -2.99]
         self.speed_x = choice(values)
         # self.rect = pygame.draw.circle(self.screen, self.color, (self.x, self.y), self.radius)
 
@@ -40,12 +41,9 @@ class Ball(Sprite):
 
     def check_launch(self):
         if self.platform.moving_left or self.platform.moving_right:
-            # print(self.speed_x, self.speed_y, self.temp_speed_x, self.temp_speed_y)
-            # self.speed_x = self.temp_speed_x
-            # self.speed_y = self.temp_speed_y
-            # print(self.speed_x, self.speed_y, self.temp_speed_x, self.temp_speed_y)
             self.speed_y = self.settings.ball_speed_y
-            values = [uniform(-2.99, -1.99), uniform(1.99, 2.99)]
+            # values = [uniform(-2.99, -1.99), uniform(1.99, 2.99)]
+            values = [2.99, -2.99]
             self.speed_x = choice(values)
             self.game.level_running = True
 
@@ -85,13 +83,13 @@ class Ball(Sprite):
                 self.speed_x += 0.149
                 print("inc")
             elif self.platform.moving_right and self.direction_x == -1:
-                self.speed_x -= 0.148
+                self.speed_x -= 0.048
                 print("dec")
             elif self.platform.moving_left and self.direction_x == -1:
                 self.speed_x += 0.149
                 print("inc")
             elif self.platform.moving_left and self.direction_x == 1:
-                self.speed_x -= 0.148
+                self.speed_x -= 0.048
                 print("dec")
 
     def check_bottom(self):

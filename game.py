@@ -28,7 +28,7 @@ class Game:
         self.fps = 60
 
         self.title_screen = pygame.image.load("images/title_screen.png")
-        self.end_screen = pygame.image.load("images/gameover_screen.png")
+        self.end_screen = pygame.image.load("images/end_screen.png")
         self.ball_lost_screen = pygame.image.load("images/ball_lost.png")
         self.dmgup_image = pygame.image.load("images/dmg_up.png")
         self.lifeup_image = pygame.image.load("images/life_up.png")
@@ -128,24 +128,27 @@ class Game:
                 self.timer.value = 180
                 self.timer.collected = False
                 self.endscreen_visible = False
+                self.platform.moving_left = False
+                self.platform.moving_right = False
                 pygame.mouse.set_visible(False)
                 # self.new_high_score = False
                 # self.bonus_fruit_visible = False
 
     def check_spawn(self):
         value = randint(1, 1000)
-        if value <= 633 and not self.active_drop:
+        if value <= 666 and not self.active_drop:
             if len(self.drops_collected) <= 4:
                 return True
 
-    def create_pickup(self, rect):
-        self.pickup = Pickup(self, self.dmgup_image)
+    def create_pickup(self, rect, image):
+        self.pickup = Pickup(self, image)
         self.pickup.x = rect.x
         self.pickup.y = rect.y
         self.pickup_visible = True
 
     def check_pickup(self):     
         self.pickup_rect = pygame.Rect(self.pickup.x, self.pickup.y, 40, 40)
+
         if self.pickup_rect.colliderect(self.platform.rect):
             if self.pickup_visible and not self.pickup_collected:
                 self.pickup_collected = True
@@ -155,8 +158,22 @@ class Game:
                 self.drops_collected.append("")
                 self.timer.collected = True
                 self.pickup_collected = False
-            return
 
+        if self.pickup_rect.top > self.screen_rect.bottom and self.pickup_visible:
+            self.active_drop = []
+            self.pickup_visible = False
+            print("out")
+
+    def get_pickup(self):
+        value = randint(1, 1000)
+
+        if value > 333:
+            return self.widthup_image
+        elif value <= 333:
+            return self.dmgup_image
+        elif value <= 111:
+            return self.lifeup_image
+    
     def get_color(self):
         if self.current_level == 1:
             colors = ["blue"]
@@ -186,9 +203,9 @@ class Game:
                     
                     bonus = self.check_spawn()
                     if bonus and not self.pickup_visible and not self.active_drop:
-                        if not self.active_drop:
-                            self.create_pickup(i.rect)
-                            self.active_drop.append("")
+                        image = self.get_pickup()
+                        self.create_pickup(i.rect, image)
+                        self.active_drop.append("")
                 
     def check_blocks(self):
         for i in self.blocks:
@@ -218,8 +235,6 @@ class Game:
 
     def dead(self):
         self.lives -= 1
-        # print fail screen
-        print(self.lives)
         if self.lives > 0:
             self.level_running = False  
             self.platform.moving_left = False
@@ -230,16 +245,11 @@ class Game:
             self.ball.start_pos()
             self.active_drop = []
             self.ball_lost = True
-            # self.counter = time.time() * 1000
-            # pygame.time.delay(1500)
-            # self.ball_lost = False
-
         else:
             self.play_button = Button(self, "Replay?")
             self.game_active = False
             self.level_running = False
             self.current_level = 1
-            print("game over")
             pygame.mouse.set_visible(True)
             self.endscreen_visible = True
             
@@ -314,12 +324,7 @@ class Game:
             self.play_button.draw_button()
 
         if self.game_active and self.ball_lost:
-        #     self.fps = 0
             self.screen.blit(self.ball_lost_screen, (0, 0))
-            
-        #     pygame.time.wait(2000)
-        #     self.ball_lost = False
-        #     self.fps = 60
 
         if self.game_active and not self.ball_lost:
             self.timer.drawme()
