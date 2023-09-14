@@ -1,7 +1,7 @@
 import pygame
 import sys
 from random import randint, choice
-from time import sleep
+from time import *
 
 from player import Player
 from settings import Settings
@@ -29,6 +29,7 @@ class Game:
 
         self.title_screen = pygame.image.load("images/title_screen.png")
         self.end_screen = pygame.image.load("images/gameover_screen.png")
+        self.ball_lost_screen = pygame.image.load("images/ball_lost.png")
         self.dmgup_image = pygame.image.load("images/dmg_up.png")
         self.lifeup_image = pygame.image.load("images/life_up.png")
         self.widthup_image = pygame.image.load("images/width_up.png")
@@ -56,6 +57,7 @@ class Game:
         self.pickup_visible = False
         self.pickup_collected = False
         self.endscreen_visible = False
+        self.ball_lost = False
 
         self.load_next_level(self.current_level) 
         
@@ -64,6 +66,9 @@ class Game:
         while True:
             self.check_events()
             if self.game_active:
+                if self.ball_lost:
+                    pygame.time.delay(1500)
+                    self.ball_lost = False
                 self.platform.update()
                 self.ball.update()                    
                 self.scorelabel.prep_score(self.points)
@@ -216,12 +221,19 @@ class Game:
         # print fail screen
         print(self.lives)
         if self.lives > 0:
-            self.level_running = False         
+            self.level_running = False  
+            self.platform.moving_left = False
+            self.platform.moving_right = False       
             self.pickup_visible = False
             self.pickup_collected = False
             self.timer.reset()
             self.ball.start_pos()
             self.active_drop = []
+            self.ball_lost = True
+            # self.counter = time.time() * 1000
+            # pygame.time.delay(1500)
+            # self.ball_lost = False
+
         else:
             self.play_button = Button(self, "Replay?")
             self.game_active = False
@@ -301,7 +313,15 @@ class Game:
             self.screen.blit(self.title_screen, (0, 0))
             self.play_button.draw_button()
 
-        if self.game_active:
+        if self.game_active and self.ball_lost:
+        #     self.fps = 0
+            self.screen.blit(self.ball_lost_screen, (0, 0))
+            
+        #     pygame.time.wait(2000)
+        #     self.ball_lost = False
+        #     self.fps = 60
+
+        if self.game_active and not self.ball_lost:
             self.timer.drawme()
             self.scorelabel.draw_score()
             if self.pickup_visible:
@@ -310,6 +330,7 @@ class Game:
             for i in self.blocks:
                 i.drawme()                 
             self.ball.drawme()
+
         pygame.display.flip()
 
 pygame.quit()
