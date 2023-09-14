@@ -21,7 +21,8 @@ class Ball(Sprite):
         self.y = float(self.y)
         self.color = (200, 250, 200)
         self.image = pygame.image.load("images/ball.png")
-        self.rect = self.image.get_rect()
+        # self.rect = self.image.get_rect()
+        self.rect = pygame.Rect(self.x, self.y, 19.73, 19.71)
         self.start_pos()
         self.speed_y = self.settings.ball_speed_y
         values = [uniform(-2.99, -1.99), uniform(1.99, 2.99)]

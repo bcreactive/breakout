@@ -27,10 +27,11 @@ class Game:
         self.clock = pygame.time.Clock()   
         self.fps = 60
 
+        self.title_screen = pygame.image.load("images/title_screen.png")
+        self.end_screen = pygame.image.load("images/gameover_screen.png")
         self.dmgup_image = pygame.image.load("images/dmg_up.png")
         self.lifeup_image = pygame.image.load("images/life_up.png")
         self.widthup_image = pygame.image.load("images/width_up.png")
-        # self.title_screen = 
         # self.level_screen = 
         # self.music = 
 
@@ -54,6 +55,7 @@ class Game:
         self.level_running = False
         self.pickup_visible = False
         self.pickup_collected = False
+        self.endscreen_visible = False
 
         self.load_next_level(self.current_level) 
         
@@ -120,6 +122,7 @@ class Game:
                 self.pickup_collected = False
                 self.timer.value = 180
                 self.timer.collected = False
+                self.endscreen_visible = False
                 pygame.mouse.set_visible(False)
                 # self.new_high_score = False
                 # self.bonus_fruit_visible = False
@@ -226,6 +229,7 @@ class Game:
             self.current_level = 1
             print("game over")
             pygame.mouse.set_visible(True)
+            self.endscreen_visible = True
             
     def check_level_end(self):
         if len(self.blocks) == 0:           
@@ -290,8 +294,11 @@ class Game:
 
     def update_screen(self):
         self.screen.fill((0, 100, 150))
-
-        if not self.game_active:
+        if not self.game_active and self.endscreen_visible:
+            self.screen.blit(self.end_screen, (0, 0))
+            self.play_button.draw_button()
+        elif not self.game_active and not self.endscreen_visible:
+            self.screen.blit(self.title_screen, (0, 0))
             self.play_button.draw_button()
 
         if self.game_active:

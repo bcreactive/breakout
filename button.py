@@ -28,11 +28,11 @@ class Button:
         self.rect = pygame.Rect(0, 0, self.width, self.height)
         if msg == "Play!":
             self.width, self.height = 160, 80      
-            self.rect.center = self.screen_rect.center
+            self.rect.x = 500
+            self.rect.y = 400
         elif msg == "Replay?":
-            self.rect.center = self.screen_rect.center
-            # self.rect.x = 200
-            # self.rect.y = 400
+            self.rect.x = 100
+            self.rect.y = 300
         
         self._prep_msg(msg)
 
