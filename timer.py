@@ -12,10 +12,8 @@ class Timer:
         self.y = 10
         self.value = 180
         self.label_rect = pygame.Rect(self.x, self.y, 180, 20)
-        self.value_rect = pygame.Rect(self.x, self.y, self.value, 20)
-
         # self.ticker = 0
-        self.collected = False
+        self.reset()
 
     def reset(self):
         self.collected = False
@@ -23,9 +21,7 @@ class Timer:
         self.value = 180
         self.value_rect = pygame.Rect(self.x, self.y, self.value, 20)
 
-
     def update(self):
-        # print(self.value)
         if self.collected:
             if self.value == 0:
                 self.collected = False
@@ -37,6 +33,7 @@ class Timer:
                 self.value -= 1
                 self.value_rect = pygame.Rect(self.x, self.y, self.value, 20)
 
-    def drawme(self):       
-        pygame.draw.rect(self.screen, (234, 234, 234), (self.label_rect))
-        pygame.draw.rect(self.screen, (24, 24, 34), (self.value_rect))
+    def drawme(self):  
+        if self.collected and self.value > 0:     
+            pygame.draw.rect(self.screen, (234, 234, 234), (self.label_rect))
+            pygame.draw.rect(self.screen, (24, 24, 34), (self.value_rect))

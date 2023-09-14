@@ -70,7 +70,6 @@ class Game:
                     self.update_blocks()
                     self.check_level_end()
                     self.pickup.update()
-                    
                     if self.pickup_visible:
                         self.check_pickup()
                     self.timer.update()
@@ -127,12 +126,11 @@ class Game:
 
     def check_spawn(self):
         value = randint(1, 1000)
-        if value <= 333 and len(self.active_drop) <= 1:
+        if value <= 633 and not self.active_drop:
             if len(self.drops_collected) <= 4:
                 return True
 
     def create_pickup(self, rect):
-        # block_rect = rect
         self.pickup = Pickup(self, self.dmgup_image)
         self.pickup.x = rect.x
         self.pickup.y = rect.y
@@ -179,8 +177,10 @@ class Game:
                     self.blocks.remove(i)
                     
                     bonus = self.check_spawn()
-                    if bonus and not self.pickup_visible:
-                        self.create_pickup(i.rect)
+                    if bonus and not self.pickup_visible and not self.active_drop:
+                        if not self.active_drop:
+                            self.create_pickup(i.rect)
+                            self.active_drop.append("")
                 
     def check_blocks(self):
         for i in self.blocks:
@@ -218,6 +218,7 @@ class Game:
             self.pickup_collected = False
             self.timer.reset()
             self.ball.start_pos()
+            self.active_drop = []
         else:
             self.play_button = Button(self, "Replay?")
             self.game_active = False
