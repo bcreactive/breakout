@@ -31,6 +31,7 @@ class Game:
         self.title_screen = pygame.image.load("images/title_screen.png")
         self.end_screen = pygame.image.load("images/end_screen.png")
         self.ball_lost_screen = pygame.image.load("images/ball_lost.png")
+        self.levelup_screen = pygame.image.load("images/levelup.png")
         self.dmgup_image = pygame.image.load("images/dmg_up.png")
         self.lifeup_image = pygame.image.load("images/life_up.png")
         self.widthup_image = pygame.image.load("images/width_up.png")
@@ -61,6 +62,7 @@ class Game:
         self.pickup_collected = False
         self.endscreen_visible = False
         self.ball_lost = False
+        self.level_up = False
 
         self.load_next_level(self.current_level) 
         
@@ -70,8 +72,11 @@ class Game:
             self.check_events()
             if self.game_active:
                 if self.ball_lost:
-                    pygame.time.delay(1200)
+                    pygame.time.delay(1000)
                     self.ball_lost = False
+                if self.level_up:
+                    pygame.time.delay(1000)
+                    self.level_up = False
                 self.platform.update()
                 self.ball.update()                    
                 self.scorelabel.prep_score(self.points)
@@ -138,6 +143,7 @@ class Game:
                 self.platform.moving_right = False
                 self.ball.ball_speed = self.settings.ball_speed
                 self.highscore.grats = False
+                self.scorelabel.prep_level(self.current_level)
                 pygame.mouse.set_visible(False)
                 # self.new_high_score = False
 
@@ -279,6 +285,7 @@ class Game:
             self.level_running = False
             self.pickup_visible = False
             self.pickup_collected = False
+            self.level_up = True
             self.active_drop = ""
             self.drops_collected = []
             self.ball.start_pos()
@@ -288,11 +295,10 @@ class Game:
             self.load_next_level(self.current_level)
             self.get_blocks()
             self.scorelabel.prep_level(self.current_level)
-            print(self.ball.ball_speed)
-
+            
     def load_next_level(self, level):
        
-        if level == 1:
+        if level == 5:
             self.level_pos = [
                             (250, 50), (490, 50), (310, 90), (430, 90),
                             (310, 130), (370, 130), (430, 130), (250, 170),
@@ -328,8 +334,8 @@ class Game:
                             (270, 170), (330, 170), (390, 170), (450, 170),
                             (510, 170), (570, 170),(630, 170), (690, 170)] 
         
-            # if level == 1:
-        #     self.level_pos = [(100, 100)]
+        if level == 1:
+            self.level_pos = [(400, 400)]
         # if level == 1:
         #     self.level_pos = [
         #                     (250, 50), (490, 50), (310, 90), (430, 90),
@@ -349,6 +355,9 @@ class Game:
             self.screen.blit(self.title_screen, (0, 0))
             self.play_button.draw_button()
 
+        # if self.game_active and self.level_up:
+        #     self.screen.blit(self.levelup_screen, (0, 0))
+
         if self.game_active and self.ball_lost:
             self.screen.blit(self.ball_lost_screen, (0, 0))
 
@@ -362,6 +371,9 @@ class Game:
             for i in self.blocks:
                 i.drawme()                 
             self.ball.drawme()
+
+        if self.game_active and self.level_up:
+            self.screen.blit(self.levelup_screen, (0, 0))
 
         pygame.display.flip()
 
