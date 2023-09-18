@@ -23,6 +23,8 @@ class Player(Sprite):
         self.moving_right = False
         
     def update(self):
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        self.rect_image = pygame.Rect(self.x, self.y, self.width, self.height)
         if self.moving_left == True and self.x > 0:
             self.x -= self.settings.player_speed
         if self.moving_right == True and self.x < self.game.screen_width - self.width:

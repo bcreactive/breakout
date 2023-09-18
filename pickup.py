@@ -14,8 +14,6 @@ class Pickup(Sprite):
         self.y = 100
         self.image = drop
         self.rect = self.image.get_rect()
-        # self.name = name
-        # self.collected = False
 
     def update(self):
         self.y += self.settings.pickup_speed

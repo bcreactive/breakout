@@ -17,7 +17,7 @@ class Block(Sprite):
         self.points = self.get_points(color)
         self.hp = self.get_hp(color)
 
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)  
+        self.rect = pygame.Rect(self.x - 0.13, self.y - 0.17, self.width, self.height)  
         # self.image_rect = pygame.Rect(self.x, self.y, self.width, self.height)  
            
         self.visible = True
@@ -59,7 +59,7 @@ class Block(Sprite):
             return 5
 
     def check_hp(self):     
-        if self.hp == 0:
+        if self.hp <= 0:
             self.visible = False
     
     def check_color(self, hp):

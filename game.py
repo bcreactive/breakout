@@ -25,7 +25,7 @@ class Game:
         self.screen_rect = self.screen.get_rect()
         pygame.display.set_caption("Game")   
         self.clock = pygame.time.Clock()   
-        self.fps = 40
+        self.fps = 60
 
         self.title_screen = pygame.image.load("images/title_screen.png")
         self.end_screen = pygame.image.load("images/end_screen.png")
@@ -65,13 +65,13 @@ class Game:
     # Main game loop.
     def run_game(self):      
         while True:
-            print(self.bonus)
-            print(self.active_drop)
-            print(f"{self.drops_collected}\n")
+            # print(self.drops_collected)
+            # print(self.lives)
+            print(self.blocks)
             self.check_events()
             if self.game_active:
                 if self.ball_lost:
-                    pygame.time.delay(1500)
+                    pygame.time.delay(1200)
                     self.ball_lost = False
                 self.platform.update()
                 self.ball.update()                    
@@ -80,6 +80,8 @@ class Game:
                     self.check_blocks()
                     self.update_blocks()
                     self.check_level_end()
+                    
+                    self.bonus_action(self.active_drop)
                     if self.pickup_visible:
                         self.pickup.update()
                         self.check_pickup()
@@ -120,7 +122,8 @@ class Game:
                 self.ball.start_pos()
                 self.level_pos = []
                 self.blocks = []
-                self.active_drop = []
+                self.bonus = ""
+                self.active_drop = ""
                 self.drops_collected = []
                 self.load_next_level(self.current_level)
                 self.get_blocks()
@@ -136,7 +139,16 @@ class Game:
                 self.platform.moving_right = False
                 pygame.mouse.set_visible(False)
                 # self.new_high_score = False
-                # self.bonus_fruit_visible = False
+
+    def bonus_action(self, drop):
+        if self.pickup_collected:
+            if drop == "widthup":
+                self.platform.width = 180
+            elif drop == "dmgup":
+                self.ball.dmg = 3
+        if not self.pickup_collected:
+            self.ball.dmg = 1
+            self.platform.width = 100
 
     def check_spawn(self):
         value = randint(1, 1000)
@@ -154,43 +166,35 @@ class Game:
         self.pickup_rect = pygame.Rect(self.pickup.x, self.pickup.y, 40, 40)
 
         if self.pickup_rect.colliderect(self.platform.rect):
-            if self.pickup_visible and not self.pickup_collected:
-                self.pickup_collected = True
-                self.pickup_visible = False
-               
-                self.active_drop = self.bonus
-                # self.drops_collected.append(self.bonus)
                 
-                self.timer.collected = True
-                self.pickup_collected = False
-                self.bonus = ""
-            
-            # if self.pickup_collected:
-            #     self.bonus = ""
+            if self.pickup_visible and not self.pickup_collected:
+                if self.bonus == "lifeup" and not self.lives >= 4:
+                    self.lives += 1
 
-        if self.pickup_rect.top > self.screen_rect.bottom and self.pickup_visible:
-            self.active_drop = ""
+                self.pickup_collected = True
+                self.pickup_visible = False   
+                self.active_drop = self.bonus                              
+                self.bonus = ""
+
+                self.timer.collected = True
+            
+        if self.pickup_rect.top > self.screen_rect.bottom and self.pickup_visible:           
             self.pickup_visible = False
+            self.active_drop = ""
             self.bonus = ""
-            print("out")
 
     def get_pickup(self):
         value = randint(1, 1000)
-
         if value > 666:
             self.bonus = "widthup"
-            # self.active_drop.append("widthup")
             return self.widthup_image
         elif value <= 666 and value >= 333:
             self.bonus = "dmgup"
-            # self.active_drop.append("dmgup")
             return self.dmgup_image
         elif value < 333:
             self.bonus = "lifeup"
-            # self.active_drop.append("lifeup")
             return self.lifeup_image
         
-    
     def get_color(self):
         if self.current_level == 1:
             colors = ["blue"]
@@ -213,16 +217,16 @@ class Game:
         for i in self.blocks:
             i.update()           
             if self.ball.rect.colliderect(i.rect):                 
-                i.hp -= 1
-                if i.hp == 0:
+                i.hp -= self.ball.dmg
+                if i.hp <= 0:
                     self.points += i.points
                     self.blocks.remove(i)
                     
                     bonus = self.check_spawn()
                     if bonus and not self.pickup_visible and not self.active_drop:
                         image = self.get_pickup()
-                        self.create_pickup(i.rect, image)
-                        # self.active_drop.append("")
+                        if not self.bonus in self.drops_collected:
+                            self.create_pickup(i.rect, image)
                 
     def check_blocks(self):
         for i in self.blocks:
@@ -260,7 +264,7 @@ class Game:
             self.pickup_collected = False
             self.timer.reset()
             self.ball.start_pos()
-            self.active_drop = []
+            self.active_drop = ""
             self.ball_lost = True
         else:
             self.play_button = Button(self, "Replay?")
@@ -275,7 +279,7 @@ class Game:
             self.level_running = False
             self.pickup_visible = False
             self.pickup_collected = False
-            self.active_drop = []
+            self.active_drop = ""
             self.drops_collected = []
             self.ball.start_pos()
             self.current_level += 1
@@ -333,6 +337,7 @@ class Game:
 
     def update_screen(self):
         self.screen.fill((0, 100, 150))
+
         if not self.game_active and self.endscreen_visible:
             self.screen.blit(self.end_screen, (0, 0))
             self.play_button.draw_button()
@@ -344,10 +349,9 @@ class Game:
             self.screen.blit(self.ball_lost_screen, (0, 0))
 
         if self.game_active and not self.ball_lost:
-            # if not self.bonus == "lifeup":
-            if not self.active_drop == "lifeup":
-                self.timer.drawme()
             self.scorelabel.draw_score()
+            if not self.active_drop == "lifeup":
+                self.timer.drawme()           
             if self.pickup_visible:
                 self.pickup.drawme()
             self.platform.drawme()

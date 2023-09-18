@@ -21,13 +21,12 @@ class Ball(Sprite):
         self.y = float(self.y)
         self.color = (200, 250, 200)
         self.image = pygame.image.load("images/ball.png")
-        # self.rect = self.image.get_rect()
         self.rect = pygame.Rect(self.x, self.y, 19.73, 19.71)
         self.start_pos()
         self.speed_y = self.settings.ball_speed_y
-        # values = [uniform(-2.99, -1.99), uniform(1.99, 2.99)]
         values = [2.99, -2.99]
         self.speed_x = choice(values)
+        self.dmg = 1
         # self.rect = pygame.draw.circle(self.screen, self.color, (self.x, self.y), self.radius)
 
     def start_pos(self):
@@ -38,11 +37,11 @@ class Ball(Sprite):
         self.direction_x = 1
         self.direction_y = -1
         self.platform.x = 350
+        self.dmg = 1
 
     def check_launch(self):
         if self.platform.moving_left or self.platform.moving_right:
             self.speed_y = self.settings.ball_speed_y
-            # values = [uniform(-2.99, -1.99), uniform(1.99, 2.99)]
             values = [2.99, -2.99]
             self.speed_x = choice(values)
             self.game.level_running = True
