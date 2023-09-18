@@ -35,7 +35,6 @@ class Game:
         self.dmgup_image = pygame.image.load("images/dmg_up.png")
         self.lifeup_image = pygame.image.load("images/life_up.png")
         self.widthup_image = pygame.image.load("images/width_up.png")
-        # self.level_screen = 
         # self.music = 
 
         self.play_button = Button(self, "Play!")
@@ -75,7 +74,7 @@ class Game:
                     pygame.time.delay(1000)
                     self.ball_lost = False
                 if self.level_up:
-                    pygame.time.delay(1000)
+                    pygame.time.delay(1800)
                     self.level_up = False
                 self.platform.update()
                 self.ball.update()                    
@@ -145,7 +144,6 @@ class Game:
                 self.highscore.grats = False
                 self.scorelabel.prep_level(self.current_level)
                 pygame.mouse.set_visible(False)
-                # self.new_high_score = False
 
     def bonus_action(self, drop):
         if self.pickup_collected:
@@ -204,11 +202,11 @@ class Game:
         
     def get_color(self):
         if self.current_level == 1:
-            colors = ["blue"]
+            colors = ["blue", "red", "blue"]
         elif self.current_level == 2:
-            colors = ["blue", "red"]
+            colors = ["blue", "green", "red", "blue", "red"]
         elif self.current_level == 3:
-            colors = ["blue", "red", "green", "violet"]
+            colors = ["blue", "red", "green", "blue", "green", "red", "violet"]
         elif self.current_level == 4:
             colors = ["blue", "red", "green", "violet", "yellow"]
 
@@ -228,34 +226,40 @@ class Game:
                 if i.hp <= 0:
                     self.points += i.points
                     self.blocks.remove(i)
-                    
-                    bonus = self.check_spawn()
-                    if bonus and not self.pickup_visible and not self.active_drop:
-                        image = self.get_pickup()
-                        if not self.bonus in self.drops_collected:
-                            self.create_pickup(i.rect, image)
-                
+                    self.check_bonus(i)
+
+    def check_bonus(self, block):
+        bonus = self.check_spawn()
+        if bonus and not self.pickup_visible and not self.active_drop:
+            image = self.get_pickup()
+            if not self.bonus in self.drops_collected:
+                self.create_pickup(block.rect, image)
+
     def check_blocks(self):
         for i in self.blocks:
             if self.ball.rect.colliderect(i.rect):
                 if self.ball.rect.bottom >= i.rect.top and self.ball.rect.top < i.rect.top:
                     if self.ball.rect.left <= i.rect.right  and self.ball.rect.right >= i.rect.left :
                             if self.ball.direction_y == 1:
+                                self.ball.speed_x += 0.0031
                                 self.ball.direction_y *= -1
                                 print("top")
                 if self.ball.rect.right >= i.rect.left and self.ball.rect.left < i.rect.left: 
                     if self.ball.rect.bottom >= i.rect.top  and self.ball.rect.top <= i.rect.bottom :  
-                            if self.ball.direction_x == 1:      
+                            if self.ball.direction_x == 1:
+                                self.ball.speed_y += 0.0032 
                                 self.ball.direction_x *= -1
                                 print("left")
                 if self.ball.rect.left <= i.rect.right and self.ball.rect.right > i.rect.right: 
                     if self.ball.rect.bottom >= i.rect.top  and self.ball.rect.top <= i.rect.bottom:  
-                            if self.ball.direction_x == -1:      
+                            if self.ball.direction_x == -1:    
+                                self.ball.speed_y += 0.0021  
                                 self.ball.direction_x *= -1
                                 print("right")
                 if self.ball.rect.top <= i.rect.bottom and self.ball.rect.bottom > i.rect.bottom: 
                     if self.ball.rect.left <= i.rect.right and self.ball.rect.right >= i.rect.left :  
-                            if self.ball.direction_y == -1:      
+                            if self.ball.direction_y == -1: 
+                                self.ball.speed_x -= 0.0022     
                                 self.ball.direction_y *= -1
                                 print("bottom")
 
@@ -290,8 +294,8 @@ class Game:
             self.drops_collected = []
             self.ball.start_pos()
             self.current_level += 1
-            self.ball.ball_speed += 0.53
-            self.platform.speed += 0.5
+            self.ball.ball_speed += 0.33
+            self.platform.speed += 0.7
             self.load_next_level(self.current_level)
             self.get_blocks()
             self.scorelabel.prep_level(self.current_level)
@@ -321,19 +325,22 @@ class Game:
                             ]
             
         if level == 3:
-            self.level_pos = [(70, 50), (370, 50), (670, 50), (130, 90),
-                               (190, 90), (370, 90), (550, 90), (610, 90),
-                               (250, 130), (310, 130), (370, 130),
-                               (430, 130), (490, 130), (190, 170), (370, 170),
-                               (550, 170), (130, 210), (190, 210), (250, 210),
-                               (310, 210), (370, 210), (430, 210), (490, 210),
-                               (550, 210), (610, 210), (250, 250), (490, 250),
-                               (190, 290), (310, 290), (370, 290), (430, 290),
-                               (550, 290), (70, 330), (130, 330), (370, 330),
-                               (610, 330), (670, 330)]
+            self.level_pos = [
+                            (70, 50), (370, 50), (670, 50), (130, 90),
+                            (190, 90), (370, 90), (550, 90), (610, 90),
+                            (250, 130), (310, 130), (370, 130),
+                            (430, 130), (490, 130), (190, 170), (370, 170),
+                            (550, 170), (130, 210), (190, 210), (250, 210),
+                            (310, 210), (370, 210), (430, 210), (490, 210),
+                            (550, 210), (610, 210), (250, 250), (490, 250),
+                            (190, 290), (310, 290), (370, 290), (430, 290),
+                            (550, 290), (70, 330), (130, 330), (370, 330),
+                            (610, 330), (670, 330)
+                            ]
             
         if level == 4:
-            self.level_pos = [(70, 50), (90, 50), (150, 50), (210, 50),
+            self.level_pos = [
+                            (30, 50), (90, 50), (150, 50), (210, 50),
                             (270, 50), (330, 50), (390, 50), (450, 50),
                             (510, 50), (570, 50),(630, 50), (690, 50),
                             (30, 90), (90, 90), (150, 90), (210, 90),
@@ -344,7 +351,8 @@ class Game:
                             (510, 130), (570, 130),(630, 130), (690, 130),
                             (30, 170), (90, 170), (150, 170), (210, 170),
                             (270, 170), (330, 170), (390, 170), (450, 170),
-                            (510, 170), (570, 170),(630, 170), (690, 170)] 
+                            (510, 170), (570, 170),(630, 170), (690, 170)
+                            ] 
 
     def update_screen(self):
         self.screen.fill((0, 100, 150))
@@ -356,9 +364,6 @@ class Game:
         elif not self.game_active and not self.endscreen_visible:
             self.screen.blit(self.title_screen, (0, 0))
             self.play_button.draw_button()
-
-        # if self.game_active and self.level_up:
-        #     self.screen.blit(self.levelup_screen, (0, 0))
 
         if self.game_active and self.ball_lost:
             self.screen.blit(self.ball_lost_screen, (0, 0))

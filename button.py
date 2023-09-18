@@ -31,7 +31,7 @@ class Button:
             self.rect.x = 500
             self.rect.y = 400
         elif msg == "Replay?":
-            self.rect.x = 60
+            self.rect.x = 20
             self.rect.y = 450
         
         self.prep_msg(msg)

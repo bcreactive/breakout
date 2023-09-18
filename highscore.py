@@ -43,14 +43,13 @@ class Highscore:
     def prep_high_score(self):
         # Get a rendered high-score image.
         self.check_high_score()
-        # print(self.game.points)
         high_score = self.high_score
         high_score_str = f"Highscore: {high_score}"
         self.high_score_image = self.font.render(high_score_str, True,
                                     self.text_color, self.label_color)
         
         self.high_score_rect = self.high_score_image.get_rect()  
-        self.high_score_rect.x = 60
+        self.high_score_rect.x = 20
         self.high_score_rect.y = 380
         self.save_highscore()  
         self.draw_highscore()
@@ -64,17 +63,13 @@ class Highscore:
                                     text_color, self.label_color)
         
         self.grats_rect = self.grats_image.get_rect()  
-        self.grats_rect.x = 60
+        self.grats_rect.x = 20
         self.grats_rect.y = 320
-        # self.draw_grats()
 
     def draw_highscore(self):
         self.screen.blit(self.high_score_image, self.high_score_rect)
         if self.grats:
             self.screen.blit(self.grats_image, self.grats_rect)
-    
-    # def draw_grats(self):
-    #     self.screen.blit(self.grats_image, self.grats_rect)
 
 
 
