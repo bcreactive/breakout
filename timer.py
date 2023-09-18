@@ -12,24 +12,22 @@ class Timer:
         self.y = 10
         self.value = 180
         self.label_rect = pygame.Rect(self.x, self.y, 180, 20)
-        # self.ticker = 0
         self.reset()
 
     def reset(self):
         self.collected = False
-        # self.ticker = 0
         self.value = 180
         self.value_rect = pygame.Rect(self.x, self.y, self.value, 20)
-
+    
     def update(self):
         if self.collected:
             if self.value == 0:
                 self.collected = False
                 self.value = 180
                 self.value_rect = pygame.Rect(self.x, self.y, self.value, 20)
-                print("bonus over")
+                self.game.drops_collected.append(self.game.active_drop)
+                self.game.active_drop = ""
             elif self.value > 0: 
-                # self.ticker += 1
                 self.value -= 1
                 self.value_rect = pygame.Rect(self.x, self.y, self.value, 20)
 

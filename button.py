@@ -34,9 +34,9 @@ class Button:
             self.rect.x = 100
             self.rect.y = 300
         
-        self._prep_msg(msg)
+        self.prep_msg(msg)
 
-    def _prep_msg(self, msg):
+    def prep_msg(self, msg):
         # Get a rendered image of the buttontext.
         self.msg_image = self.font.render(msg, True, self.text_color,
                 self.button_color)

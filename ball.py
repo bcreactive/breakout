@@ -50,9 +50,7 @@ class Ball(Sprite):
     def update(self):
         if not self.game.level_running:
             self.check_launch()
-            # print("checking")
         if self.game.level_running:
-            # print("running")
             self.check_walls()
             self.check_platform()
             self.check_bottom()
