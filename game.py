@@ -249,8 +249,6 @@ class Game:
                             if self.ball.direction_y == -1:      
                                 self.ball.direction_y *= -1
                                 print("bottom")
-        # if self.level_running:
-        #     self.check_level_end()
 
     def dead(self):
         self.lives -= 1
