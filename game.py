@@ -11,6 +11,7 @@ from button import Button
 from scorelabel import Scorelabel
 from pickup import Pickup
 from timer import Timer
+from highscore import Highscore
 
 
 class Game:
@@ -44,6 +45,7 @@ class Game:
         self.scorelabel = Scorelabel(self)
         self.pickup = Pickup(self, self.lifeup_image)
         self.timer = Timer(self)
+        self.highscore = Highscore(self)
         
         self.blocks = []
         self.level_pos = []
@@ -135,6 +137,7 @@ class Game:
                 self.platform.moving_left = False
                 self.platform.moving_right = False
                 self.ball.ball_speed = self.settings.ball_speed
+                self.highscore.grats = False
                 pygame.mouse.set_visible(False)
                 # self.new_high_score = False
 
@@ -264,6 +267,7 @@ class Game:
             self.ball_lost = True
         else:
             self.play_button = Button(self, "Replay?")
+            self.highscore.prep_high_score()
             self.game_active = False
             self.level_running = False
             self.current_level = 1
@@ -340,6 +344,7 @@ class Game:
         if not self.game_active and self.endscreen_visible:
             self.screen.blit(self.end_screen, (0, 0))
             self.play_button.draw_button()
+            self.highscore.draw_highscore()
         elif not self.game_active and not self.endscreen_visible:
             self.screen.blit(self.title_screen, (0, 0))
             self.play_button.draw_button()
