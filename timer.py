@@ -29,7 +29,7 @@ class Timer:
                 self.game.active_drop = ""
                 self.game.pickup_collected = False
             elif self.value > 0: 
-                self.value -= 1
+                self.value -= 0.5
                 self.value_rect = pygame.Rect(self.x, self.y, self.value, 20)
 
     def drawme(self):  

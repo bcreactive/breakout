@@ -14,7 +14,7 @@ class Player(Sprite):
         self.x = 400 - self.width/2
         self.x = float(self.x)
         self.y = self.screen_rect.height - self.height - 10
-        
+        self.speed = self.settings.player_speed
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.rect_image = pygame.Rect(self.x, self.y, self.width, self.height)
         self.color = (123, 123, 123)
@@ -26,9 +26,9 @@ class Player(Sprite):
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.rect_image = pygame.Rect(self.x, self.y, self.width, self.height)
         if self.moving_left == True and self.x > 0:
-            self.x -= self.settings.player_speed
+            self.x -= self.speed
         if self.moving_right == True and self.x < self.game.screen_width - self.width:
-            self.x += self.settings.player_speed
+            self.x += self.speed
         self.rect.x = self.x
         self.rect_image.x = self.x
         self.rect_image.y = self.y + 5

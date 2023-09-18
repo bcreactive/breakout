@@ -65,9 +65,6 @@ class Game:
     # Main game loop.
     def run_game(self):      
         while True:
-            # print(self.drops_collected)
-            # print(self.lives)
-            print(self.blocks)
             self.check_events()
             if self.game_active:
                 if self.ball_lost:
@@ -137,6 +134,7 @@ class Game:
                 self.endscreen_visible = False
                 self.platform.moving_left = False
                 self.platform.moving_right = False
+                self.ball.ball_speed = self.settings.ball_speed
                 pygame.mouse.set_visible(False)
                 # self.new_high_score = False
 
@@ -152,7 +150,7 @@ class Game:
 
     def check_spawn(self):
         value = randint(1, 1000)
-        if value <= 666 and not self.active_drop:
+        if value <= 100 and not self.active_drop:
             if len(self.drops_collected) <= 4:
                 return True
 
@@ -185,13 +183,13 @@ class Game:
 
     def get_pickup(self):
         value = randint(1, 1000)
-        if value > 666:
+        if value > 550:
             self.bonus = "widthup"
             return self.widthup_image
-        elif value <= 666 and value >= 333:
+        elif value <= 550 and value >= 100:
             self.bonus = "dmgup"
             return self.dmgup_image
-        elif value < 333:
+        elif value < 100:
             self.bonus = "lifeup"
             return self.lifeup_image
         
@@ -283,9 +281,12 @@ class Game:
             self.drops_collected = []
             self.ball.start_pos()
             self.current_level += 1
+            self.ball.ball_speed += 0.53
+            self.platform.speed += 0.5
             self.load_next_level(self.current_level)
             self.get_blocks()
             self.scorelabel.prep_level(self.current_level)
+            print(self.ball.ball_speed)
 
     def load_next_level(self, level):
        
