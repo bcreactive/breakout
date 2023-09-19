@@ -243,22 +243,22 @@ class Game:
                 if self.ball.rect.bottom >= i.rect.top and self.ball.rect.top < i.rect.top:
                     if self.ball.rect.left <= i.rect.right  and self.ball.rect.right >= i.rect.left :
                             if self.ball.direction_y == 1:
-                                self.ball.speed_x += 0.0017
+                                self.ball.speed_x += 0.0117
                                 self.ball.direction_y *= -1
                 if self.ball.rect.right >= i.rect.left and self.ball.rect.left < i.rect.left: 
                     if self.ball.rect.bottom >= i.rect.top  and self.ball.rect.top <= i.rect.bottom :  
                             if self.ball.direction_x == 1:
-                                self.ball.speed_y += 0.0032 
+                                self.ball.speed_y += 0.0132 
                                 self.ball.direction_x *= -1
                 if self.ball.rect.left <= i.rect.right and self.ball.rect.right > i.rect.right: 
                     if self.ball.rect.bottom >= i.rect.top  and self.ball.rect.top <= i.rect.bottom:  
                             if self.ball.direction_x == -1:    
-                                self.ball.speed_y += 0.0021  
+                                self.ball.speed_y += 0.0121  
                                 self.ball.direction_x *= -1
                 if self.ball.rect.top <= i.rect.bottom and self.ball.rect.bottom > i.rect.bottom: 
                     if self.ball.rect.left <= i.rect.right and self.ball.rect.right >= i.rect.left :  
                             if self.ball.direction_y == -1: 
-                                self.ball.speed_x -= 0.0023     
+                                self.ball.speed_x -= 0.0123     
                                 self.ball.direction_y *= -1
 
     def dead(self):

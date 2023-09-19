@@ -15,9 +15,9 @@ class Ball(Sprite):
         self.settings = game.settings
 
         self.radius = 10
-        self.x = 389
+        self.x = 388.337
         self.y = 540
-        self.x = float(self.x)
+        # self.x = float(self.x)
         self.y = float(self.y)
         self.color = (200, 250, 200)
         self.image = pygame.image.load("images/ball.png")
@@ -61,12 +61,21 @@ class Ball(Sprite):
 
     def check_walls(self):
         if self.x + 2*self.radius >= self.screen_rect.right:
-           self.direction_x *= -1
+            if self.direction_x == 1:
+                self.speed_x -= 0.021
+            elif self.direction_x == -1:
+                self.speed_x += 0.033             
+            self.direction_x *= -1
             
         if self.x <= self.screen_rect.left:
+            if self.direction_x == 1:
+                self.speed_x -= 0.021
+            elif self.direction_x == -1:
+                self.speed_x += 0.033
             self.direction_x *= -1
            
-        if self.y <= self.screen_rect.top:
+        if self.y <= self.screen_rect.top:           
+            self.speed_x += 0.023
             self.direction_y *= -1
           
     def check_platform(self):
