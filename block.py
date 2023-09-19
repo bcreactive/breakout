@@ -25,22 +25,22 @@ class Block(Sprite):
 
     def get_color(self, col):
         if col == "blue":
-            return (0, 0, 255, 0)
+            return (85, 85, 255)
         elif col == "red":
-            return (255, 0, 0)
-        elif col == "green":
-            return (0, 255, 0)
+            return (177, 3, 3)
+        elif col == "orange":
+            return (255, 85, 0)
         elif col == "violet":
-            return (200, 0, 200)
+            return (170, 0, 170)
         elif col == "yellow":
-            return (0, 200, 200)
+            return (255, 255, 85)
         
     def get_points(self, col):
         if col == "blue":
             return 100
         elif col == "red":
             return 200
-        elif col == "green":
+        elif col == "orange":
             return 300
         elif col == "violet":
             return 400
@@ -52,7 +52,7 @@ class Block(Sprite):
             return 1
         elif col == "red":
             return 2
-        elif col == "green":
+        elif col == "orange":
             return 3
         elif col == "violet":
             return 4
@@ -65,15 +65,15 @@ class Block(Sprite):
     
     def check_color(self, hp):
         if hp == 1:
-            return (0, 0, 255, 0)
+            return (85, 85, 255)
         elif hp == 2:
-            return (255, 0, 0)
+            return (177, 3, 3)
         elif hp == 3:
-            return (0, 255, 0)
+            return (255, 85, 0)
         elif hp == 4:
-            return (200, 0, 200)
+            return (170, 0, 170)
         elif hp == 5:
-            return (0, 200, 200)
+            return (255, 255, 85)
 
     def update(self):
         self.check_hp()

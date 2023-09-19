@@ -11,25 +11,26 @@ class Button:
         self.screen_rect = self.screen.get_rect()
         self.width = 160
         self.height = 80
-        self.button_color = (96, 21, 95)
+        self.button_color = (170, 0, 170)
 
         # Set the dimensions and properties of the button.
         if msg == "Play!":
-            self.width, self.height = 160, 80
-            self.button_color = (96, 21, 95)
+            self.width, self.height = 140, 60
+            self.button_color = (170, 0, 170)
+            self.text_color = (255, 255, 85)
         elif msg == "Replay?":
             self.width, self.height = 200, 80
             self.button_color = (55, 23, 100)
+            self.text_color = (255, 55, 255)
 
-        self.text_color = (255, 55, 255)
         self.font = pygame.font.SysFont(None, 60)
 
         # Build the button's rect object and set position.
         self.rect = pygame.Rect(0, 0, self.width, self.height)
         if msg == "Play!":
-            self.width, self.height = 160, 80      
-            self.rect.x = 500
-            self.rect.y = 400
+            self.width, self.height = 140, 60      
+            self.rect.x = 520
+            self.rect.y = 405
         elif msg == "Replay?":
             self.rect.x = 20
             self.rect.y = 450
@@ -45,5 +46,5 @@ class Button:
 
     def draw_button(self):
         self.screen.fill(self.button_color, self.rect)
-        self.border = pygame.draw.rect(self.screen, (255, 255, 255), (self.rect), 2)
+        # self.border = pygame.draw.rect(self.screen, (255, 55, 255), (self.rect), 4)
         self.screen.blit(self.msg_image, self.msg_image_rect)

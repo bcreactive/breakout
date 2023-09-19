@@ -14,9 +14,11 @@ class Highscore:
         self.high_score = int(self.high_score)
 
         # Font settings
-        self.text_color = (130, 230, 230)
+        # self.text_color = (130, 230, 230)
+        self.text_color = (55, 23, 100)
+        
         self.font = pygame.font.SysFont(None, 60)
-        self.label_color = (118, 66, 138)
+        self.label_color = (132, 155, 228)
         self.grats_image = None
         self.grats = False
         self.prep_grats()
@@ -57,7 +59,8 @@ class Highscore:
     
     def prep_grats(self):
         # Shows a message, when a new high-score is achieved.
-        text_color = (130, 230, 250)
+        # text_color = (130, 230, 250)
+        text_color = (255, 85, 0)
         grats_str = f"!!!New Highscore!!!"
         self.grats_image = self.font.render(grats_str, True,
                                     text_color, self.label_color)

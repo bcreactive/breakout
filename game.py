@@ -204,11 +204,13 @@ class Game:
         if self.current_level == 1:
             colors = ["blue", "red", "blue"]
         elif self.current_level == 2:
-            colors = ["blue", "green", "red", "blue", "red"]
+            colors = ["blue", "orange", "red", "blue", "red"]
         elif self.current_level == 3:
-            colors = ["blue", "red", "green", "blue", "green", "red", "violet"]
+            colors = ["blue", "red", "orange", "blue", "orange", "red", 
+                      "violet"]
         elif self.current_level >= 4:
-            colors = ["blue", "red", "yellow", "green", "violet", "yellow"]
+            colors = ["blue", "red", "yellow", "orange", "violet", "orange",
+                      "blue"]
 
         return choice(colors)
     
