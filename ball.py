@@ -62,20 +62,20 @@ class Ball(Sprite):
     def check_walls(self):
         if self.x + 2*self.radius >= self.screen_rect.right:
             if self.direction_x == 1:
-                self.speed_x -= 0.021
+                self.speed_x -= 0.022
             elif self.direction_x == -1:
                 self.speed_x += 0.033             
             self.direction_x *= -1
             
         if self.x <= self.screen_rect.left:
             if self.direction_x == 1:
-                self.speed_x -= 0.021
+                self.speed_x -= 0.024
             elif self.direction_x == -1:
-                self.speed_x += 0.033
+                self.speed_x += 0.031
             self.direction_x *= -1
            
         if self.y <= self.screen_rect.top:           
-            self.speed_x += 0.023
+            self.speed_x += 0.017
             self.direction_y *= -1
           
     def check_platform(self):

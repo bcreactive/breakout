@@ -35,8 +35,8 @@ class Game:
         self.dmgup_image = pygame.image.load("images/dmg_up.png")
         self.lifeup_image = pygame.image.load("images/life_up.png")
         self.widthup_image = pygame.image.load("images/width_up.png")
-        # self.music = 
-
+        self.intro_sound = pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound/intro.mp3')) 
+        
         self.play_button = Button(self, "Play!")
         self.settings = Settings()
         self.lives = self.settings.lives
@@ -144,6 +144,7 @@ class Game:
                 self.highscore.grats = False
                 self.scorelabel.prep_level(self.current_level)
                 pygame.mouse.set_visible(False)
+                self.intro_sound = pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound/level.mp3')) 
 
     def bonus_action(self, drop):
         if self.pickup_collected:
