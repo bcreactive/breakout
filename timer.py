@@ -8,7 +8,7 @@ class Timer:
         self.screen = game.screen
         self.screen_rect = game.screen.get_rect()
         self.settings = game.settings
-        self.x = 120
+        self.x = 130
         self.y = 10
         self.value = 180
         self.label_rect = pygame.Rect(self.x, self.y, 180, 20)

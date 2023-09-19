@@ -157,7 +157,7 @@ class Game:
 
     def check_spawn(self):
         value = randint(1, 1000)
-        if value <= 100 and not self.active_drop:
+        if value <= 150 and not self.active_drop:
             if len(self.drops_collected) <= 4:
                 return True
 
@@ -207,8 +207,8 @@ class Game:
             colors = ["blue", "green", "red", "blue", "red"]
         elif self.current_level == 3:
             colors = ["blue", "red", "green", "blue", "green", "red", "violet"]
-        elif self.current_level == 4:
-            colors = ["blue", "red", "green", "violet", "yellow"]
+        elif self.current_level >= 4:
+            colors = ["blue", "red", "yellow", "green", "violet", "yellow"]
 
         return choice(colors)
     
@@ -241,7 +241,7 @@ class Game:
                 if self.ball.rect.bottom >= i.rect.top and self.ball.rect.top < i.rect.top:
                     if self.ball.rect.left <= i.rect.right  and self.ball.rect.right >= i.rect.left :
                             if self.ball.direction_y == 1:
-                                self.ball.speed_x += 0.0031
+                                self.ball.speed_x += 0.0017
                                 self.ball.direction_y *= -1
                                 print("top")
                 if self.ball.rect.right >= i.rect.left and self.ball.rect.left < i.rect.left: 
@@ -259,7 +259,7 @@ class Game:
                 if self.ball.rect.top <= i.rect.bottom and self.ball.rect.bottom > i.rect.bottom: 
                     if self.ball.rect.left <= i.rect.right and self.ball.rect.right >= i.rect.left :  
                             if self.ball.direction_y == -1: 
-                                self.ball.speed_x -= 0.0022     
+                                self.ball.speed_x -= 0.0023     
                                 self.ball.direction_y *= -1
                                 print("bottom")
 
@@ -340,20 +340,37 @@ class Game:
             
         if level == 4:
             self.level_pos = [
-                            (30, 50), (90, 50), (150, 50), (210, 50),
-                            (270, 50), (330, 50), (390, 50), (450, 50),
-                            (510, 50), (570, 50),(630, 50), (690, 50),
-                            (30, 90), (90, 90), (150, 90), (210, 90),
-                            (270, 90), (330, 90), (390, 90), (450, 90),
-                            (510, 90), (570, 90),(630, 90), (690, 90), 
-                            (30, 130), (90, 130), (150, 130), (210, 130),
-                            (270, 130), (330, 130), (390, 130), (450, 130),
-                            (510, 130), (570, 130),(630, 130), (690, 130),
-                            (30, 170), (90, 170), (150, 170), (210, 170),
-                            (270, 170), (330, 170), (390, 170), (450, 170),
-                            (510, 170), (570, 170),(630, 170), (690, 170)
+                            (250, 50), (370, 50), (490, 50), (70, 90),
+                            (190, 90), (250, 90), (310, 90), (370, 90),
+                            (430, 90), (490, 90), (550, 90), (670, 90),                           
+                            (70, 130), (190, 130), (310, 130), (370, 130),
+                            (430, 130), (550, 130), (670, 130), (130, 170),
+                            (190, 170), (370, 170), (550, 170), (610, 170),
+                            (190, 210), (250, 210), (310, 210), (370, 210),
+                            (430, 210), (490, 210), (550, 210), (130, 250),
+                            (250, 250), (490, 250), (610, 250), (70, 290), 
+                            (250, 290), (310, 290), (370, 290), (430, 290),
+                            (490, 290), (670, 290), (70, 330), (190, 330),
+                            (310, 330), (370, 330), (430, 330), (550, 330),
+                            (670, 330)
                             ] 
-
+            
+        # if level == 5:
+        #     self.level_pos = [
+        #                     (30, 50), (90, 50), (150, 50), (210, 50),
+        #                     (270, 50), (330, 50), (390, 50), (450, 50),
+        #                     (510, 50), (570, 50),(630, 50), (690, 50),
+        #                     (30, 90), (90, 90), (150, 90), (210, 90),
+        #                     (270, 90), (330, 90), (390, 90), (450, 90),
+        #                     (510, 90), (570, 90),(630, 90), (690, 90), 
+        #                     (30, 130), (90, 130), (150, 130), (210, 130),
+        #                     (270, 130), (330, 130), (390, 130), (450, 130),
+        #                     (510, 130), (570, 130),(630, 130), (690, 130),
+        #                     (30, 170), (90, 170), (150, 170), (210, 170),
+        #                     (270, 170), (330, 170), (390, 170), (450, 170),
+        #                     (510, 170), (570, 170),(630, 170), (690, 170)
+        #                     ] 
+            
     def update_screen(self):
         self.screen.fill((0, 100, 150))
 
