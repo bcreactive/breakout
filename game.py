@@ -26,6 +26,7 @@ class Game:
                                                self.screen_height))
         self.screen_rect = self.screen.get_rect()
         pygame.display.set_caption("Game")   
+        self.bg_color = (23, 23, 187) #(0, 100, 150) (0, 0, 85)
         self.clock = pygame.time.Clock()   
         self.fps = 60
 
@@ -86,7 +87,6 @@ class Game:
                     self.check_blocks()
                     self.update_blocks()
                     self.check_level_end()
-                    
                     self.bonus_action(self.active_drop)
                     if self.pickup_visible:
                         self.pickup.update()
@@ -385,7 +385,7 @@ class Game:
         #                     ] 
             
     def update_screen(self):
-        self.screen.fill((0, 100, 150))
+        self.screen.fill(self.bg_color)
 
         if not self.game_active and self.endscreen_visible:
             self.screen.blit(self.end_screen, (0, 0))

@@ -25,7 +25,7 @@ class Block(Sprite):
 
     def get_color(self, col):
         if col == "blue":
-            return (85, 85, 255)
+            return (85, 170, 255)
         elif col == "red":
             return (177, 3, 3)
         elif col == "orange":
@@ -65,7 +65,7 @@ class Block(Sprite):
     
     def check_color(self, hp):
         if hp == 1:
-            return (85, 85, 255)
+            return (85, 170, 255)
         elif hp == 2:
             return (177, 3, 3)
         elif hp == 3:
