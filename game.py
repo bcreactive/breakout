@@ -22,7 +22,8 @@ class Game:
         
         self.screen_width = 800
         self.screen_height = 600
-        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
+        self.screen = pygame.display.set_mode((self.screen_width,
+                                               self.screen_height))
         self.screen_rect = self.screen.get_rect()
         pygame.display.set_caption("Game")   
         self.clock = pygame.time.Clock()   
@@ -35,7 +36,8 @@ class Game:
         self.dmgup_image = pygame.image.load("images/dmg_up.png")
         self.lifeup_image = pygame.image.load("images/life_up.png")
         self.widthup_image = pygame.image.load("images/width_up.png")
-        self.intro_sound = pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound/intro.mp3')) 
+        self.intro_sound = pygame.mixer.Channel(0).play(
+                            pygame.mixer.Sound('sound/intro.mp3')) 
         
         self.play_button = Button(self, "Play!")
         self.settings = Settings()
@@ -117,9 +119,8 @@ class Game:
         """Start a new game if the player clicks Play."""
         if not self.game_active:
             if self.play_button.rect.collidepoint(mouse_pos):
-                # pygame.mixer.Channel(2).play(pygame.mixer.Sound('sound\\button.mp3'))
+                pygame.mixer.Channel(1).play(pygame.mixer.Sound('sound\\blib.wav'))
                 sleep(1)
-                # pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound\playing.mp3'))
                 self.points = 0
                 self.current_level = 1
                 self.ball.start_pos()
@@ -144,7 +145,8 @@ class Game:
                 self.highscore.grats = False
                 self.scorelabel.prep_level(self.current_level)
                 pygame.mouse.set_visible(False)
-                self.intro_sound = pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound/level.mp3')) 
+                self.intro_sound = pygame.mixer.Channel(0).play(
+                                    pygame.mixer.Sound('sound/level.mp3')) 
 
     def bonus_action(self, drop):
         if self.pickup_collected:
@@ -160,6 +162,7 @@ class Game:
         value = randint(1, 1000)
         if value <= 150 and not self.active_drop:
             if len(self.drops_collected) <= 4:
+                pygame.mixer.Channel(2).play(pygame.mixer.Sound('sound/spawn.wav'))
                 return True
 
     def create_pickup(self, rect, image):
@@ -172,7 +175,7 @@ class Game:
         self.pickup_rect = pygame.Rect(self.pickup.x, self.pickup.y, 40, 40)
 
         if self.pickup_rect.colliderect(self.platform.rect):
-                
+            pygame.mixer.Channel(2).play(pygame.mixer.Sound('sound/pickupget.wav'))
             if self.pickup_visible and not self.pickup_collected:
                 if self.bonus == "lifeup" and not self.lives >= 4:
                     self.lives += 1
@@ -227,9 +230,11 @@ class Game:
             if self.ball.rect.colliderect(i.rect):                 
                 i.hp -= self.ball.dmg
                 if i.hp <= 0:
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound('sound/blib2.wav'))
                     self.points += i.points
                     self.blocks.remove(i)
                     self.check_bonus(i)
+                    
 
     def check_bonus(self, block):
         bonus = self.check_spawn()
@@ -244,22 +249,22 @@ class Game:
                 if self.ball.rect.bottom >= i.rect.top and self.ball.rect.top < i.rect.top:
                     if self.ball.rect.left <= i.rect.right  and self.ball.rect.right >= i.rect.left :
                             if self.ball.direction_y == 1:
-                                self.ball.speed_x += 0.0117
+                                self.ball.speed_y += 0.0117
                                 self.ball.direction_y *= -1
                 if self.ball.rect.right >= i.rect.left and self.ball.rect.left < i.rect.left: 
                     if self.ball.rect.bottom >= i.rect.top  and self.ball.rect.top <= i.rect.bottom :  
                             if self.ball.direction_x == 1:
-                                self.ball.speed_y += 0.0132 
+                                self.ball.speed_x += 0.0132 
                                 self.ball.direction_x *= -1
                 if self.ball.rect.left <= i.rect.right and self.ball.rect.right > i.rect.right: 
                     if self.ball.rect.bottom >= i.rect.top  and self.ball.rect.top <= i.rect.bottom:  
                             if self.ball.direction_x == -1:    
-                                self.ball.speed_y += 0.0121  
+                                self.ball.speed_x += 0.0121  
                                 self.ball.direction_x *= -1
                 if self.ball.rect.top <= i.rect.bottom and self.ball.rect.bottom > i.rect.bottom: 
                     if self.ball.rect.left <= i.rect.right and self.ball.rect.right >= i.rect.left :  
                             if self.ball.direction_y == -1: 
-                                self.ball.speed_x -= 0.0123     
+                                self.ball.speed_y -= 0.0123     
                                 self.ball.direction_y *= -1
 
     def dead(self):
@@ -274,7 +279,9 @@ class Game:
             self.ball.start_pos()
             self.active_drop = ""
             self.ball_lost = True
+            pygame.mixer.Channel(1).play(pygame.mixer.Sound('sound/balllost.wav'))
         else:
+            pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound/fail.wav'))
             self.play_button = Button(self, "Replay?")
             self.highscore.prep_high_score()
             self.game_active = False
@@ -282,6 +289,9 @@ class Game:
             self.current_level = 1
             pygame.mouse.set_visible(True)
             self.endscreen_visible = True
+            pygame.time.delay(3000)
+            if self.highscore.grats:
+                pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound/highscore.wav'))
             
     def check_level_end(self):
         if len(self.blocks) == 0:           
@@ -298,7 +308,8 @@ class Game:
             self.load_next_level(self.current_level)
             self.get_blocks()
             self.scorelabel.prep_level(self.current_level)
-            
+            pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound/complete.wav'))
+                    
     def load_next_level(self, level):
        
         if level == 1:
