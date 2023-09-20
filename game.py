@@ -78,6 +78,7 @@ class Game:
                 if self.level_up:
                     pygame.time.delay(1800)
                     self.level_up = False
+                    pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound/level.mp3'))
                 self.platform.update()
                 self.ball.update()                    
                 self.scorelabel.prep_score(self.points)
@@ -162,7 +163,7 @@ class Game:
         value = randint(1, 1000)
         if value <= 150 and not self.active_drop:
             if len(self.drops_collected) <= 4:
-                pygame.mixer.Channel(2).play(pygame.mixer.Sound('sound/spawn.wav'))
+                # pygame.mixer.Channel(2).play(pygame.mixer.Sound('sound/spawn.wav'))
                 return True
 
     def create_pickup(self, rect, image):
@@ -235,13 +236,13 @@ class Game:
                     self.blocks.remove(i)
                     self.check_bonus(i)
                     
-
     def check_bonus(self, block):
         bonus = self.check_spawn()
         if bonus and not self.pickup_visible and not self.active_drop:
             image = self.get_pickup()
             if not self.bonus in self.drops_collected:
                 self.create_pickup(block.rect, image)
+                pygame.mixer.Channel(2).play(pygame.mixer.Sound('sound/spawn.wav'))
 
     def check_blocks(self):
         for i in self.blocks:
@@ -309,6 +310,8 @@ class Game:
             self.get_blocks()
             self.scorelabel.prep_level(self.current_level)
             pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound/complete.wav'))
+            # pygame.time.delay(1820)
+            # pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound/level.mp3'))
                     
     def load_next_level(self, level):
        
