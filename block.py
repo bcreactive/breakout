@@ -13,13 +13,15 @@ class Block:
         self.color = self.get_color(color)
         self.points = self.get_points(color)
         self.hp = self.get_hp(color)
-        
+
         self.x = x
         self.y = y
         self.width = 59.37
-        self.height = 39.78
+        self.height = 39.39
+        # self.rect = pygame.Rect(self.x - 0.03, self.y - 0.07,
+        #                         self.width + 0.0173, self.height + 0.0175)
         self.rect = pygame.Rect(self.x - 0.03, self.y - 0.07,
-                                self.width + 0.073, self.height + 0.075)
+                                self.width, self.height)
                    
         self.visible = True
 

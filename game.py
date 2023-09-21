@@ -321,7 +321,7 @@ class Game:
             self.drops_collected = []
             self.ball.start_pos()
             self.current_level += 1
-            self.ball.ball_speed += 0.33
+            self.ball.ball_speed += 0.43
             self.platform.speed += 0.7
             self.load_next_level(self.current_level)
             self.get_blocks()

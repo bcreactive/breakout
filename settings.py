@@ -12,7 +12,7 @@ class Settings:
         self.screen_height = 600
 
         #speed settings
-        self.player_speed = 6
-        self.ball_speed = 3.07119
+        self.player_speed = 6.5
+        self.ball_speed = 3.57119
         self.pickup_speed = 2
        
