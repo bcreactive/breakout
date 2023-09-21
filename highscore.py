@@ -14,12 +14,10 @@ class Highscore:
         self.high_score = int(self.high_score)
 
         # Font settings
-        # self.text_color = (130, 230, 230)
-        self.text_color = (55, 23, 100)
-        
+        self.text_color = (55, 23, 100)       
         self.font = pygame.font.SysFont(None, 60)
-        # self.label_color = (132, 155, 228)
         self.label_color = self.game.bg_color
+
         self.grats_image = None
         self.grats = False
         self.prep_grats()
@@ -48,8 +46,7 @@ class Highscore:
         high_score = self.high_score
         high_score_str = f"Highscore: {high_score}"
         self.high_score_image = self.font.render(high_score_str, True,
-                                    self.text_color, self.label_color)
-        
+                                    self.text_color, self.label_color)       
         self.high_score_rect = self.high_score_image.get_rect()  
         self.high_score_rect.x = 20
         self.high_score_rect.y = 380
@@ -59,17 +56,16 @@ class Highscore:
     
     def prep_grats(self):
         # Shows a message, when a new high-score is achieved.
-        # text_color = (130, 230, 250)
         text_color = (177, 3, 3)
         grats_str = f"!!!New Highscore!!!"
         self.grats_image = self.font.render(grats_str, True,
-                                    text_color, self.label_color)
-        
+                                    text_color, self.label_color)      
         self.grats_rect = self.grats_image.get_rect()  
         self.grats_rect.x = 20
         self.grats_rect.y = 320
 
     def draw_highscore(self):
+        # Drawing the highscore on the gameover-screen.
         self.screen.blit(self.high_score_image, self.high_score_rect)
         if self.grats:
             self.screen.blit(self.grats_image, self.grats_rect)

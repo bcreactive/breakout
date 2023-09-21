@@ -18,31 +18,23 @@ class Game:
     """Main gameclass."""
 
     def __init__(self):
+        """Initialize attributes"""
         pygame.init()
-        
-        self.screen_width = 800
-        self.screen_height = 600
-        self.screen = pygame.display.set_mode((self.screen_width,
-                                               self.screen_height))
-        self.screen_rect = self.screen.get_rect()
-        pygame.display.set_caption("Game")   
-        self.bg_color = (0, 85, 255) #(0, 100, 150) (0, 0, 85)
+        self.settings = Settings()
         self.clock = pygame.time.Clock()   
         self.fps = 60
 
-        self.title_screen = pygame.image.load("images/title_screen.png")
-        self.end_screen = pygame.image.load("images/end_screen.png")
-        self.ball_lost_screen = pygame.image.load("images/ball_lost.png")
-        self.levelup_screen = pygame.image.load("images/levelup.png")
-        self.dmgup_image = pygame.image.load("images/dmg_up.png")
-        self.lifeup_image = pygame.image.load("images/life_up.png")
-        self.widthup_image = pygame.image.load("images/width_up.png")
+        self.screen = pygame.display.set_mode((self.settings.screen_width,
+                                               self.settings.screen_height))       
+        self.screen_rect = self.screen.get_rect()
+        pygame.display.set_caption("Game")   
+        self.bg_color = (0, 85, 255)
+
+        self.load_images()
         self.intro_sound = pygame.mixer.Channel(0).play(
                             pygame.mixer.Sound('sound/intro.mp3')) 
         
         self.play_button = Button(self, "Play!")
-        self.settings = Settings()
-        self.lives = self.settings.lives
         self.platform = Player(self)
         self.ball = Ball(self)
         self.scorelabel = Scorelabel(self)
@@ -56,6 +48,7 @@ class Game:
         self.drops_collected = []
         self.points = 0
         self.current_level = 1
+        self.lives = self.settings.lives
         self.bonus = ""
 
         self.game_active = False
@@ -68,8 +61,8 @@ class Game:
 
         self.load_next_level(self.current_level) 
         
-    # Main game loop.
-    def run_game(self):      
+    def run_game(self):  
+        # Main game loop.   
         while True:
             self.check_events()
             if self.game_active:
@@ -96,6 +89,7 @@ class Game:
             self.clock.tick(self.fps)
 
     def check_events(self):
+        # check for user input
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()          
@@ -116,11 +110,22 @@ class Game:
                     if event.key == pygame.K_RIGHT:
                         self.platform.moving_right = False
 
+    def load_images(self):
+        self.title_screen = pygame.image.load("images/title_screen.png")
+        self.end_screen = pygame.image.load("images/end_screen.png")
+        self.ball_lost_screen = pygame.image.load("images/ball_lost.png")
+        self.levelup_screen = pygame.image.load("images/levelup.png")
+        self.dmgup_image = pygame.image.load("images/dmg_up.png")
+        self.lifeup_image = pygame.image.load("images/life_up.png")
+        self.widthup_image = pygame.image.load("images/width_up.png")
+
     def check_play_button(self, mouse_pos):
-        """Start a new game if the player clicks Play."""
+        """Start a new game when button is clicked and reset game stats."""
+
         if not self.game_active:
             if self.play_button.rect.collidepoint(mouse_pos):
-                pygame.mixer.Channel(1).play(pygame.mixer.Sound('sound\\blib.wav'))
+                pygame.mixer.Channel(1).play(pygame.mixer.Sound(
+                                            'sound\\blib.wav'))
                 sleep(1)
                 self.points = 0
                 self.current_level = 1
@@ -130,9 +135,10 @@ class Game:
                 self.bonus = ""
                 self.active_drop = ""
                 self.drops_collected = []
+                self.lives = self.settings.lives   
                 self.load_next_level(self.current_level)
                 self.get_blocks()
-                self.lives = self.settings.lives               
+         
                 self.level_running = False
                 self.game_active = True
                 self.pickup_visible = False
@@ -142,14 +148,16 @@ class Game:
                 self.endscreen_visible = False
                 self.platform.moving_left = False
                 self.platform.moving_right = False
-                self.ball.ball_speed = self.settings.ball_speed
                 self.highscore.grats = False
+
+                self.ball.ball_speed = self.settings.ball_speed               
                 self.scorelabel.prep_level(self.current_level)
                 pygame.mouse.set_visible(False)
                 self.intro_sound = pygame.mixer.Channel(0).play(
                                     pygame.mixer.Sound('sound/level.wav')) 
 
     def bonus_action(self, drop):
+        # Changes and resets the values, when a drop is colleted.
         if self.pickup_collected:
             if drop == "widthup":
                 self.platform.width = 180
@@ -160,10 +168,10 @@ class Game:
             self.platform.width = 100
 
     def check_spawn(self):
+        # checks, if a collectible appears at a given chance
         value = randint(1, 1000)
         if value <= 150 and not self.active_drop:
             if len(self.drops_collected) <= 4:
-                # pygame.mixer.Channel(2).play(pygame.mixer.Sound('sound/spawn.wav'))
                 return True
 
     def create_pickup(self, rect, image):
@@ -172,7 +180,8 @@ class Game:
         self.pickup.y = rect.y
         self.pickup_visible = True
 
-    def check_pickup(self):     
+    def check_pickup(self):    
+        # checks, if the drop is either collected or lost 
         self.pickup_rect = pygame.Rect(self.pickup.x, self.pickup.y, 40, 40)
 
         if self.pickup_rect.colliderect(self.platform.rect):
@@ -194,6 +203,7 @@ class Game:
             self.bonus = ""
 
     def get_pickup(self):
+        # Get the sort of the pickup at a given chance, if one is created.
         value = randint(1, 1000)
         if value > 550:
             self.bonus = "widthup"
@@ -206,6 +216,7 @@ class Game:
             return self.lifeup_image
         
     def get_color(self):
+        # Get the pool with increasing amount of colors for each level.
         if self.current_level == 1:
             colors = ["blue", "red", "blue"]
         elif self.current_level == 2:
@@ -220,12 +231,14 @@ class Game:
         return choice(colors)
     
     def get_blocks(self):
+        # create the block-rects
         for i in self.level_pos:
             color = self.get_color()
             new_block = Block(self, i[0], i[1], color)
             self.blocks.append(new_block)
 
     def update_blocks(self):
+        # check the blocks for ballcollision and remove block, if hp <= 0 
         for i in self.blocks:
             i.update()           
             if self.ball.rect.colliderect(i.rect):                 
@@ -237,6 +250,7 @@ class Game:
                     self.check_bonus(i)
                     
     def check_bonus(self, block):
+        # Checks if a drop will spawn, loads the image and build the pickup.
         bonus = self.check_spawn()
         if bonus and not self.pickup_visible and not self.active_drop:
             image = self.get_pickup()
@@ -245,6 +259,7 @@ class Game:
                 pygame.mixer.Channel(2).play(pygame.mixer.Sound('sound/spawn.wav'))
 
     def check_blocks(self):
+        # Collision detection for the blocks, changes direction of the ball.
         for i in self.blocks:
             if self.ball.rect.colliderect(i.rect):
                 if self.ball.rect.bottom >= i.rect.top and self.ball.rect.top < i.rect.top:
@@ -269,6 +284,7 @@ class Game:
                                 self.ball.direction_y *= -1
 
     def dead(self):
+        # actions, when a ball is lost
         self.lives -= 1
         if self.lives > 0:
             self.level_running = False  
@@ -295,6 +311,7 @@ class Game:
                 pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound/highscore.wav'))
             
     def check_level_end(self):
+        # Loading the next level, if all the blocks are removed.
         if len(self.blocks) == 0:           
             self.level_running = False
             self.pickup_visible = False
@@ -312,7 +329,7 @@ class Game:
             pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound/complete.wav'))
                     
     def load_next_level(self, level):
-       
+        # Positions for the blocks for each level.
         if level == 1:
             self.level_pos = [
                             (250, 50), (490, 50), (310, 90), (430, 90),
@@ -366,23 +383,24 @@ class Game:
                             (670, 330)
                             ] 
             
-        # if level == 5:
-        #     self.level_pos = [
-        #                     (30, 50), (90, 50), (150, 50), (210, 50),
-        #                     (270, 50), (330, 50), (390, 50), (450, 50),
-        #                     (510, 50), (570, 50),(630, 50), (690, 50),
-        #                     (30, 90), (90, 90), (150, 90), (210, 90),
-        #                     (270, 90), (330, 90), (390, 90), (450, 90),
-        #                     (510, 90), (570, 90),(630, 90), (690, 90), 
-        #                     (30, 130), (90, 130), (150, 130), (210, 130),
-        #                     (270, 130), (330, 130), (390, 130), (450, 130),
-        #                     (510, 130), (570, 130),(630, 130), (690, 130),
-        #                     (30, 170), (90, 170), (150, 170), (210, 170),
-        #                     (270, 170), (330, 170), (390, 170), (450, 170),
-        #                     (510, 170), (570, 170),(630, 170), (690, 170)
-        #                     ] 
+        if level == 5:
+            self.level_pos = [
+                            (30, 50), (90, 50), (150, 50), (210, 50),
+                            (270, 50), (330, 50), (390, 50), (450, 50),
+                            (510, 50), (570, 50),(630, 50), (690, 50),
+                            (30, 90), (90, 90), (150, 90), (210, 90),
+                            (270, 90), (330, 90), (390, 90), (450, 90),
+                            (510, 90), (570, 90),(630, 90), (690, 90), 
+                            (30, 130), (90, 130), (150, 130), (210, 130),
+                            (270, 130), (330, 130), (390, 130), (450, 130),
+                            (510, 130), (570, 130),(630, 130), (690, 130),
+                            (30, 170), (90, 170), (150, 170), (210, 170),
+                            (270, 170), (330, 170), (390, 170), (450, 170),
+                            (510, 170), (570, 170),(630, 170), (690, 170)
+                            ] 
             
     def update_screen(self):
+        # Draw the elements on the screen.
         self.screen.fill(self.bg_color)
 
         if not self.game_active and self.endscreen_visible:

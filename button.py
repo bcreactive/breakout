@@ -6,14 +6,13 @@ class Button:
 
     def __init__(self, game, msg):
         """Initialize button attributes."""
-
         self.screen = game.screen
         self.screen_rect = self.screen.get_rect()
         self.width = 160
         self.height = 80
         self.button_color = (170, 0, 170)
 
-        # Set the dimensions and properties of the button.
+        # Set the dimensions, color and font of the button.
         if msg == "Play!":
             self.width, self.height = 180, 70
             self.button_color = (170, 0, 170)
@@ -45,6 +44,7 @@ class Button:
         self.msg_image_rect.center = self.rect.center
 
     def draw_button(self):
+        # Draw the button to the screen.
         self.screen.fill(self.button_color, self.rect)
         # self.border = pygame.draw.rect(self.screen, (255, 55, 255), (self.rect), 2)
         self.screen.blit(self.msg_image, self.msg_image_rect)

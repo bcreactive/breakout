@@ -3,8 +3,10 @@ from pygame.sprite import Sprite
 
 
 class Player(Sprite):
+    """This class builds the player platform."""
     
     def __init__(self, game):
+        """Initialize player attributes."""
         self.game = game
         self.screen = game.screen
         self.screen_rect = self.screen.get_rect()
@@ -23,17 +25,19 @@ class Player(Sprite):
         self.moving_right = False
         
     def update(self):
+        # Update position of platform for each frame.
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.rect_image = pygame.Rect(self.x, self.y, self.width, self.height)
         if self.moving_left == True and self.x > 0:
             self.x -= self.speed
-        if self.moving_right == True and self.x < self.game.screen_width - self.width:
+        if self.moving_right == True and self.x < self.game.settings.screen_width - self.width:
             self.x += self.speed
         self.rect.x = self.x
         self.rect_image.x = self.x
         self.rect_image.y = self.y + 5
     
     def drawme(self):
+        # Drawing the platform on the screen.
         pygame.draw.rect(self.screen, self.color, (self.rect_image))
         pygame.draw.rect(self.screen, (60, 60, 60), (self.rect_image), 2)
 

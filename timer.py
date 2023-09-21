@@ -2,8 +2,9 @@ import pygame
 
 
 class Timer:
+    """This class builds a timer, to show the remaining bonus-time."""
     def __init__(self, game):
-
+        """Initialize timer attributes."""
         self.game = game
         self.screen = game.screen
         self.screen_rect = game.screen.get_rect()
@@ -15,11 +16,13 @@ class Timer:
         self.reset()
 
     def reset(self):
+        # Reset the timer.
         self.collected = False
         self.value = 180
         self.value_rect = pygame.Rect(self.x, self.y, self.value, 20)
     
     def update(self):
+        # Timer starts counting down, once a pickup is collected.
         if self.collected:
             if self.value <= 0:
                 self.collected = False
@@ -33,6 +36,7 @@ class Timer:
                 self.value_rect = pygame.Rect(self.x, self.y, self.value, 20)
 
     def drawme(self):  
+        # Drawing timer on the screen if not time is up.
         if self.collected and self.value > 0:     
             pygame.draw.rect(self.screen, (234, 234, 234), (self.label_rect))
             pygame.draw.rect(self.screen, (24, 24, 34), (self.value_rect))

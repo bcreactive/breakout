@@ -1,11 +1,12 @@
-import pygame
 from pygame.sprite import Sprite
 
 
 class Pickup(Sprite):
-    def __init__(self, game, drop):
-        super().__init__()
+    """This class creates a certain pickup."""
 
+    def __init__(self, game, drop):
+        """Initialize attributes."""
+        super().__init__()
         self.game = game
         self.screen = game.screen
         self.screen_rect = game.screen.get_rect()
@@ -16,8 +17,10 @@ class Pickup(Sprite):
         self.rect = self.image.get_rect()
 
     def update(self):
+        # Update position of pickup.
         self.y += self.settings.pickup_speed
 
     def drawme(self):
+        # Draw pickup to the screen.
         if not self.rect.top >= self.screen_rect.bottom: 
             self.screen.blit(self.image, (self.x, self.y))
