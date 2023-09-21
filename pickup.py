@@ -1,12 +1,8 @@
-from pygame.sprite import Sprite
-
-
-class Pickup(Sprite):
+class Pickup:
     """This class creates a certain pickup."""
 
     def __init__(self, game, drop):
         """Initialize attributes."""
-        super().__init__()
         self.game = game
         self.screen = game.screen
         self.screen_rect = game.screen.get_rect()

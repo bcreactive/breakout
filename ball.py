@@ -1,13 +1,12 @@
 import pygame
 from random import choice
-from pygame.sprite import Sprite
 
 
-class Ball(Sprite):
+class Ball:
     """This class builds the ball and update the position."""
 
     def __init__(self, game):
-        super().__init__()
+        """Initialize ball attributes."""
         self.game = game
         self.screen = game.screen
         self.screen_rect = self.screen.get_rect()

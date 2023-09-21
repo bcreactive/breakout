@@ -1,8 +1,7 @@
 import pygame
-from pygame.sprite import Sprite
 
 
-class Player(Sprite):
+class Player:
     """This class builds the player platform."""
     
     def __init__(self, game):
