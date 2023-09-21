@@ -26,7 +26,7 @@ class Game:
                                                self.screen_height))
         self.screen_rect = self.screen.get_rect()
         pygame.display.set_caption("Game")   
-        self.bg_color = (23, 23, 187) #(0, 100, 150) (0, 0, 85)
+        self.bg_color = (0, 85, 255) #(0, 100, 150) (0, 0, 85)
         self.clock = pygame.time.Clock()   
         self.fps = 60
 
@@ -79,7 +79,7 @@ class Game:
                 if self.level_up:
                     pygame.time.delay(1800)
                     self.level_up = False
-                    pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound/level.mp3'))
+                    pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound/level.wav'))
                 self.platform.update()
                 self.ball.update()                    
                 self.scorelabel.prep_score(self.points)
@@ -147,7 +147,7 @@ class Game:
                 self.scorelabel.prep_level(self.current_level)
                 pygame.mouse.set_visible(False)
                 self.intro_sound = pygame.mixer.Channel(0).play(
-                                    pygame.mixer.Sound('sound/level.mp3')) 
+                                    pygame.mixer.Sound('sound/level.wav')) 
 
     def bonus_action(self, drop):
         if self.pickup_collected:
@@ -310,8 +310,6 @@ class Game:
             self.get_blocks()
             self.scorelabel.prep_level(self.current_level)
             pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound/complete.wav'))
-            # pygame.time.delay(1820)
-            # pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound/level.mp3'))
                     
     def load_next_level(self, level):
        

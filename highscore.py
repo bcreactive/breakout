@@ -18,11 +18,11 @@ class Highscore:
         self.text_color = (55, 23, 100)
         
         self.font = pygame.font.SysFont(None, 60)
-        self.label_color = (132, 155, 228)
+        # self.label_color = (132, 155, 228)
+        self.label_color = self.game.bg_color
         self.grats_image = None
         self.grats = False
         self.prep_grats()
-
 
     def get_saved_highscore(self):
         file_name = "save_file.csv"
@@ -60,7 +60,7 @@ class Highscore:
     def prep_grats(self):
         # Shows a message, when a new high-score is achieved.
         # text_color = (130, 230, 250)
-        text_color = (255, 85, 0)
+        text_color = (177, 3, 3)
         grats_str = f"!!!New Highscore!!!"
         self.grats_image = self.font.render(grats_str, True,
                                     text_color, self.label_color)
