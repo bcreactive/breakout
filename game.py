@@ -205,13 +205,13 @@ class Game:
     def get_pickup(self):
         # Get the sort of the pickup at a given chance, if one is created.
         value = randint(1, 1000)
-        if value > 550:
+        if value > 583:
             self.bonus = "widthup"
             return self.widthup_image
-        elif value <= 550 and value >= 100:
+        elif value <= 583 and value >= 133:
             self.bonus = "dmgup"
             return self.dmgup_image
-        elif value < 100:
+        elif value < 133:
             self.bonus = "lifeup"
             return self.lifeup_image
         
@@ -260,28 +260,39 @@ class Game:
 
     def check_blocks(self):
         # Collision detection for the blocks, changes direction of the ball.
+        buffer = []
         for i in self.blocks:
             if self.ball.rect.colliderect(i.rect):
-                if self.ball.rect.bottom >= i.rect.top and self.ball.rect.top < i.rect.top:
-                    if self.ball.rect.left <= i.rect.right  and self.ball.rect.right >= i.rect.left :
+                if not buffer:
+                    if self.ball.rect.bottom >= i.rect.top and self.ball.rect.top < i.rect.top:
+                        if self.ball.rect.left <= i.rect.right  and self.ball.rect.right >= i.rect.left :
                             if self.ball.direction_y == 1:
-                                self.ball.speed_y += 0.0117
+                                buffer.append("collided")
+                                self.ball.speed_y += 0.0127
                                 self.ball.direction_y *= -1
-                if self.ball.rect.right >= i.rect.left and self.ball.rect.left < i.rect.left: 
-                    if self.ball.rect.bottom >= i.rect.top  and self.ball.rect.top <= i.rect.bottom :  
-                            if self.ball.direction_x == 1:
+                if not buffer:
+                    if self.ball.rect.right >= i.rect.left and self.ball.rect.left < i.rect.left: 
+                        if self.ball.rect.bottom >= i.rect.top  and self.ball.rect.top <= i.rect.bottom :  
+                            if self.ball.direction_x == 1 and not buffer:
+                                buffer.append("collided")
                                 self.ball.speed_x += 0.0132 
-                                self.ball.direction_x *= -1
-                if self.ball.rect.left <= i.rect.right and self.ball.rect.right > i.rect.right: 
-                    if self.ball.rect.bottom >= i.rect.top  and self.ball.rect.top <= i.rect.bottom:  
-                            if self.ball.direction_x == -1:    
+                                self.ball.direction_x *= -1    
+                if not buffer:                       
+                    if self.ball.rect.left <= i.rect.right and self.ball.rect.right > i.rect.right: 
+                        if self.ball.rect.bottom >= i.rect.top  and self.ball.rect.top <= i.rect.bottom:  
+                            if self.ball.direction_x == -1 and not buffer: 
+                                buffer.append("collided")   
                                 self.ball.speed_x += 0.0121  
                                 self.ball.direction_x *= -1
-                if self.ball.rect.top <= i.rect.bottom and self.ball.rect.bottom > i.rect.bottom: 
-                    if self.ball.rect.left <= i.rect.right and self.ball.rect.right >= i.rect.left :  
-                            if self.ball.direction_y == -1: 
+                if not buffer:
+                    if self.ball.rect.top <= i.rect.bottom and self.ball.rect.bottom > i.rect.bottom: 
+                        if self.ball.rect.left <= i.rect.right and self.ball.rect.right >= i.rect.left :  
+                            if self.ball.direction_y == -1 and not buffer: 
+                                buffer.append("collided")
                                 self.ball.speed_y -= 0.0123     
                                 self.ball.direction_y *= -1
+        print(buffer)
+        buffer = []    
 
     def dead(self):
         # actions, when a ball is lost

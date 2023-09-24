@@ -88,13 +88,13 @@ class Ball:
                 self.direction_y *= -1
 
             if self.platform.moving_right and self.direction_x == 1:
-                self.speed_x += 0.0049
+                self.speed_x += 0.0195
             elif self.platform.moving_right and self.direction_x == -1:
-                self.speed_x -= 0.0047
+                self.speed_x -= 0.0206
             elif self.platform.moving_left and self.direction_x == -1:
-                self.speed_x += 0.049
+                self.speed_x += 0.0193
             elif self.platform.moving_left and self.direction_x == 1:
-                self.speed_x -= 0.043
+                self.speed_x -= 0.0202
 
     def check_bottom(self):
         # Check if ball is lost.
