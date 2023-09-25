@@ -3,6 +3,7 @@ import pygame
 
 class Timer:
     """This class builds a timer, to show the remaining bonus-time."""
+    
     def __init__(self, game):
         """Initialize timer attributes."""
         self.game = game

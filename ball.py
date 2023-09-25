@@ -84,8 +84,10 @@ class Ball:
         # Changes direction of ball, if the platform is touched.
         if self.rect.colliderect(self.platform.rect):
 
-            if not self.rect.bottom >= self.screen_rect.bottom - 29:
+            if not self.rect.bottom >= self.screen_rect.bottom - 29.99:
                 self.direction_y *= -1
+            elif self.rect.bottom >= self.screen_rect.bottom - 29.99:
+                self.direction_x *= -1
 
             if self.platform.moving_right and self.direction_x == 1:
                 self.speed_x += 0.0195
