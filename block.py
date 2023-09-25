@@ -20,9 +20,8 @@ class Block:
         self.height = 39.39
         # self.rect = pygame.Rect(self.x - 0.03, self.y - 0.07,
         #                         self.width + 0.0173, self.height + 0.0175)
-        self.rect = pygame.Rect(self.x - 0.03, self.y - 0.07,
+        self.rect = pygame.Rect(self.x - 0.01, self.y - 0.01,
                                 self.width, self.height)
-                   
         self.visible = True
 
     def get_color(self, col):

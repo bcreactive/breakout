@@ -30,8 +30,8 @@ class Ball:
 
     def start_pos(self):
         # Reset start position of ball and platform.
-        self.x = 389
-        self.y = 540
+        self.x = 388.73
+        self.y = 540.03
         self.speed_x = 0
         self.speed_y = 0
         self.direction_x = 1
