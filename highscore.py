@@ -14,7 +14,7 @@ class Highscore:
         self.high_score = int(self.high_score)
 
         # Font settings
-        self.text_color = (55, 23, 100)       
+        self.text_color = (255, 85, 0)       
         self.font = pygame.font.SysFont(None, 60)
         self.label_color = self.game.bg_color
 

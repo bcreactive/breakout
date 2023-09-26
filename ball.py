@@ -20,7 +20,7 @@ class Ball:
         self.y = float(self.y)
         self.color = (200, 250, 200)
         self.image = pygame.image.load("images/ball.png")
-        self.rect = pygame.Rect(self.x, self.y, 19.73, 19.71)
+        self.rect = pygame.Rect(self.x, self.y, 19.999, 19.999)
         self.start_pos()
         self.ball_speed = self.settings.ball_speed
         self.speed_y = self.ball_speed + 0.07
@@ -63,21 +63,21 @@ class Ball:
     def check_walls(self):
         # Changes direction of ball, if a wall is touched.
         if self.x + 2*self.radius >= self.screen_rect.right:
-            if self.direction_x == 1:
-                self.speed_x -= 0.022
-            elif self.direction_x == -1:
-                self.speed_x += 0.033             
+            # if self.direction_x == 1:
+            #     self.speed_x -= 0.022
+            # elif self.direction_x == -1:
+            #     self.speed_x += 0.033             
             self.direction_x *= -1
             
         if self.x <= self.screen_rect.left:
-            if self.direction_x == 1:
-                self.speed_x -= 0.024
-            elif self.direction_x == -1:
-                self.speed_x += 0.031
+            # if self.direction_x == 1:
+            #     self.speed_x -= 0.024
+            # elif self.direction_x == -1:
+            #     self.speed_x += 0.031
             self.direction_x *= -1
            
         if self.y <= self.screen_rect.top:           
-            self.speed_x += 0.017
+            # self.speed_x += 0.017
             self.direction_y *= -1
           
     def check_platform(self):

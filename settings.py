@@ -10,6 +10,7 @@ class Settings:
         #screen settings
         self.screen_width = 800
         self.screen_height = 600
+        self.bg_color = (89, 111, 175)
 
         #speed settings
         self.player_speed = 6.5

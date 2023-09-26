@@ -28,7 +28,7 @@ class Game:
                                                self.settings.screen_height))       
         self.screen_rect = self.screen.get_rect()
         pygame.display.set_caption("Game")   
-        self.bg_color = (0, 85, 255)
+        self.bg_color = self.settings.bg_color
 
         self.load_images()
         self.intro_sound = pygame.mixer.Channel(0).play(
@@ -59,7 +59,7 @@ class Game:
         self.ball_lost = False
         self.level_up = False
 
-        self.load_next_level(self.current_level) 
+        self.load_next_level(self.current_level)
         
     def run_game(self):  
         # Main game loop.   
@@ -72,7 +72,8 @@ class Game:
                 if self.level_up:
                     pygame.time.delay(1800)
                     self.level_up = False
-                    pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound/level.mp3'))
+                    pygame.mixer.Channel(0).play(
+                        pygame.mixer.Sound('sound/level.mp3'))
                 self.platform.update()
                 self.ball.update()                    
                 self.scorelabel.prep_score(self.points)
@@ -120,12 +121,12 @@ class Game:
         self.widthup_image = pygame.image.load("images/width_up.png")
 
     def check_play_button(self, mouse_pos):
-        """Start a new game when button is clicked and reset game stats."""
+        # Start a new game when button is clicked and reset game stats.
 
         if not self.game_active:
             if self.play_button.rect.collidepoint(mouse_pos):
-                pygame.mixer.Channel(1).play(pygame.mixer.Sound(
-                                            'sound\\blib.mp3'))
+                pygame.mixer.Channel(1).play(
+                    pygame.mixer.Sound('sound\\blib.mp3'))
                 sleep(1)
                 self.points = 0
                 self.current_level = 1
@@ -157,7 +158,7 @@ class Game:
                                     pygame.mixer.Sound('sound/level.mp3')) 
 
     def bonus_action(self, drop):
-        # Changes and resets the values, when a drop is colleted.
+        # Changes and resets the values, when a bonus-drop is colleted.
         if self.pickup_collected:
             if drop == "widthup":
                 self.platform.width = 180
@@ -185,7 +186,8 @@ class Game:
         self.pickup_rect = pygame.Rect(self.pickup.x, self.pickup.y, 40, 40)
 
         if self.pickup_rect.colliderect(self.platform.rect):
-            pygame.mixer.Channel(2).play(pygame.mixer.Sound('sound/pickupget.mp3'))
+            pygame.mixer.Channel(2).play(
+                pygame.mixer.Sound('sound/pickupget.mp3'))
             if self.pickup_visible and not self.pickup_collected:
                 if self.bonus == "lifeup" and not self.lives >= 4:
                     self.lives += 1
@@ -244,7 +246,8 @@ class Game:
             if self.ball.rect.colliderect(i.rect):                 
                 i.hp -= self.ball.dmg
                 if i.hp <= 0:
-                    pygame.mixer.Channel(1).play(pygame.mixer.Sound('sound/blib2.mp3'))
+                    pygame.mixer.Channel(1).play(
+                        pygame.mixer.Sound('sound/blib2.mp3'))
                     self.points += i.points
                     self.blocks.remove(i)
                     self.check_bonus(i)
@@ -256,35 +259,36 @@ class Game:
             image = self.get_pickup()
             if not self.bonus in self.drops_collected:
                 self.create_pickup(block.rect, image)
-                pygame.mixer.Channel(2).play(pygame.mixer.Sound('sound/spawn.mp3'))
+                pygame.mixer.Channel(2).play(
+                    pygame.mixer.Sound('sound/spawn.mp3'))
 
     def check_blocks(self):
         # Collision detection for the blocks, changes direction of the ball.
         buffer = []
         for i in self.blocks:
             if self.ball.rect.colliderect(i.rect):
-                if not buffer:
+                if not len(buffer) >= 2:
                     if self.ball.rect.bottom >= i.rect.top and self.ball.rect.top < i.rect.top:
                         if self.ball.rect.left <= i.rect.right  and self.ball.rect.right >= i.rect.left:
                             if self.ball.direction_y == 1:
                                 buffer.append("collided")
                                 self.ball.speed_y += 0.0127
                                 self.ball.direction_y *= -1
-                if not buffer:
+                if not len(buffer) >= 2:
                     if self.ball.rect.right >= i.rect.left and self.ball.rect.left < i.rect.left: 
                         if self.ball.rect.bottom >= i.rect.top  and self.ball.rect.top <= i.rect.bottom:  
                             if self.ball.direction_x == 1 and not buffer:
                                 buffer.append("collided")
                                 self.ball.speed_x += 0.0132 
                                 self.ball.direction_x *= -1    
-                if not buffer:                       
+                if not len(buffer) >= 2:                       
                     if self.ball.rect.left <= i.rect.right and self.ball.rect.right > i.rect.right: 
                         if self.ball.rect.bottom >= i.rect.top  and self.ball.rect.top <= i.rect.bottom:  
                             if self.ball.direction_x == -1 and not buffer: 
                                 buffer.append("collided")   
                                 self.ball.speed_x += 0.0121  
                                 self.ball.direction_x *= -1
-                if not buffer:
+                if not len(buffer) >= 2:
                     if self.ball.rect.top <= i.rect.bottom and self.ball.rect.bottom > i.rect.bottom: 
                         if self.ball.rect.left <= i.rect.right and self.ball.rect.right >= i.rect.left:  
                             if self.ball.direction_y == -1 and not buffer: 
@@ -306,9 +310,11 @@ class Game:
             self.ball.start_pos()
             self.active_drop = ""
             self.ball_lost = True
-            pygame.mixer.Channel(1).play(pygame.mixer.Sound('sound/balllost.mp3'))
+            pygame.mixer.Channel(1).play(
+                pygame.mixer.Sound('sound/balllost.mp3'))
         else:
-            pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound/fail.mp3'))
+            pygame.mixer.Channel(0).play(
+                pygame.mixer.Sound('sound/fail.mp3'))
             self.play_button = Button(self, "Replay?")
             self.highscore.prep_high_score()
             self.game_active = False
@@ -318,7 +324,8 @@ class Game:
             self.endscreen_visible = True
             pygame.time.delay(3000)
             if self.highscore.grats:
-                pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound/highscore.mp3'))
+                pygame.mixer.Channel(0).play(
+                    pygame.mixer.Sound('sound/highscore.mp3'))
             
     def check_level_end(self):
         # Loading the next level, if all the blocks are removed.
@@ -336,7 +343,8 @@ class Game:
             self.load_next_level(self.current_level)
             self.get_blocks()
             self.scorelabel.prep_level(self.current_level)
-            pygame.mixer.Channel(0).play(pygame.mixer.Sound('sound/complete.mp3'))
+            pygame.mixer.Channel(0).play(
+                pygame.mixer.Sound('sound/complete.mp3'))
                     
     def load_next_level(self, level):
         # Positions for the blocks for each level.
@@ -426,7 +434,7 @@ class Game:
 
         if self.game_active and not self.ball_lost:
             self.scorelabel.draw_score()
-            if not self.active_drop == "lifeup":
+            if self.active_drop and not self.active_drop == "lifeup":
                 self.timer.drawme()           
             if self.pickup_visible:
                 self.pickup.drawme()

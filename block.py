@@ -27,15 +27,15 @@ class Block:
     def get_color(self, col):
         # Get RGB tuple for color.
         if col == "blue":
-            return (85, 170, 255)
+            return (103, 182, 189)
         elif col == "red":
-            return (177, 3, 3)
+            return (234, 145, 130)
         elif col == "orange":
-            return (255, 85, 0)
+            return (219, 128, 46)
         elif col == "violet":
-            return (170, 0, 170)
+            return (184, 105, 98)
         elif col == "yellow":
-            return (255, 255, 85)
+            return (245, 238, 155)
         
     def get_points(self, col):
         # Define the points of a block with a given color.
@@ -70,15 +70,15 @@ class Block:
     def check_color(self, hp):
         # Changes color, if hp of block is lowered.
         if hp == 1:
-            return (85, 170, 255)
+            return (103, 182, 189)
         elif hp == 2:
-            return (177, 3, 3)
+            return (234, 145, 130)
         elif hp == 3:
-            return (255, 85, 0)
+            return (219, 128, 46)
         elif hp == 4:
-            return (170, 0, 170)
+            return (184, 105, 98)
         elif hp == 5:
-            return (255, 255, 85)
+            return (245, 238, 155)
 
     def update(self):
         self.check_hp()
