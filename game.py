@@ -267,33 +267,33 @@ class Game:
         buffer = []
         for i in self.blocks:
             if self.ball.rect.colliderect(i.rect):
-                if not len(buffer) >= 2:
+                if not buffer:
                     if self.ball.rect.bottom >= i.rect.top and self.ball.rect.top < i.rect.top:
                         if self.ball.rect.left <= i.rect.right  and self.ball.rect.right >= i.rect.left:
                             if self.ball.direction_y == 1:
                                 buffer.append("collided")
-                                self.ball.speed_y += 0.0127
+                                self.ball.speed_y += 0.00127
                                 self.ball.direction_y *= -1
-                if not len(buffer) >= 2:
+                if not buffer:
                     if self.ball.rect.right >= i.rect.left and self.ball.rect.left < i.rect.left: 
                         if self.ball.rect.bottom >= i.rect.top  and self.ball.rect.top <= i.rect.bottom:  
-                            if self.ball.direction_x == 1 and not buffer:
+                            if self.ball.direction_x == 1:
                                 buffer.append("collided")
-                                self.ball.speed_x += 0.0132 
+                                self.ball.speed_x += 0.00132 
                                 self.ball.direction_x *= -1    
-                if not len(buffer) >= 2:                       
+                if not buffer:                       
                     if self.ball.rect.left <= i.rect.right and self.ball.rect.right > i.rect.right: 
                         if self.ball.rect.bottom >= i.rect.top  and self.ball.rect.top <= i.rect.bottom:  
-                            if self.ball.direction_x == -1 and not buffer: 
+                            if self.ball.direction_x == -1: 
                                 buffer.append("collided")   
-                                self.ball.speed_x += 0.0121  
+                                self.ball.speed_x += 0.00121  
                                 self.ball.direction_x *= -1
-                if not len(buffer) >= 2:
+                if not buffer:
                     if self.ball.rect.top <= i.rect.bottom and self.ball.rect.bottom > i.rect.bottom: 
                         if self.ball.rect.left <= i.rect.right and self.ball.rect.right >= i.rect.left:  
-                            if self.ball.direction_y == -1 and not buffer: 
+                            if self.ball.direction_y == -1: 
                                 buffer.append("collided")
-                                self.ball.speed_y -= 0.0123     
+                                self.ball.speed_y -= 0.00123     
                                 self.ball.direction_y *= -1
         buffer = []    
 

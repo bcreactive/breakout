@@ -10,6 +10,11 @@ class Timer:
         self.screen = game.screen
         self.screen_rect = game.screen.get_rect()
         self.settings = game.settings
+        self.dmgup_image = game.dmgup_image
+        self.widthup_image = game.widthup_image
+        self.dmgup_image = pygame.transform.scale(self.dmgup_image, (20, 20))
+        self.widthup_image = pygame.transform.scale(
+                                                self.widthup_image, (20, 20))
         self.x = 130
         self.y = 10
         self.value = 180
@@ -41,3 +46,7 @@ class Timer:
         if self.collected and self.value > 0:     
             pygame.draw.rect(self.screen, (234, 234, 234), (self.label_rect))
             pygame.draw.rect(self.screen, (24, 24, 34), (self.value_rect))
+        if self.game.active_drop == "dmgup":
+            self.screen.blit(self.dmgup_image, (320, 10))
+        if self.game.active_drop == "widthup":
+            self.screen.blit(self.widthup_image, (320, 10))
