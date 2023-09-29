@@ -63,22 +63,23 @@ class Ball:
     def check_walls(self):
         # Changes direction of ball, if a wall is touched.
         if self.x + 2*self.radius >= self.screen_rect.right:
-            # if self.direction_x == 1:
-            #     self.speed_x -= 0.022
-            # elif self.direction_x == -1:
-            #     self.speed_x += 0.033             
             self.direction_x *= -1
-            
+            if self.direction_x == 1:
+                self.speed_x += 0.00122
+            elif self.direction_x == -1:
+                self.speed_x += 0.00133             
+             
         if self.x <= self.screen_rect.left:
-            # if self.direction_x == 1:
-            #     self.speed_x -= 0.024
-            # elif self.direction_x == -1:
-            #     self.speed_x += 0.031
             self.direction_x *= -1
-           
-        if self.y <= self.screen_rect.top:           
-            # self.speed_x += 0.017
-            self.direction_y *= -1
+            if self.direction_x == 1:
+                self.speed_x += 0.00124
+            elif self.direction_x == -1:
+                self.speed_x += 0.00131
+                     
+        if self.y <= self.screen_rect.top:  
+            self.direction_y *= -1         
+            self.speed_x += 0.0017
+            
           
     def check_platform(self):
         # Changes direction of ball, if the platform is touched.
@@ -90,13 +91,13 @@ class Ball:
                 self.direction_x *= -1
 
             if self.platform.moving_right and self.direction_x == 1:
-                self.speed_x += 0.00195
+                self.speed_x += 0.01195
             elif self.platform.moving_right and self.direction_x == -1:
-                self.speed_x -= 0.00206
+                self.speed_x -= 0.01206
             elif self.platform.moving_left and self.direction_x == -1:
-                self.speed_x += 0.00193
+                self.speed_x += 0.01193
             elif self.platform.moving_left and self.direction_x == 1:
-                self.speed_x -= 0.00202
+                self.speed_x -= 0.01202
 
     def check_bottom(self):
         # Check if ball is lost.

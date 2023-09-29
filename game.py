@@ -241,16 +241,21 @@ class Game:
 
     def update_blocks(self):
         # check the blocks for ballcollision and remove block, if hp <= 0 
+        buffer = []
         for i in self.blocks:
             i.update()           
-            if self.ball.rect.colliderect(i.rect):                 
-                i.hp -= self.ball.dmg
+            if self.ball.rect.colliderect(i.rect):  
+                if not buffer:               
+                    i.hp -= self.ball.dmg
+                    buffer.append("hit")
                 if i.hp <= 0:
                     pygame.mixer.Channel(1).play(
                         pygame.mixer.Sound('sound/blib2.mp3'))
                     self.points += i.points
                     self.blocks.remove(i)
                     self.check_bonus(i)
+        # print(buffer)
+        buffer = []
                     
     def check_bonus(self, block):
         # Checks if a drop will spawn, loads the image and build the pickup.
@@ -272,29 +277,30 @@ class Game:
                         if self.ball.rect.left <= i.rect.right  and self.ball.rect.right >= i.rect.left:
                             if self.ball.direction_y == 1:
                                 buffer.append("collided")
-                                self.ball.speed_y += 0.00127
                                 self.ball.direction_y *= -1
+                                self.ball.speed_y += 0.00127                                
                 if not buffer:
                     if self.ball.rect.right >= i.rect.left and self.ball.rect.left < i.rect.left: 
                         if self.ball.rect.bottom >= i.rect.top  and self.ball.rect.top <= i.rect.bottom:  
                             if self.ball.direction_x == 1:
                                 buffer.append("collided")
-                                self.ball.speed_x += 0.00132 
-                                self.ball.direction_x *= -1    
+                                self.ball.direction_x *= -1  
+                                self.ball.speed_x += 0.00132                                 
                 if not buffer:                       
                     if self.ball.rect.left <= i.rect.right and self.ball.rect.right > i.rect.right: 
                         if self.ball.rect.bottom >= i.rect.top  and self.ball.rect.top <= i.rect.bottom:  
                             if self.ball.direction_x == -1: 
                                 buffer.append("collided")   
-                                self.ball.speed_x += 0.00121  
                                 self.ball.direction_x *= -1
+                                self.ball.speed_x += 0.00121                                  
                 if not buffer:
                     if self.ball.rect.top <= i.rect.bottom and self.ball.rect.bottom > i.rect.bottom: 
                         if self.ball.rect.left <= i.rect.right and self.ball.rect.right >= i.rect.left:  
                             if self.ball.direction_y == -1: 
                                 buffer.append("collided")
-                                self.ball.speed_y -= 0.00123     
                                 self.ball.direction_y *= -1
+                                self.ball.speed_y -= 0.00123     
+                                
         buffer = []    
 
     def dead(self):
