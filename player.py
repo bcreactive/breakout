@@ -29,8 +29,11 @@ class Player:
         self.rect_image = pygame.Rect(self.x, self.y, self.width, self.height)
         if self.moving_left == True and self.x > 0:
             self.x -= self.speed
-        if self.moving_right == True and self.x < self.game.settings.screen_width - self.width:
+
+        if (self.moving_right == True and 
+            self.x < self.game.settings.screen_width - self.width):
             self.x += self.speed
+
         self.rect.x = self.x
         self.rect_image.x = self.x
         self.rect_image.y = self.y + 5
