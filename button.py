@@ -10,7 +10,6 @@ class Button:
         self.screen_rect = self.screen.get_rect()
         self.width = 160
         self.height = 80
-        # self.button_color = (184, 105, 98)
 
         # Set the dimensions, color and font of the button.
         if msg == "Play!":

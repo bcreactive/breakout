@@ -31,7 +31,7 @@ class Block:
         elif col == "red":
             return (234, 145, 130)
         elif col == "orange":
-            return (219, 128, 46)
+            return (234, 201, 201)
         elif col == "violet":
             return (184, 105, 98)
         elif col == "yellow":
@@ -74,7 +74,7 @@ class Block:
         elif hp == 2:
             return (234, 145, 130)
         elif hp == 3:
-            return (219, 128, 46)
+            return (234, 201, 201)
         elif hp == 4:
             return (184, 105, 98)
         elif hp == 5:
