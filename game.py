@@ -59,7 +59,7 @@ class Game:
         self.ball_lost = False
         self.level_up = False
 
-        self.load_next_level(self.current_level)
+        self.load_level_pos(self.current_level)
         
     def run_game(self):  
         # Main game loop.   
@@ -136,7 +136,7 @@ class Game:
                 self.active_drop = ""
                 self.drops_collected = []
                 self.lives = self.settings.lives   
-                self.load_next_level(self.current_level)
+                self.load_level_pos(self.current_level)
                 self.get_blocks()
          
                 self.level_running = False
@@ -156,24 +156,26 @@ class Game:
                 self.intro_sound = pygame.mixer.Channel(0).play(
                                     pygame.mixer.Sound('sound/level.mp3')) 
 
-    def bonus_action(self, drop):
-        # Changes and resets the values, when a bonus-drop is colleted.
-        if self.pickup_collected:
-            if drop == "widthup":
-                self.platform.width = 180
-            elif drop == "dmgup":
-                self.ball.dmg = 3
-        if not self.pickup_collected:
-            self.ball.dmg = 1
-            self.platform.width = 100
-
     def check_spawn(self):
         # checks, if a collectible appears at a given chance
         value = randint(1, 1000)
         if value <= 150 and not self.active_drop:
             if len(self.drops_collected) <= 4:
                 return True
-
+            
+    def chose_pickup(self):
+        # Get the sort of the pickup at a given chance, if one is created.
+        value = randint(1, 1000)
+        if value > 583:
+            self.bonus = "widthup"
+            return self.widthup_image
+        elif value <= 583 and value >= 133:
+            self.bonus = "dmgup"
+            return self.dmgup_image
+        elif value < 133:
+            self.bonus = "lifeup"
+            return self.lifeup_image
+        
     def create_pickup(self, rect, image):
         self.pickup = Pickup(self, image)
         self.pickup.x = rect.x
@@ -203,20 +205,28 @@ class Game:
             self.pickup_visible = False
             self.active_drop = ""
             self.bonus = ""
+    
+    def check_bonus(self, block):
+        # Checks if a drop will spawn, loads the image and build the pickup.
+        bonus = self.check_spawn()
+        if bonus and not self.pickup_visible and not self.active_drop:
+            image = self.chose_pickup()
+            if not self.bonus in self.drops_collected:
+                self.create_pickup(block.rect, image)
+                pygame.mixer.Channel(2).play(
+                    pygame.mixer.Sound('sound/spawn.mp3'))   
 
-    def get_pickup(self):
-        # Get the sort of the pickup at a given chance, if one is created.
-        value = randint(1, 1000)
-        if value > 583:
-            self.bonus = "widthup"
-            return self.widthup_image
-        elif value <= 583 and value >= 133:
-            self.bonus = "dmgup"
-            return self.dmgup_image
-        elif value < 133:
-            self.bonus = "lifeup"
-            return self.lifeup_image
-        
+    def bonus_action(self, drop):
+        # Changes and resets the values, when a bonus-drop is colleted.
+        if self.pickup_collected:
+            if drop == "widthup":
+                self.platform.width = 180
+            elif drop == "dmgup":
+                self.ball.dmg = 3
+        if not self.pickup_collected:
+            self.ball.dmg = 1
+            self.platform.width = 100   
+                
     def get_color(self):
         # Get the pool with increasing amount of colors for each level.
         # if self.current_level == 1:
@@ -256,16 +266,6 @@ class Game:
                     self.check_bonus(i)
         # print(buffer)
         buffer = []
-                    
-    def check_bonus(self, block):
-        # Checks if a drop will spawn, loads the image and build the pickup.
-        bonus = self.check_spawn()
-        if bonus and not self.pickup_visible and not self.active_drop:
-            image = self.get_pickup()
-            if not self.bonus in self.drops_collected:
-                self.create_pickup(block.rect, image)
-                pygame.mixer.Channel(2).play(
-                    pygame.mixer.Sound('sound/spawn.mp3'))
 
     def check_blocks(self):
         # Collision detection for the blocks, changes direction of the ball.
@@ -273,6 +273,7 @@ class Game:
         for i in self.blocks:
             if self.ball.rect.colliderect(i.rect):
                 if not buffer:
+                    # check top of block
                     if (self.ball.rect.bottom >= i.rect.top and
                         self.ball.rect.top < i.rect.top):
                         if (self.ball.rect.left <= i.rect.right and
@@ -282,6 +283,7 @@ class Game:
                                 self.ball.direction_y *= -1
                                 self.ball.speed_y += 0.00127                                
                 if not buffer:
+                    # check left side of block
                     if (self.ball.rect.right >= i.rect.left and
                         self.ball.rect.left < i.rect.left): 
                         if (self.ball.rect.bottom >= i.rect.top and
@@ -290,7 +292,8 @@ class Game:
                                 buffer.append("collided")
                                 self.ball.direction_x *= -1  
                                 self.ball.speed_x += 0.00132                                 
-                if not buffer:                       
+                if not buffer:                    
+                    # check right side of block   
                     if (self.ball.rect.left <= i.rect.right and
                         self.ball.rect.right > i.rect.right): 
                         if (self.ball.rect.bottom >= i.rect.top and
@@ -300,6 +303,7 @@ class Game:
                                 self.ball.direction_x *= -1
                                 self.ball.speed_x += 0.00121                                  
                 if not buffer:
+                    # check bottom of block
                     if (self.ball.rect.top <= i.rect.bottom and
                         self.ball.rect.bottom > i.rect.bottom): 
                         if (self.ball.rect.left <= i.rect.right and
@@ -354,13 +358,13 @@ class Game:
             self.current_level += 1
             self.ball.ball_speed += 0.43
             self.platform.speed += 0.7
-            self.load_next_level(self.current_level)
+            self.load_level_pos(self.current_level)
             self.get_blocks()
             self.scorelabel.prep_level(self.current_level)
             pygame.mixer.Channel(0).play(
                 pygame.mixer.Sound('sound/complete.mp3'))
                     
-    def load_next_level(self, level):
+    def load_level_pos(self, level):
         # Positions for the blocks for each level.
         if level == 1:
             # Glasses
