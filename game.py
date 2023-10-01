@@ -167,20 +167,20 @@ class Game:
     def check_spawn(self):
         # checks, if a collectible appears at a given chance
         value = randint(1, 1000)
-        if value <= 1500 and not self.active_drop:
+        if value <= 150 and not self.active_drop:
             if len(self.drops_collected) <= 4:
                 return True
             
     def chose_pickup(self):
         # Get the sort of the pickup at a given chance, if one is created.
         value = randint(1, 1000)
-        # if value > 583:
-        #     self.bonus = "widthup"
-        #     return self.widthup_image
-        # elif value <= 583 and value >= 133:
-        #     self.bonus = "dmgup"
-        #     return self.dmgup_image
-        if value <= 1000 and value >= 90:
+        if value > 666:
+            self.bonus = "widthup"
+            return self.widthup_image
+        elif value <= 666 and value > 333 :
+            self.bonus = "dmgup"
+            return self.dmgup_image
+        if value <= 333 and value >= 90:
             self.bonus = "multiball"
             return self.multiball_image
         elif value < 90:
