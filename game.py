@@ -200,8 +200,8 @@ class Game:
                 if self.bonus == "lifeup" and not self.lives >= 4:
                     self.lives += 1
                 if self.bonus == "multiball":
-                    self.ball_2 = Ball(self)
-                    self.ball_3 = Ball(self)
+                    self.ball_2 = Ball(self, self.platform.rect.center, 540)
+                    self.ball_3 = Ball(self, self.platform.rect.center, 540)
                     self.active_balls.append(self.ball_2)
                     self.active_balls.append(self.ball_3)
 

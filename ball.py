@@ -5,7 +5,7 @@ from random import choice
 class Ball:
     """This class builds the ball and update the position."""
 
-    def __init__(self, game):
+    def __init__(self, game, x=388.337, y=540):
         """Initialize ball attributes."""
         self.game = game
         self.screen = game.screen
@@ -14,8 +14,8 @@ class Ball:
         self.settings = game.settings
 
         self.radius = 10
-        self.x = 388.337
-        self.y = 540
+        self.x = x
+        self.y = y
         self.x = float(self.x)
         self.y = float(self.y)
         self.color = (200, 250, 200)
