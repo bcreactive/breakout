@@ -23,7 +23,7 @@ class Ball:
         self.rect = pygame.Rect(self.x, self.y, 20, 20)
         # self.start_pos()
         self.ball_speed = game.ball_speed
-        self.speed_y = self.ball_speed + 0.032
+        self.speed_y = self.ball_speed + 0.132
         values = [self.ball_speed, -self.ball_speed]
         self.speed_x = choice(values)
         self.direction_x = 1

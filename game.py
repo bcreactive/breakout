@@ -198,8 +198,13 @@ class Game:
         self.pickup_rect = pygame.Rect(self.pickup.x, self.pickup.y, 40, 40)
 
         if self.pickup_rect.colliderect(self.platform.rect):
-            pygame.mixer.Channel(2).play(
-                pygame.mixer.Sound('sound/pickupget.mp3'))
+            if self.bonus == "multiball":
+                pygame.mixer.Channel(2).play(
+                    pygame.mixer.Sound('sound/multiball.mp3'))
+            else:
+                pygame.mixer.Channel(2).play(
+                    pygame.mixer.Sound('sound/pickupget.mp3'))
+                
             if self.pickup_visible and not self.pickup_collected:
                 if self.bonus == "lifeup" and not self.lives >= 4:
                     self.lives += 1
@@ -378,8 +383,8 @@ class Game:
             self.drops_collected = []
             self.ball.start_pos()
             self.current_level += 1
-            self.ball.ball_speed += 0.33
-            self.platform.speed += 0.6
+            self.ball_speed += 0.25
+            self.platform.speed += 0.5
             self.load_level_pos(self.current_level)
             self.get_blocks()
             self.scorelabel.prep_level(self.current_level)
