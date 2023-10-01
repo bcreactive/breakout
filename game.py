@@ -46,6 +46,7 @@ class Game:
         self.level_pos = []
         self.active_drop = ""
         self.drops_collected = []
+        self.active_balls = []
         self.points = 0
         self.current_level = 1
         self.lives = self.settings.lives
@@ -119,6 +120,7 @@ class Game:
         self.dmgup_image = pygame.image.load("images/dmg_up.png")
         self.lifeup_image = pygame.image.load("images/life_up.png")
         self.widthup_image = pygame.image.load("images/width_up.png")
+        self.multiball_image = pygame.image.load("images/multiball.png")
 
     def check_play_button(self, mouse_pos):
         # Start a new game when button is clicked and reset game stats.
@@ -138,6 +140,8 @@ class Game:
                 self.lives = self.settings.lives   
                 self.load_level_pos(self.current_level)
                 self.get_blocks()
+                self.active_balls.append(self.ball)
+                print(self.active_balls)
          
                 self.level_running = False
                 self.game_active = True
@@ -166,13 +170,16 @@ class Game:
     def chose_pickup(self):
         # Get the sort of the pickup at a given chance, if one is created.
         value = randint(1, 1000)
-        if value > 583:
-            self.bonus = "widthup"
-            return self.widthup_image
-        elif value <= 583 and value >= 133:
-            self.bonus = "dmgup"
-            return self.dmgup_image
-        elif value < 133:
+        # if value > 583:
+        #     self.bonus = "widthup"
+        #     return self.widthup_image
+        # elif value <= 583 and value >= 133:
+        #     self.bonus = "dmgup"
+        #     return self.dmgup_image
+        if value <= 1000 and value >= 90:
+            self.bonus = "multiball"
+            return self.multiball_image
+        elif value < 90:
             self.bonus = "lifeup"
             return self.lifeup_image
         
@@ -192,6 +199,12 @@ class Game:
             if self.pickup_visible and not self.pickup_collected:
                 if self.bonus == "lifeup" and not self.lives >= 4:
                     self.lives += 1
+                if self.bonus == "multiball":
+                    self.ball_2 = Ball(self)
+                    self.ball_3 = Ball(self)
+                    self.active_balls.append(self.ball_2)
+                    self.active_balls.append(self.ball_3)
+                    print(self.active_balls)
 
                 self.pickup_collected = True
                 self.pickup_visible = False   
@@ -312,7 +325,7 @@ class Game:
                                 buffer.append("collided")
                                 self.ball.direction_y *= -1
                                 self.ball.speed_y -= 0.00123     
-                                
+
         buffer = []    
 
     def dead(self):
@@ -330,6 +343,7 @@ class Game:
             self.ball_lost = True
             pygame.mixer.Channel(1).play(
                 pygame.mixer.Sound('sound/balllost.mp3'))
+            self.active_balls.append(self.ball)
         else:
             pygame.mixer.Channel(0).play(
                 pygame.mixer.Sound('sound/fail.mp3'))
@@ -356,8 +370,8 @@ class Game:
             self.drops_collected = []
             self.ball.start_pos()
             self.current_level += 1
-            self.ball.ball_speed += 0.43
-            self.platform.speed += 0.7
+            self.ball.ball_speed += 0.33
+            self.platform.speed += 0.6
             self.load_level_pos(self.current_level)
             self.get_blocks()
             self.scorelabel.prep_level(self.current_level)
@@ -516,7 +530,8 @@ class Game:
 
         if self.game_active and not self.ball_lost:
             self.scorelabel.draw_score()
-            if self.active_drop and not self.active_drop == "lifeup":
+            if (self.active_drop and not self.active_drop == "lifeup" and not
+                self.active_drop == "multiball"):
                 self.timer.drawme()           
             if self.pickup_visible:
                 self.pickup.drawme()

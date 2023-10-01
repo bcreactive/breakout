@@ -30,7 +30,7 @@ class Ball:
 
     def start_pos(self):
         # Reset start position of ball and platform.
-        self.x = 388.73
+        self.x = 388.373
         self.y = 540.03
         self.speed_x = 0
         self.speed_y = 0
@@ -101,8 +101,12 @@ class Ball:
 
     def check_bottom(self):
         # Check if ball is lost.
-        if self.y + self.radius > self.screen_rect.bottom:    
-            self.game.dead()  
+        if self.y + self.radius > self.screen_rect.bottom:  
+            if len(self.game.active_balls) >= 1:
+                self.game.active_balls.pop() 
+            print(self.game.active_balls)
+            if len(self.game.active_balls) < 1:
+                self.game.dead()  
               
     def drawme(self):
         # Draw the ball on the screen.
