@@ -30,16 +30,20 @@ class Timer:
     def update(self):
         # Timer starts counting down, once a pickup is collected.
         if self.collected:
-            if self.value <= 0:
-                self.collected = False
-                self.value = 180
-                self.value_rect = pygame.Rect(self.x, self.y, self.value, 20)
-                self.game.drops_collected.append(self.game.active_drop)
-                self.game.active_drop = ""
-                self.game.pickup_collected = False
-            elif self.value > 0: 
-                self.value -= 0.21
-                self.value_rect = pygame.Rect(self.x, self.y, self.value, 20)
+            # if (self.game.active_drop == "widthup" or
+            #     self.game.active_drop == "dmgup"):
+                if self.value <= 0:
+                    self.collected = False
+                    self.value = 180
+                    self.value_rect = pygame.Rect(self.x, self.y, self.value, 20)
+                    self.game.drops_collected.append(self.game.active_drop)
+                    self.game.active_drop = ""
+                    self.game.pickup_collected = False
+                elif self.value > 0: 
+                    self.value -= 0.21
+                    self.value_rect = pygame.Rect(self.x, self.y, self.value, 20)
+            # if self.game.active_drop == "multiball":
+
 
     def drawme(self):  
         # Drawing timer on the screen if not time is up.

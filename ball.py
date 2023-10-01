@@ -64,21 +64,21 @@ class Ball:
         # Changes direction of ball, if a wall is touched.
         if self.x + 2*self.radius >= self.screen_rect.right:
             self.direction_x *= -1
-            if self.direction_x == 1:
-                self.speed_x += 0.00122
-            elif self.direction_x == -1:
-                self.speed_x += 0.00133             
+            # if self.direction_x == 1:
+            #     self.speed_x += 0.00122
+            # elif self.direction_x == -1:
+            self.speed_x += 0.00133             
              
         if self.x <= self.screen_rect.left:
             self.direction_x *= -1
-            if self.direction_x == 1:
-                self.speed_x += 0.00124
-            elif self.direction_x == -1:
-                self.speed_x += 0.00131
+            # if self.direction_x == 1:
+            #     self.speed_x += 0.00124
+            # elif self.direction_x == -1:
+            self.speed_x += 0.00131
                      
         if self.y <= self.screen_rect.top:  
             self.direction_y *= -1         
-            self.speed_x += 0.0017
+            self.speed_y += 0.0017
             
           
     def check_platform(self):
@@ -103,8 +103,7 @@ class Ball:
         # Check if ball is lost.
         if self.y + self.radius > self.screen_rect.bottom:  
             if len(self.game.active_balls) >= 1:
-                self.game.active_balls.pop() 
-            print(self.game.active_balls)
+                self.game.active_balls.remove(self)
             if len(self.game.active_balls) < 1:
                 self.game.dead()  
               

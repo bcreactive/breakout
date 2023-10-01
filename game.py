@@ -76,7 +76,8 @@ class Game:
                     pygame.mixer.Channel(0).play(
                         pygame.mixer.Sound('sound/level.mp3'))
                 self.platform.update()
-                self.ball.update()                    
+                for i in self.active_balls:
+                    i.update()                    
                 self.scorelabel.prep_score(self.points)
                 if self.level_running:
                     self.check_blocks()
@@ -141,7 +142,6 @@ class Game:
                 self.load_level_pos(self.current_level)
                 self.get_blocks()
                 self.active_balls.append(self.ball)
-                print(self.active_balls)
          
                 self.level_running = False
                 self.game_active = True
@@ -204,13 +204,11 @@ class Game:
                     self.ball_3 = Ball(self)
                     self.active_balls.append(self.ball_2)
                     self.active_balls.append(self.ball_3)
-                    print(self.active_balls)
 
                 self.pickup_collected = True
                 self.pickup_visible = False   
                 self.active_drop = self.bonus                              
                 self.bonus = ""
-
                 self.timer.collected = True
             
         if (self.pickup_rect.top > self.screen_rect.bottom and 
@@ -236,6 +234,7 @@ class Game:
                 self.platform.width = 180
             elif drop == "dmgup":
                 self.ball.dmg = 3
+
         if not self.pickup_collected:
             self.ball.dmg = 1
             self.platform.width = 100   
@@ -265,66 +264,67 @@ class Game:
     def update_blocks(self):
         # check the blocks for ballcollision and remove block, if hp <= 0 
         buffer = []
-        for i in self.blocks:
-            i.update()           
-            if self.ball.rect.colliderect(i.rect):  
-                if not buffer:               
-                    i.hp -= self.ball.dmg
-                    buffer.append("hit")
-                if i.hp <= 0:
-                    pygame.mixer.Channel(1).play(
-                        pygame.mixer.Sound('sound/blib2.mp3'))
-                    self.points += i.points
-                    self.blocks.remove(i)
-                    self.check_bonus(i)
-        # print(buffer)
+        for ball in self.active_balls:     
+            for block in self.blocks:
+                block.update()             
+                if ball.rect.colliderect(block.rect):  
+                    if not buffer:               
+                        block.hp -= ball.dmg
+                        buffer.append("hit")
+                    if block.hp <= 0:
+                        pygame.mixer.Channel(1).play(
+                            pygame.mixer.Sound('sound/blib2.mp3'))
+                        self.points += block.points
+                        self.blocks.remove(block)
+                        self.check_bonus(block)
         buffer = []
 
     def check_blocks(self):
         # Collision detection for the blocks, changes direction of the ball.
         buffer = []
         for i in self.blocks:
-            if self.ball.rect.colliderect(i.rect):
-                if not buffer:
-                    # check top of block
-                    if (self.ball.rect.bottom >= i.rect.top and
-                        self.ball.rect.top < i.rect.top):
-                        if (self.ball.rect.left <= i.rect.right and
-                            self.ball.rect.right >= i.rect.left):
-                            if self.ball.direction_y == 1:
-                                buffer.append("collided")
-                                self.ball.direction_y *= -1
-                                self.ball.speed_y += 0.00127                                
-                if not buffer:
-                    # check left side of block
-                    if (self.ball.rect.right >= i.rect.left and
-                        self.ball.rect.left < i.rect.left): 
-                        if (self.ball.rect.bottom >= i.rect.top and
-                            self.ball.rect.top <= i.rect.bottom):  
-                            if self.ball.direction_x == 1:
-                                buffer.append("collided")
-                                self.ball.direction_x *= -1  
-                                self.ball.speed_x += 0.00132                                 
-                if not buffer:                    
-                    # check right side of block   
-                    if (self.ball.rect.left <= i.rect.right and
-                        self.ball.rect.right > i.rect.right): 
-                        if (self.ball.rect.bottom >= i.rect.top and
-                            self.ball.rect.top <= i.rect.bottom):  
-                            if self.ball.direction_x == -1: 
-                                buffer.append("collided")   
-                                self.ball.direction_x *= -1
-                                self.ball.speed_x += 0.00121                                  
-                if not buffer:
-                    # check bottom of block
-                    if (self.ball.rect.top <= i.rect.bottom and
-                        self.ball.rect.bottom > i.rect.bottom): 
-                        if (self.ball.rect.left <= i.rect.right and
-                            self.ball.rect.right >= i.rect.left):  
-                            if self.ball.direction_y == -1: 
-                                buffer.append("collided")
-                                self.ball.direction_y *= -1
-                                self.ball.speed_y -= 0.00123     
+            for ball in self.active_balls:
+                if ball.rect.colliderect(i.rect):
+                    if not buffer:
+                        # check top of block
+                        if (ball.rect.bottom >= i.rect.top and
+                            ball.rect.top < i.rect.top):
+                            if (ball.rect.left <= i.rect.right and
+                                ball.rect.right >= i.rect.left):
+                                if ball.direction_y == 1:
+                                    buffer.append("collided")
+                                    ball.direction_y *= -1
+                                    ball.speed_y += 0.00127                                
+                    if not buffer:
+                        # check left side of block
+                        if (ball.rect.right >= i.rect.left and
+                            ball.rect.left < i.rect.left): 
+                            if (ball.rect.bottom >= i.rect.top and
+                                ball.rect.top <= i.rect.bottom):  
+                                if ball.direction_x == 1:
+                                    buffer.append("collided")
+                                    ball.direction_x *= -1  
+                                    ball.speed_x += 0.00132                                 
+                    if not buffer:                    
+                        # check right side of block   
+                        if (ball.rect.left <= i.rect.right and
+                            ball.rect.right > i.rect.right): 
+                            if (ball.rect.bottom >= i.rect.top and
+                                ball.rect.top <= i.rect.bottom):  
+                                if ball.direction_x == -1: 
+                                    buffer.append("collided")   
+                                    ball.direction_x *= -1
+                                    ball.speed_x += 0.00121                                  
+                    if not buffer:
+                        # check bottom of block
+                        if (ball.rect.top <= i.rect.bottom and
+                            ball.rect.bottom > i.rect.bottom): 
+                            if (ball.rect.left <= i.rect.right and
+                                ball.rect.right >= i.rect.left):  
+                                if ball.direction_y == -1: 
+                                    buffer.append("collided")
+                                    ball.direction_y *= -1
+                                    ball.speed_y -= 0.00123     
 
         buffer = []    
 
@@ -343,6 +343,7 @@ class Game:
             self.ball_lost = True
             pygame.mixer.Channel(1).play(
                 pygame.mixer.Sound('sound/balllost.mp3'))
+            self.active_balls = []
             self.active_balls.append(self.ball)
         else:
             pygame.mixer.Channel(0).play(
@@ -358,6 +359,8 @@ class Game:
             if self.highscore.grats:
                 pygame.mixer.Channel(0).play(
                     pygame.mixer.Sound('sound/highscore.mp3'))
+            self.active_balls = []
+            self.active_balls.append(self.ball)
             
     def check_level_end(self):
         # Loading the next level, if all the blocks are removed.
@@ -377,6 +380,8 @@ class Game:
             self.scorelabel.prep_level(self.current_level)
             pygame.mixer.Channel(0).play(
                 pygame.mixer.Sound('sound/complete.mp3'))
+            self.active_balls = []
+            self.active_balls.append(self.ball)
                     
     def load_level_pos(self, level):
         # Positions for the blocks for each level.
@@ -537,8 +542,9 @@ class Game:
                 self.pickup.drawme()
             self.platform.drawme()
             for i in self.blocks:
-                i.drawme()                 
-            self.ball.drawme()
+                i.drawme()         
+            for i in self.active_balls:        
+                i.drawme()
 
         if self.game_active and self.level_up:
             self.screen.blit(self.levelup_screen, (0, 0))
