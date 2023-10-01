@@ -5,7 +5,7 @@ from random import choice
 class Ball:
     """This class builds the ball and update the position."""
 
-    def __init__(self, game, x=388.337, y=540):
+    def __init__(self, game, x):
         """Initialize ball attributes."""
         self.game = game
         self.screen = game.screen
@@ -15,23 +15,25 @@ class Ball:
 
         self.radius = 10
         self.x = x
-        self.y = y
+        self.y = 540.33
         self.x = float(self.x)
         self.y = float(self.y)
         self.color = (200, 250, 200)
         self.image = pygame.image.load("images/ball.png")
         self.rect = pygame.Rect(self.x, self.y, 20, 20)
-        self.start_pos()
-        self.ball_speed = self.settings.ball_speed
+        # self.start_pos()
+        self.ball_speed = game.ball_speed
         self.speed_y = self.ball_speed + 0.032
         values = [self.ball_speed, -self.ball_speed]
         self.speed_x = choice(values)
+        self.direction_x = 1
+        self.direction_y = -1
         self.dmg = 1
 
     def start_pos(self):
         # Reset start position of ball and platform.
-        self.x = 388.373
-        self.y = 540.03
+        self.x = 390
+        self.y = 540.33
         self.speed_x = 0
         self.speed_y = 0
         self.direction_x = 1

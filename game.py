@@ -34,9 +34,10 @@ class Game:
         self.intro_sound = pygame.mixer.Channel(0).play(
                             pygame.mixer.Sound('sound/intro.mp3')) 
         
+        self.ball_speed = self.settings.ball_speed       
         self.play_button = Button(self, "Play!")
         self.platform = Player(self)
-        self.ball = Ball(self)
+        self.ball = Ball(self, self.platform.rect.center[0])
         self.scorelabel = Scorelabel(self)
         self.pickup = Pickup(self, self.lifeup_image)
         self.timer = Timer(self)
@@ -51,7 +52,7 @@ class Game:
         self.current_level = 1
         self.lives = self.settings.lives
         self.bonus = ""
-
+        
         self.game_active = False
         self.level_running = False
         self.pickup_visible = False
@@ -132,7 +133,7 @@ class Game:
                 sleep(1)
                 self.points = 0
                 self.current_level = 1
-                self.ball.start_pos()
+                # self.ball.start_pos()
                 self.level_pos = []
                 self.blocks = []
                 self.bonus = ""
@@ -141,7 +142,10 @@ class Game:
                 self.lives = self.settings.lives   
                 self.load_level_pos(self.current_level)
                 self.get_blocks()
+                self.active_balls = []
                 self.active_balls.append(self.ball)
+                self.ball.start_pos()
+                self.ball.ball_speed = self.settings.ball_speed
          
                 self.level_running = False
                 self.game_active = True
@@ -163,7 +167,7 @@ class Game:
     def check_spawn(self):
         # checks, if a collectible appears at a given chance
         value = randint(1, 1000)
-        if value <= 150 and not self.active_drop:
+        if value <= 1500 and not self.active_drop:
             if len(self.drops_collected) <= 4:
                 return True
             
@@ -200,8 +204,8 @@ class Game:
                 if self.bonus == "lifeup" and not self.lives >= 4:
                     self.lives += 1
                 if self.bonus == "multiball":
-                    self.ball_2 = Ball(self, self.platform.rect.center, 540)
-                    self.ball_3 = Ball(self, self.platform.rect.center, 540)
+                    self.ball_2 = Ball(self, self.platform.rect.center[0])
+                    self.ball_3 = Ball(self, self.platform.rect.center[0])
                     self.active_balls.append(self.ball_2)
                     self.active_balls.append(self.ball_3)
 
@@ -338,13 +342,14 @@ class Game:
             self.pickup_visible = False
             self.pickup_collected = False
             self.timer.reset()
-            self.ball.start_pos()
+            # self.ball.start_pos()
             self.active_drop = ""
             self.ball_lost = True
             pygame.mixer.Channel(1).play(
                 pygame.mixer.Sound('sound/balllost.mp3'))
             self.active_balls = []
             self.active_balls.append(self.ball)
+            self.ball.start_pos()
         else:
             pygame.mixer.Channel(0).play(
                 pygame.mixer.Sound('sound/fail.mp3'))
