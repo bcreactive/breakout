@@ -32,7 +32,7 @@ class Game:
 
         self.load_images()
         self.intro_sound = pygame.mixer.Channel(0).play(
-                            pygame.mixer.Sound('sound/intro.mp3')) 
+                                pygame.mixer.Sound('sound/intro.mp3')) 
         
         self.ball_speed = self.settings.ball_speed       
         self.play_button = Button(self, "Play!")
@@ -58,6 +58,7 @@ class Game:
         self.pickup_visible = False
         self.pickup_collected = False
         self.endscreen_visible = False
+        self.winscreen_visible = False
         self.ball_lost = False
         self.level_up = False
 
@@ -123,6 +124,7 @@ class Game:
         self.lifeup_image = pygame.image.load("images/life_up.png")
         self.widthup_image = pygame.image.load("images/width_up.png")
         self.multiball_image = pygame.image.load("images/multiball.png")
+        self.winscreen_image = pygame.image.load("images/win_screen.png")
 
     def check_play_button(self, mouse_pos):
         # Start a new game when button is clicked and reset game stats.
@@ -133,7 +135,6 @@ class Game:
                 sleep(1)
                 self.points = 0
                 self.current_level = 1
-                # self.ball.start_pos()
                 self.level_pos = []
                 self.blocks = []
                 self.bonus = ""
@@ -145,7 +146,7 @@ class Game:
                 self.active_balls = []
                 self.active_balls.append(self.ball)
                 self.ball.start_pos()
-                self.ball.ball_speed = self.settings.ball_speed
+                self.ball_speed = self.settings.ball_speed
          
                 self.level_running = False
                 self.game_active = True
@@ -157,10 +158,9 @@ class Game:
                 self.platform.moving_left = False
                 self.platform.moving_right = False
                 self.highscore.grats = False
-
-                self.ball.ball_speed = self.settings.ball_speed               
-                self.scorelabel.prep_level(self.current_level)
                 pygame.mouse.set_visible(False)
+                self.scorelabel.prep_level(self.current_level)
+               
                 self.intro_sound = pygame.mixer.Channel(0).play(
                                     pygame.mixer.Sound('sound/level.mp3')) 
 
@@ -210,7 +210,9 @@ class Game:
                     self.lives += 1
                 if self.bonus == "multiball":
                     self.ball_2 = Ball(self, self.platform.rect.center[0])
+                    self.ball_2.speed_x = self.ball_speed + 0.3
                     self.ball_3 = Ball(self, self.platform.rect.center[0])
+                    self.ball_3.speed_x = -self.ball_speed + 0.3
                     self.active_balls.append(self.ball_2)
                     self.active_balls.append(self.ball_3)
 
@@ -381,18 +383,22 @@ class Game:
             self.level_up = True
             self.active_drop = ""
             self.drops_collected = []
-            self.ball.start_pos()
             self.current_level += 1
             self.ball_speed += 0.25
             self.platform.speed += 0.5
-            self.load_level_pos(self.current_level)
-            self.get_blocks()
-            self.scorelabel.prep_level(self.current_level)
-            pygame.mixer.Channel(0).play(
-                pygame.mixer.Sound('sound/complete.mp3'))
             self.active_balls = []
             self.active_balls.append(self.ball)
-                    
+            if self.current_level <= 7:
+                self.ball.start_pos()
+                self.load_level_pos(self.current_level)
+                self.get_blocks()
+                self.scorelabel.prep_level(self.current_level)
+                pygame.mixer.Channel(0).play(
+                    pygame.mixer.Sound('sound/complete.mp3'))
+            if self.current_level > 7:
+                self.winscreen_visible = True
+                # pygame.mixer.Channel(0).play('sound/endsound.mp3')
+                      
     def load_level_pos(self, level):
         # Positions for the blocks for each level.
         if level == 1:
@@ -558,6 +564,9 @@ class Game:
 
         if self.game_active and self.level_up:
             self.screen.blit(self.levelup_screen, (0, 0))
+
+        if self.winscreen_visible:
+            self.screen.blit(self.winscreen_image, (0, 0))
 
         pygame.display.flip()
 

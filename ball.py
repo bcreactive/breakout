@@ -43,10 +43,13 @@ class Ball:
 
     def check_launch(self):
         # Waiting for a keyboard action, to launch the ball.
-        if self.platform.moving_left or self.platform.moving_right:
-            self.speed_y = self.ball_speed
-            values = [self.ball_speed, -self.ball_speed]
-            self.speed_x = choice(values)
+        if self.platform.moving_left or self.platform.moving_right:   
+            if self.platform.moving_left:
+                self.speed_y = self.ball_speed
+                self.speed_x = self.ball_speed
+            elif self.platform.moving_right:
+                self.speed_y = self.ball_speed
+                self.speed_x = -self.ball_speed
             self.game.level_running = True
 
     def update(self):
