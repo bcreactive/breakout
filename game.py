@@ -75,12 +75,13 @@ class Game:
                     pygame.time.delay(1000)
                     self.ball_lost = False
                 if self.level_up:
-                    if self.current_level <= 7:
-                        pygame.time.delay(1800)
-                        self.level_up = False
-                        self.level_sound = self.load_sound()
-                        pygame.mixer.Channel(0).play(
-                            pygame.mixer.Sound(self.level_sound))
+                    self.load_new_sound()
+                    # if self.current_level <= 7:
+                    #     pygame.time.delay(1800)
+                    #     self.level_up = False
+                    #     self.level_sound = self.load_sound()
+                    #     pygame.mixer.Channel(0).play(
+                    #         pygame.mixer.Sound(self.level_sound))
                         
                 self.platform.update()
                 for i in self.active_balls:
@@ -419,7 +420,15 @@ class Game:
                 self.winscreen_visible = True
                 pygame.mixer.Channel(0).play(
                     pygame.mixer.Sound('sound/win.mp3'))
-                      
+
+    def load_new_sound(self):
+        if self.current_level <= 7:
+            pygame.time.delay(1800)
+            self.level_up = False
+            self.level_sound = self.load_sound()
+            pygame.mixer.Channel(0).play(
+                pygame.mixer.Sound(self.level_sound))
+
     def load_level_pos(self, level):
         # Positions for the blocks for each level.
         # if level == 7:
