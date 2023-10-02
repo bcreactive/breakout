@@ -42,7 +42,7 @@ class Game:
         self.scorelabel = Scorelabel(self)
         self.pickup = Pickup(self, self.lifeup_image)
         self.timer = Timer(self)
-        self.highscore = Highscore(self)
+        
         
         self.blocks = []
         self.level_pos = []
@@ -64,6 +64,7 @@ class Game:
         self.level_up = False
 
         self.load_level_pos(self.current_level)
+        self.highscore = Highscore(self)
         
     def run_game(self):  
         # Main game loop.   
@@ -74,11 +75,13 @@ class Game:
                     pygame.time.delay(1000)
                     self.ball_lost = False
                 if self.level_up:
-                    pygame.time.delay(1800)
-                    self.level_up = False
-                    self.level_sound = self.load_sound()
-                    pygame.mixer.Channel(0).play(
-                        pygame.mixer.Sound(self.level_sound))
+                    if self.current_level <= 7:
+                        pygame.time.delay(1800)
+                        self.level_up = False
+                        self.level_sound = self.load_sound()
+                        pygame.mixer.Channel(0).play(
+                            pygame.mixer.Sound(self.level_sound))
+                        
                 self.platform.update()
                 for i in self.active_balls:
                     i.update()                    
@@ -133,13 +136,13 @@ class Game:
         track = choice(tracks)
         if track == 1:
             return "sound/level_a.mp3"
-        if track == 2:
+        elif track == 2:
             return "sound/level_b.mp3"
-        if track == 3:
+        elif track == 3:
             return "sound/level_c.mp3"
-        if track == 4:
+        elif track == 4:
             return "sound/level_d.mp3"
-        if track == 5:
+        elif track == 5:
             return "sound/level_e.mp3"
         
     def check_play_button(self, mouse_pos):
@@ -414,7 +417,8 @@ class Game:
                     pygame.mixer.Sound('sound/complete.mp3'))
             if self.current_level > 7:
                 self.winscreen_visible = True
-                pygame.mixer.Channel(3).play('sound/win.mp3')
+                pygame.mixer.Channel(0).play(
+                    pygame.mixer.Sound('sound/win.mp3'))
                       
     def load_level_pos(self, level):
         # Positions for the blocks for each level.
@@ -540,22 +544,22 @@ class Game:
                             (430, 330), (550, 330), (670, 330)
                             ] 
         
-        if level == 8:
-            # Blockyblockworld
-            self.level_pos = [
-                            (30, 50), (90, 50), (150, 50), (210, 50),
-                            (270, 50), (330, 50), (390, 50), (450, 50),
-                            (510, 50), (570, 50),(630, 50), (690, 50),
-                            (30, 90), (90, 90), (150, 90), (210, 90),
-                            (270, 90), (330, 90), (390, 90), (450, 90),
-                            (510, 90), (570, 90),(630, 90), (690, 90), 
-                            (30, 130), (90, 130), (150, 130), (210, 130),
-                            (270, 130), (330, 130), (390, 130), (450, 130),
-                            (510, 130), (570, 130),(630, 130), (690, 130),
-                            (30, 170), (90, 170), (150, 170), (210, 170),
-                            (270, 170), (330, 170), (390, 170), (450, 170),
-                            (510, 170), (570, 170),(630, 170), (690, 170)
-                            ] 
+        # if level == 8:
+        #     # Blockyblockworld
+        #     self.level_pos = [
+        #                     (30, 50), (90, 50), (150, 50), (210, 50),
+        #                     (270, 50), (330, 50), (390, 50), (450, 50),
+        #                     (510, 50), (570, 50),(630, 50), (690, 50),
+        #                     (30, 90), (90, 90), (150, 90), (210, 90),
+        #                     (270, 90), (330, 90), (390, 90), (450, 90),
+        #                     (510, 90), (570, 90),(630, 90), (690, 90), 
+        #                     (30, 130), (90, 130), (150, 130), (210, 130),
+        #                     (270, 130), (330, 130), (390, 130), (450, 130),
+        #                     (510, 130), (570, 130),(630, 130), (690, 130),
+        #                     (30, 170), (90, 170), (150, 170), (210, 170),
+        #                     (270, 170), (330, 170), (390, 170), (450, 170),
+        #                     (510, 170), (570, 170),(630, 170), (690, 170)
+        #                     ] 
             
     def update_screen(self):
         # Draw the elements on the screen.
@@ -588,10 +592,10 @@ class Game:
         if self.game_active and self.level_up:
             self.screen.blit(self.levelup_screen, (0, 0))
 
-        if self.winscreen_visible:
+        if self.game_active and self.winscreen_visible:
             self.screen.blit(self.winscreen_image, (0, 0))
-            # self.highscore.check_high_score()
-            # self.highscore.prep_high_score()
+            self.highscore.check_high_score()
+            self.highscore.prep_high_score()
             # self.highscore.draw_highscore()
 
         pygame.display.flip()
