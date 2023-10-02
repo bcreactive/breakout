@@ -32,8 +32,9 @@ class Game:
 
         self.load_images()
         self.intro_sound = pygame.mixer.Channel(0).play(
-                                pygame.mixer.Sound('sound/intro.mp3')) 
-        
+                                pygame.mixer.Sound('sound/intro.mp3'))        
+        self.level_sound = self.load_sound()
+
         self.ball_speed = self.settings.ball_speed       
         self.play_button = Button(self, "Play!")
         self.platform = Player(self)
@@ -75,8 +76,9 @@ class Game:
                 if self.level_up:
                     pygame.time.delay(1800)
                     self.level_up = False
+                    self.level_sound = self.load_sound()
                     pygame.mixer.Channel(0).play(
-                        pygame.mixer.Sound('sound/level.mp3'))
+                        pygame.mixer.Sound(self.level_sound))
                 self.platform.update()
                 for i in self.active_balls:
                     i.update()                    
@@ -125,7 +127,21 @@ class Game:
         self.widthup_image = pygame.image.load("images/width_up.png")
         self.multiball_image = pygame.image.load("images/multiball.png")
         self.winscreen_image = pygame.image.load("images/win_screen.png")
-
+     
+    def load_sound(self):
+        tracks = [1, 2, 3, 4, 5]
+        track = choice(tracks)
+        if track == 1:
+            return "sound/level_a.mp3"
+        if track == 2:
+            return "sound/level_b.mp3"
+        if track == 3:
+            return "sound/level_c.mp3"
+        if track == 4:
+            return "sound/level_d.mp3"
+        if track == 5:
+            return "sound/level_e.mp3"
+        
     def check_play_button(self, mouse_pos):
         # Start a new game when button is clicked and reset game stats.
         if not self.game_active:
@@ -160,9 +176,10 @@ class Game:
                 self.highscore.grats = False
                 pygame.mouse.set_visible(False)
                 self.scorelabel.prep_level(self.current_level)
-               
-                self.intro_sound = pygame.mixer.Channel(0).play(
-                                    pygame.mixer.Sound('sound/level.mp3')) 
+
+                self.level_sound = self.load_sound()
+                pygame.mixer.Channel(0).play(
+                    pygame.mixer.Sound(self.level_sound)) 
 
     def check_spawn(self):
         # checks, if a collectible appears at a given chance
@@ -305,7 +322,17 @@ class Game:
                                 if ball.direction_y == 1:
                                     buffer.append("collided")
                                     ball.direction_y *= -1
-                                    ball.speed_y += 0.00127                                
+                                    ball.speed_y += 0.00127   
+                    if not buffer:
+                        # check bottom of block
+                        if (ball.rect.top <= i.rect.bottom and
+                            ball.rect.bottom > i.rect.bottom): 
+                            if (ball.rect.left <= i.rect.right and
+                                ball.rect.right >= i.rect.left):  
+                                if ball.direction_y == -1: 
+                                    buffer.append("collided")
+                                    ball.direction_y *= -1
+                                    ball.speed_y -= 0.00123                                  
                     if not buffer:
                         # check left side of block
                         if (ball.rect.right >= i.rect.left and
@@ -326,17 +353,7 @@ class Game:
                                     buffer.append("collided")   
                                     ball.direction_x *= -1
                                     ball.speed_x += 0.00121                                  
-                    if not buffer:
-                        # check bottom of block
-                        if (ball.rect.top <= i.rect.bottom and
-                            ball.rect.bottom > i.rect.bottom): 
-                            if (ball.rect.left <= i.rect.right and
-                                ball.rect.right >= i.rect.left):  
-                                if ball.direction_y == -1: 
-                                    buffer.append("collided")
-                                    ball.direction_y *= -1
-                                    ball.speed_y -= 0.00123     
-
+                    
         buffer = []    
 
     def dead(self):
@@ -397,28 +414,27 @@ class Game:
                     pygame.mixer.Sound('sound/complete.mp3'))
             if self.current_level > 7:
                 self.winscreen_visible = True
-                # pygame.mixer.Channel(0).play('sound/endsound.mp3')
+                pygame.mixer.Channel(3).play('sound/win.mp3')
                       
     def load_level_pos(self, level):
         # Positions for the blocks for each level.
-        if level == 7:
+        # if level == 7:
+        #     self.level_pos = [
+        #                    (370, 250)
+        #                     ] 
+
+        if level == 1:
             # Glasses
             self.level_pos = [
-                           
-                           
-                           (370, 250)
-                           
+                            (250, 50), (490, 50),
+                            (190, 90), (310, 90), (430, 90), (550, 90),                           
+                            (130, 130), (370, 130), (610, 130),
+                            (70, 170), (370, 170), (670, 170),
+                            (70, 210), (370, 210), (670, 210), 
+                            (130, 250), (370, 250), (610, 250),
+                            (190, 290), (310, 290), (430, 290), (550, 290),
+                            (250, 330), (490, 330)
                             ] 
-            # self.level_pos = [
-            #                 (250, 50), (490, 50),
-            #                 (190, 90), (310, 90), (430, 90), (550, 90),                           
-            #                 (130, 130), (370, 130), (610, 130),
-            #                 (70, 170), (370, 170), (670, 170),
-            #                 (70, 210), (370, 210), (670, 210), 
-            #                 (130, 250), (370, 250), (610, 250),
-            #                 (190, 290), (310, 290), (430, 290), (550, 290),
-            #                 (250, 330), (490, 330)
-            #                 ] 
 
         if level == 2:
             # V
@@ -466,6 +482,7 @@ class Game:
                             (130, 330), (190, 330), (250, 330), (370, 330),
                             (490, 330), (550, 330), (610, 330)
                             ] 
+            
         if level == 5:
             # Alien 3
             self.level_pos = [
@@ -503,7 +520,7 @@ class Game:
                             (430, 330), (490, 330), (610, 330)
                             ]   
               
-        if level == 1:
+        if level == 7:
             # Alien 4
             self.level_pos = [
                             (250, 50), (370, 50), (490, 50), 
@@ -573,7 +590,9 @@ class Game:
 
         if self.winscreen_visible:
             self.screen.blit(self.winscreen_image, (0, 0))
-            self.highscore.draw_highscore()
+            # self.highscore.check_high_score()
+            # self.highscore.prep_high_score()
+            # self.highscore.draw_highscore()
 
         pygame.display.flip()
 

@@ -21,6 +21,7 @@ class Ball:
         self.color = (200, 250, 200)
         self.image = pygame.image.load("images/ball.png")
         self.rect = pygame.Rect(self.x, self.y, 20, 20)
+
         self.ball_speed = game.ball_speed
         self.speed_y = self.ball_speed + 0.132
         values = [self.ball_speed, -self.ball_speed]
@@ -45,10 +46,10 @@ class Ball:
         if self.platform.moving_left or self.platform.moving_right:   
             if self.platform.moving_left:
                 self.speed_y = self.ball_speed
-                self.speed_x = self.ball_speed
+                self.speed_x = self.ball_speed + 0.03
             elif self.platform.moving_right:
                 self.speed_y = self.ball_speed
-                self.speed_x = -self.ball_speed
+                self.speed_x = -self.ball_speed + 0.03
             self.game.level_running = True
 
     def update(self):

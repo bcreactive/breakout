@@ -16,8 +16,10 @@ class Block:
 
         self.x = x
         self.y = y
-        self.width = 59.39
-        self.height = 39.37
+        # self.width = 59.39
+        # self.height = 39.37
+        self.width = 59.66
+        self.height = 39.66
         # self.rect = pygame.Rect(self.x - 0.03, self.y - 0.07,
         #                         self.width + 0.0173, self.height + 0.0175)
         self.rect = pygame.Rect(self.x -3, self.y +2,

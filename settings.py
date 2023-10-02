@@ -8,8 +8,8 @@ class Settings:
         self.points = 0
 
         #screen settings
-        self.screen_width = 800
-        self.screen_height = 600
+        self.screen_width = 799
+        self.screen_height = 599
         self.bg_color = (89, 111, 175)
 
         #speed settings

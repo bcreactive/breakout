@@ -14,7 +14,7 @@ class Player:
         self.height = 30
         self.x = 400 - self.width/2
         self.x = float(self.x)
-        self.y = self.screen_rect.height - self.height - 10
+        self.y = self.screen_rect.height - self.height - 9
         self.speed = self.settings.player_speed
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.rect_image = pygame.Rect(self.x, self.y, self.width, self.height)
