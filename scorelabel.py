@@ -11,7 +11,7 @@ class Scorelabel:
         self.settings = game.settings
         self.screen_rect = self.screen.get_rect()
         
-        # Font settings
+        # Font and color settings.
         self.label_color = self.game.bg_color
         self.text_color = (30, 230, 230)
         self.font = pygame.font.SysFont(None, 48)

@@ -24,7 +24,8 @@ class Game:
         self.clock = pygame.time.Clock()   
         self.fps = 60
         self.screen = pygame.display.set_mode((self.settings.screen_width,
-                                               self.settings.screen_height))       
+                                               self.settings.screen_height)) 
+              
         self.screen_rect = self.screen.get_rect()
         pygame.display.set_caption("Game")   
         self.bg_color = self.settings.bg_color
@@ -68,12 +69,14 @@ class Game:
         # Main game loop.   
         while True:
             self.check_events()
+
             if self.game_active:
                 if self.ball_lost:
                     pygame.time.delay(1000)
                     self.ball_lost = False
                 if self.level_up:
                     self.load_new_sound()
+
                 self.platform.update()
                 for i in self.active_balls:
                     i.update()                    
@@ -87,6 +90,7 @@ class Game:
                         self.pickup.update()
                         self.check_pickup()
                     self.timer.update()
+
             self.update_screen()  
             self.clock.tick(self.fps)
 
@@ -264,8 +268,6 @@ class Game:
                 
     def get_color(self):
         # Get the pool with increasing amount of colors for each level.
-        # if self.current_level == 1:
-        #     colors = ["blue", "red", "blue"]
         if self.current_level == 1:
             colors = ["blue", "orange", "red", "blue", "red"]
         elif self.current_level == 2:
@@ -318,6 +320,7 @@ class Game:
                                     buffer.append("collided")
                                     ball.direction_y *= -1
                                     ball.speed_y += 0.00127   
+
                     if not buffer:
                         # check bottom of block
                         if (ball.rect.top <= i.rect.bottom and
@@ -327,7 +330,8 @@ class Game:
                                 if ball.direction_y == -1: 
                                     buffer.append("collided")
                                     ball.direction_y *= -1
-                                    ball.speed_y -= 0.00123                                  
+                                    ball.speed_y -= 0.00123  
+
                     if not buffer:
                         # check left side of block
                         if (ball.rect.right >= i.rect.left and
@@ -337,7 +341,8 @@ class Game:
                                 if ball.direction_x == 1:
                                     buffer.append("collided")
                                     ball.direction_x *= -1  
-                                    ball.speed_x += 0.00132                                 
+                                    ball.speed_x += 0.00132 
+
                     if not buffer:                    
                         # check right side of block   
                         if (ball.rect.left <= i.rect.right and
@@ -361,7 +366,6 @@ class Game:
             self.pickup_visible = False
             self.pickup_collected = False
             self.timer.reset()
-            # self.ball.start_pos()
             self.active_drop = ""
             self.ball_lost = True
             pygame.mixer.Channel(1).play(
@@ -422,11 +426,6 @@ class Game:
 
     def load_level_pos(self, level):
         # Positions for the blocks for each level.
-        # if level == 7:
-        #     self.level_pos = [
-        #                    (370, 250)
-        #                     ] 
-
         if level == 1:
             # Glasses
             self.level_pos = [
@@ -596,7 +595,6 @@ class Game:
             self.screen.blit(self.winscreen_image, (0, 0))
             self.highscore.check_high_score()
             self.highscore.prep_high_score()
-            # self.highscore.draw_highscore()
 
         pygame.display.flip()
 

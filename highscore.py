@@ -48,7 +48,6 @@ class Highscore:
         self.high_score_image = self.font.render(high_score_str, True,
                                     self.text_color, self.label_color)       
         self.high_score_rect = self.high_score_image.get_rect()  
-        # if self.game.endscreen_visible:
         self.high_score_rect.x = 20
         self.high_score_rect.y = 380
         if self.game.winscreen_visible:
@@ -65,7 +64,6 @@ class Highscore:
         self.grats_image = self.font.render(grats_str, True,
                                     text_color, self.label_color)      
         self.grats_rect = self.grats_image.get_rect() 
-        # if self.game.endscreen_visible: 
         self.grats_rect.x = 20
         self.grats_rect.y = 320
         if self.game.winscreen_visible:

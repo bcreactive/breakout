@@ -14,6 +14,6 @@ class Settings:
 
         #speed settings
         self.player_speed = 6.5
-        self.ball_speed = 3.57119
+        self.ball_speed = 3.571
         self.pickup_speed = 2
        
