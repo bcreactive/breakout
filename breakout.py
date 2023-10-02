@@ -32,7 +32,10 @@ class Game:
 
         self.load_images()
         self.intro_sound = pygame.mixer.Channel(0).play(
-                                pygame.mixer.Sound('sound/intro.mp3'))        
+                                pygame.mixer.Sound('sound/intro.mp3'))   
+        
+        self.tracks = [1, 2, 3, 4, 5]
+        self.played_tracks = []     
         self.level_sound = self.load_sound()
 
         self.ball_speed = self.settings.ball_speed       
@@ -47,7 +50,7 @@ class Game:
         self.level_pos = []
         self.active_drop = ""
         self.drops_collected = []
-        self.active_balls = []
+        self.active_balls = []    
         self.points = 0
         self.current_level = 1
         self.lives = self.settings.lives
@@ -128,19 +131,36 @@ class Game:
         self.winscreen_image = pygame.image.load("images/win_screen.png")
      
     def load_sound(self):
-        tracks = [1, 2, 3, 4, 5]
-        track = choice(tracks)
+        if self.tracks:
+            track = choice(self.tracks)
+        elif not self.tracks:
+            self.tracks = [1, 2, 3, 4, 5]
+            track = choice(self.tracks)
+
         if track == 1:
-            return "sound/level_a.mp3"
+            self.tracks.remove(1)
+            return "sound/level_a.mp3"          
         elif track == 2:
+            self.tracks.remove(2)
             return "sound/level_b.mp3"
         elif track == 3:
+            self.tracks.remove(3)
             return "sound/level_c.mp3"
         elif track == 4:
+            self.tracks.remove(4)
             return "sound/level_d.mp3"
         elif track == 5:
+            self.tracks.remove(5)
             return "sound/level_e.mp3"
         
+    def load_new_sound(self):
+        if self.current_level <= 7:
+            pygame.time.delay(1800)
+            self.level_up = False
+            self.level_sound = self.load_sound()
+            pygame.mixer.Channel(0).play(
+                pygame.mixer.Sound(self.level_sound))
+            
     def check_play_button(self, mouse_pos):
         # Start a new game when button is clicked and reset game stats.
         if not self.game_active:
@@ -162,6 +182,7 @@ class Game:
                 self.active_balls.append(self.ball)
                 self.ball.start_pos()
                 self.ball_speed = self.settings.ball_speed
+                self.tracks = [1, 2, 3, 4, 5]
          
                 self.level_running = False
                 self.game_active = True
@@ -416,16 +437,20 @@ class Game:
                 pygame.mixer.Channel(0).play(
                     pygame.mixer.Sound('sound/win.mp3'))
 
-    def load_new_sound(self):
-        if self.current_level <= 7:
-            pygame.time.delay(1800)
-            self.level_up = False
-            self.level_sound = self.load_sound()
-            pygame.mixer.Channel(0).play(
-                pygame.mixer.Sound(self.level_sound))
-
+    # def load_new_sound(self):
+    #     if self.current_level <= 7:
+    #         pygame.time.delay(1800)
+    #         self.level_up = False
+    #         self.level_sound = self.load_sound()
+    #         pygame.mixer.Channel(0).play(
+    #             pygame.mixer.Sound(self.level_sound))
+                     
     def load_level_pos(self, level):
         # Positions for the blocks for each level.
+        # if level == 1:
+        #     # Test
+        #     self.level_pos = [
+        #                     (370, 270)]
         if level == 1:
             # Glasses
             self.level_pos = [

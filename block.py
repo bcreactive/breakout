@@ -18,7 +18,7 @@ class Block:
         self.y = y
         self.width = 59.66
         self.height = 39.66
-        self.rect = pygame.Rect(self.x -3, self.y +2,
+        self.rect = pygame.Rect(self.x + 3, self.y + 2,
                                 self.width, self.height)
         self.visible = True
 
