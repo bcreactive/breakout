@@ -23,7 +23,6 @@ class Game:
         self.settings = Settings()
         self.clock = pygame.time.Clock()   
         self.fps = 60
-
         self.screen = pygame.display.set_mode((self.settings.screen_width,
                                                self.settings.screen_height))       
         self.screen_rect = self.screen.get_rect()
@@ -42,8 +41,7 @@ class Game:
         self.scorelabel = Scorelabel(self)
         self.pickup = Pickup(self, self.lifeup_image)
         self.timer = Timer(self)
-        
-        
+           
         self.blocks = []
         self.level_pos = []
         self.active_drop = ""
@@ -76,13 +74,6 @@ class Game:
                     self.ball_lost = False
                 if self.level_up:
                     self.load_new_sound()
-                    # if self.current_level <= 7:
-                    #     pygame.time.delay(1800)
-                    #     self.level_up = False
-                    #     self.level_sound = self.load_sound()
-                    #     pygame.mixer.Channel(0).play(
-                    #         pygame.mixer.Sound(self.level_sound))
-                        
                 self.platform.update()
                 for i in self.active_balls:
                     i.update()                    
