@@ -21,7 +21,6 @@ class Ball:
         self.color = (200, 250, 200)
         self.image = pygame.image.load("images/ball.png")
         self.rect = pygame.Rect(self.x, self.y, 20, 20)
-        # self.start_pos()
         self.ball_speed = game.ball_speed
         self.speed_y = self.ball_speed + 0.132
         values = [self.ball_speed, -self.ball_speed]
