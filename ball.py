@@ -15,7 +15,7 @@ class Ball:
 
         self.radius = 10
         self.x = x
-        self.y = 540.33
+        self.y = 538.99
         self.x = float(self.x)
         self.y = float(self.y)
         self.color = (200, 250, 200)
@@ -24,8 +24,7 @@ class Ball:
 
         self.ball_speed = game.ball_speed
         self.speed_y = self.ball_speed + 0.132
-        values = [self.ball_speed, -self.ball_speed]
-        self.speed_x = choice(values)
+        self.speed_x = 0
         self.direction_x = 1
         self.direction_y = -1
         self.dmg = 1
@@ -33,7 +32,7 @@ class Ball:
     def start_pos(self):
         # Reset start position of ball and platform.
         self.x = 390
-        self.y = 540.33
+        self.y = 538.99
         self.speed_x = 0
         self.speed_y = 0
         self.direction_x = 1

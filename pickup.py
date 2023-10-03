@@ -1,3 +1,6 @@
+from random import randint
+
+
 class Pickup:
     """This class creates a certain pickup."""
 
@@ -11,6 +14,13 @@ class Pickup:
         self.y = 100
         self.image = drop
         self.rect = self.image.get_rect()
+    
+    def check_spawn(self):
+        # checks, if a collectible appears at a given chance
+        value = randint(1, 1000)
+        if value <= 150 and not self.game.active_drop:
+            if len(self.game.drops_collected) <= 4:
+                return True
 
     def update(self):
         # Update position of pickup.

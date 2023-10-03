@@ -17,7 +17,6 @@ class Player:
         self.y = self.screen_rect.height - self.height - 9
         self.speed = self.settings.player_speed
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        self.rect_image = pygame.Rect(self.x, self.y, self.width, self.height)
         self.color = (123, 123, 123)
 
         self.moving_left = False
@@ -26,7 +25,6 @@ class Player:
     def update(self):
         # Update position of platform for each frame.
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        self.rect_image = pygame.Rect(self.x, self.y, self.width, self.height)
         if self.moving_left == True and self.x > 0:
             self.x -= self.speed
 
@@ -35,11 +33,9 @@ class Player:
             self.x += self.speed
 
         self.rect.x = self.x
-        self.rect_image.x = self.x
-        self.rect_image.y = self.y + 5
-    
+
     def drawme(self):
         # Drawing the platform on the screen.
-        pygame.draw.rect(self.screen, self.color, (self.rect_image))
-        pygame.draw.rect(self.screen, (60, 60, 60), (self.rect_image), 2)
+        pygame.draw.rect(self.screen, self.color, (self.rect))
+        pygame.draw.rect(self.screen, (60, 60, 60), (self.rect), 2)
 
