@@ -6,6 +6,7 @@ class Settings:
         
         self.lives = 3
         self.points = 0
+        self.player_width = 100
 
         #screen settings
         self.screen_width = 799

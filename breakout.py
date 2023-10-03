@@ -351,7 +351,7 @@ class Game:
                                 if ball.direction_y == -1: 
                                     buffer.append("collided")
                                     ball.direction_y *= -1
-                                    ball.speed_y -= 0.00123  
+                                    ball.speed_y += 0.00123  
 
                     if not buffer:
                         # check left side of block

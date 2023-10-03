@@ -10,7 +10,7 @@ class Player:
         self.screen = game.screen
         self.screen_rect = self.screen.get_rect()
         self.settings = game.settings
-        self.width = 100
+        self.width = self.settings.player_width
         self.height = 30
         self.x = 400 - self.width/2
         self.x = float(self.x)

@@ -15,6 +15,7 @@ class Scorelabel:
         self.label_color = self.game.bg_color
         self.text_color = (30, 230, 230)
         self.font = pygame.font.SysFont(None, 48)
+
         self.lives = self.settings.lives
         self.level = 1
         self.prep_score(0)
@@ -25,7 +26,8 @@ class Scorelabel:
         self.score = score
         score_str = f"Score: {self.score}"
         self.score_image = self.font.render(score_str, True, self.text_color,
-                                            self.label_color)       
+                                            self.label_color)  
+             
         self.score_rect = self.score_image.get_rect()
         self.score_rect.right = self.screen_rect.right - 5
         self.score_rect.top = 5
@@ -34,7 +36,8 @@ class Scorelabel:
         # Get a rendered image with the level.
         level_str = f"Level: {level}"
         self.level_img = self.font.render(level_str, True, self.text_color,
-                                            self.label_color)      
+                                            self.label_color)   
+           
         self.level_rect = self.level_img.get_rect()
         self.level_rect.right = self.screen_rect.right - 280
         self.level_rect.top = 5

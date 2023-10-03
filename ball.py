@@ -76,7 +76,7 @@ class Ball:
                      
         if self.y <= self.screen_rect.top:  
             self.direction_y *= -1         
-            self.speed_y += 0.0017
+            self.speed_y += 0.0027
             
           
     def check_platform(self):
