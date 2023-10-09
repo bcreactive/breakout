@@ -35,7 +35,7 @@ class Game:
                                 pygame.mixer.Sound('sound/intro.mp3'))   
         
         self.tracks = [1, 2, 3, 4, 5]
-        self.played_tracks = []     
+        # self.played_tracks = []     
         self.level_sound = self.load_sound()
 
         self.ball_speed = self.settings.ball_speed  
