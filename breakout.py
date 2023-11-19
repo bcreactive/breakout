@@ -35,7 +35,6 @@ class Game:
                                 pygame.mixer.Sound('sound/intro.mp3'))   
         
         self.tracks = [1, 2, 3, 4, 5]
-        # self.played_tracks = []     
         self.level_sound = self.load_sound()
 
         self.ball_speed = self.settings.ball_speed  
@@ -329,7 +328,9 @@ class Game:
         buffer = []
         for i in self.blocks:
             for ball in self.active_balls:
-                if ball.rect.colliderect(i.rect):
+                offset_x = i.rect.x - ball.rect.x
+                offset_y = i.rect.y - ball.rect.y
+                if ball.mask.overlap(i.mask, (offset_x, offset_y)):
 
                     if not buffer:
                         # check top of block

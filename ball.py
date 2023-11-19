@@ -1,11 +1,13 @@
 import pygame
+from pygame.sprite import Sprite
 from random import choice
 
 
-class Ball:
+class Ball(Sprite):
     """This class builds the ball and update the position."""
 
     def __init__(self, game, x):
+        super().__init__()
         """Initialize ball attributes."""
         self.game = game
         self.screen = game.screen
@@ -21,6 +23,7 @@ class Ball:
         self.color = (200, 250, 200)
         self.image = pygame.image.load("images/ball.png")
         self.rect = pygame.Rect(self.x, self.y, 20, 20)
+        self.mask = pygame.mask.from_surface(self.image)
 
         self.ball_speed = game.ball_speed
         self.speed_y = self.ball_speed + 0.132
@@ -66,7 +69,7 @@ class Ball:
 
     def check_walls(self):
         # Changes direction of ball, if a wall is touched.
-        if self.x + 2*self.radius >= self.screen_rect.right:
+        if self.x + self.rect.width >= self.screen_rect.right:
             self.direction_x *= -1
             self.speed_x += 0.00133             
              
@@ -81,7 +84,9 @@ class Ball:
           
     def check_platform(self):
         # Changes direction of ball, if the platform is touched.
+        
         if self.rect.colliderect(self.platform.rect):
+        # if self.mask.maskcollision(self.platform.rect):
 
             if not self.rect.bottom >= self.screen_rect.bottom - 29.99:
                 self.direction_y *= -1

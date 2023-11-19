@@ -1,11 +1,13 @@
 import pygame
+from pygame.sprite import Sprite
 
 
-class Block:
+class Block(Sprite):
     """This class builds a block at given coordnates and color."""
     
     def __init__(self, game, x, y, color):
         """Initialize block attributes."""
+        super().__init__()
         self.game = game
         self.screen = game.screen
         self.settings = game.settings
@@ -18,8 +20,14 @@ class Block:
         self.y = y
         self.width = 59.66
         self.height = 39.66
+        # self.width = int(60)
+        # self.height = int(40)
         self.rect = pygame.Rect(self.x + 3, self.y + 2,
                                 self.width, self.height)
+        
+        self.surface = pygame.Surface((self.width, self.height))
+        self.mask = pygame.mask.from_surface(self.surface)
+
         self.visible = True
 
     def get_color(self, col):
