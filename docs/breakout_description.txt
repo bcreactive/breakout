@@ -1,0 +1,17 @@
+description:
+
+use left/right arrow-keys to launch the ball and control the platform.
+try to save the ball and hit the bricks, until all of them disappear to reach the next level!
+
+there are different brick-colors, depending on the amount of healtpoints a brick has.
+
+collectibles will spawn randomly if blocks are destroyed and need to be fetched with the platform to take effect:
+
+-temporary increase of the platform-width
+-temporary increase of damagepoints
+-multiball
+-extra life
+
+a timer indicates the remaining time of the temporary effects.
+
+

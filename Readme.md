@@ -1,8 +1,9 @@
 Projekt: Breakout
 
 Dies ist meine Klon-Version der Spiele-Klassiker "Breakout" und "Arkanoid". 
-
 Erstellt mit Pygame, geschrieben in Python 3.
 
-Die Gamemusik wurde erstellt von "awtomat supabreakz" 
-soundcloud.com/awtomatsupabreakz
+Der Quellcode und die Bilddateien von Tetrx unterstehen der MIT Lizenz
+
+Die Rechte der verwendeten Musik liegen bei awtomat supabreakz. Siehe: lizenz_musik.txt
+
